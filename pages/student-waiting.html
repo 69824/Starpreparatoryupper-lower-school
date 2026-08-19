@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Waiting Room | Star Preparatory School</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071952,
+                    #0b3d91
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 520px;
+
+        }
+
+        .school-header {
+
+            text-align: center;
+
+            color: white;
+
+            margin-bottom: 25px;
+
+        }
+
+        .school-header h1 {
+
+            font-size: 27px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .school-header p {
+
+            color: #dbeafe;
+
+            font-size: 15px;
+
+        }
+
+        .card {
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 35px 30px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.25);
+
+            text-align: center;
+
+        }
+
+        .waiting-icon {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            background: #eef2ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 45px;
+
+        }
+
+        .card h2 {
+
+            color: #071952;
+
+            margin-bottom: 10px;
+
+            font-size: 25px;
+
+        }
+
+        .welcome {
+
+            color: #555;
+
+            font-size: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .student-name {
+
+            color: #071952;
+
+            font-weight: bold;
+
+        }
+
+        .quiz-info {
+
+            background: #f4f7fb;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .info-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 9px 0;
+
+            border-bottom: 1px solid #e1e5ea;
+
+            gap: 15px;
+
+        }
+
+        .info-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+        .info-label {
+
+            color: #666;
+
+            font-size: 14px;
+
+        }
+
+        .info-value {
+
+            color: #071952;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            text-align: right;
+
+        }
+
+        .status {
+
+            background: #fff3cd;
+
+            color: #664d03;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+        }
+
+        .loader {
+
+            width: 42px;
+
+            height: 42px;
+
+            border: 4px solid #e1e5ea;
+
+            border-top-color: #071952;
+
+            border-radius: 50%;
+
+            animation: spin 1s linear infinite;
+
+            margin: 0 auto 15px;
+
+        }
+
+        @keyframes spin {
+
+            to {
+
+                transform: rotate(360deg);
+
+            }
+
+        }
+
+        .instruction {
+
+            color: #777;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+        }
+
+        .error {
+
+            display: none;
+
+            background: #f8d7da;
+
+            color: #842029;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-top: 20px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+        .leave-button {
+
+            margin-top: 25px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #071952;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+        }
+
+        .leave-button:hover {
+
+            text-decoration: underline;
+
+        }
+
+        .footer {
+
+            text-align: center;
+
+            color: #dbeafe;
+
+            font-size: 12px;
+
+            margin-top: 20px;
+
+        }
+
+        @media (max-width: 500px) {
+
+            .card {
+
+                padding: 28px 20px;
+
+            }
+
+            .school-header h1 {
+
+                font-size: 22px;
+
+            }
+
+            .info-row {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 4px;
+
+            }
+
+            .info-value {
+
+                text-align: left;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- SCHOOL HEADER -->
+
+    <div class="school-header">
+
+        <h1>
+            STAR PREPARATORY SCHOOL
+        </h1>
+
+        <p>
+            Live Quiz Competition
+        </p>
+
+    </div>
+
+
+    <!-- WAITING CARD -->
+
+    <div class="card">
+
+
+        <div class="waiting-icon">
+            ⏳
+        </div>
+
+
+        <h2>
+            You're In!
+        </h2>
+
+
+        <p class="welcome">
+
+            Welcome,
+            <span
+                id="studentName"
+                class="student-name"
+            >
+                Student
+            </span>
+
+        </p>
+
+
+        <!-- QUIZ INFORMATION -->
+
+        <div class="quiz-info">
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Grade
+                </span>
+
+                <span
+                    id="studentGrade"
+                    class="info-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Quiz Code
+                </span>
+
+                <span
+                    id="quizCode"
+                    class="info-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span class="info-label">
+                    Competition
+                </span>
+
+                <span
+                    id="quizTitle"
+                    class="info-value"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="status">
+
+            <div class="loader"></div>
+
+            Waiting for the teacher to start the quiz...
+
+        </div>
+
+
+        <p class="instruction">
+
+            Please stay on this page.
+            The quiz will start automatically
+            when your teacher begins the competition.
+
+        </p>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <button
+            id="leaveButton"
+            class="leave-button"
+            type="button"
+        >
+
+            Leave Competition
+
+        </button>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        Star Preparatory School © 2026
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     FIREBASE
+========================================== -->
+
+<script type="module">
+
+
+    import {
+        initializeApp
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+    import {
+
+        getFirestore,
+
+        doc,
+
+        getDoc,
+
+        onSnapshot
+
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+        authDomain:
+            "star-preparatory-upper-quiz.firebaseapp.com",
+
+        projectId:
+            "star-preparatory-upper-quiz",
+
+        storageBucket:
+            "star-preparatory-upper-quiz.firebasestorage.app",
+
+        messagingSenderId:
+            "763341549221",
+
+        appId:
+            "1:763341549221:web:cf77f2f9e227306550674c"
+
+    };
+
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app =
+        initializeApp(
+            firebaseConfig
+        );
+
+
+    const db =
+        getFirestore(app);
+
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const studentNameElement =
+        document.getElementById(
+            "studentName"
+        );
+
+
+    const studentGradeElement =
+        document.getElementById(
+            "studentGrade"
+        );
+
+
+    const quizCodeElement =
+        document.getElementById(
+            "quizCode"
+        );
+
+
+    const quizTitleElement =
+        document.getElementById(
+            "quizTitle"
+        );
+
+
+    const errorElement =
+        document.getElementById(
+            "error"
+        );
+
+
+    const leaveButton =
+        document.getElementById(
+            "leaveButton"
+        );
+
+
+
+    // ==========================================
+    // SESSION DATA
+    // ==========================================
+
+    const quizId =
+        sessionStorage.getItem(
+            "quizId"
+        );
+
+
+    const studentId =
+        sessionStorage.getItem(
+            "studentId"
+        );
+
+
+    const studentName =
+        sessionStorage.getItem(
+            "studentName"
+        );
+
+
+    const studentGrade =
+        sessionStorage.getItem(
+            "studentGrade"
+        );
+
+
+    const quizCode =
+        sessionStorage.getItem(
+            "quizCode"
+        );
+
+
+
+    // ==========================================
+    // DISPLAY STUDENT DATA
+    // ==========================================
+
+    studentNameElement.textContent =
+        studentName || "Student";
+
+
+    studentGradeElement.textContent =
+        studentGrade || "-";
+
+
+    quizCodeElement.textContent =
+        quizCode || "-";
+
+
+
+    // ==========================================
+    // CHECK SESSION
+    // ==========================================
+
+    if (!quizId) {
+
+        showError(
+            "Quiz information is missing. Please return to the join page and join the competition again."
+        );
+
+    }
+    else {
+
+        startWaitingRoom();
+
+    }
+
+
+
+    // ==========================================
+    // WAITING ROOM
+    // ==========================================
+
+    async function startWaitingRoom() {
+
+        try {
+
+            console.log(
+                "Waiting room started."
+            );
+
+            console.log(
+                "Quiz ID:",
+                quizId
+            );
+
+            console.log(
+                "Student ID:",
+                studentId
+            );
+
+
+            // ==================================
+            // GET QUIZ INFORMATION
+            // ==================================
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            const quizSnapshot =
+                await getDoc(
+                    quizRef
+                );
+
+
+            if (
+                !quizSnapshot.exists()
+            ) {
+
+                showError(
+                    "This quiz could not be found. Please contact your teacher."
+                );
+
+                return;
+
+            }
+
+
+            const quiz =
+                quizSnapshot.data();
+
+
+            console.log(
+                "Quiz information:",
+                quiz
+            );
+
+
+            // ==================================
+            // DISPLAY QUIZ TITLE
+            // ==================================
+
+            quizTitleElement.textContent =
+                quiz.title ||
+                quiz.name ||
+                "Quiz Competition";
+
+
+            // ==================================
+            // CHECK CURRENT STATUS
+            // ==================================
+
+            if (
+                quiz.status === "started"
+            ) {
+
+                goToQuiz();
+
+                return;
+
+            }
+
+
+            if (
+                quiz.status === "completed"
+            ) {
+
+                showError(
+                    "This competition has already ended."
+                );
+
+                return;
+
+            }
+
+
+            // ==================================
+            // REAL-TIME LISTENER
+            // ==================================
+
+            onSnapshot(
+
+                quizRef,
+
+                snapshot => {
+
+                    if (
+                        !snapshot.exists()
+                    ) {
+
+                        showError(
+                            "The quiz could not be found."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const updatedQuiz =
+                        snapshot.data();
+
+
+                    console.log(
+                        "Quiz status changed:",
+                        updatedQuiz.status
+                    );
+
+
+                    // ==========================
+                    // QUIZ STARTED
+                    // ==========================
+
+                    if (
+                        updatedQuiz.status ===
+                        "started"
+                    ) {
+
+                        goToQuiz();
+
+                        return;
+
+                    }
+
+
+                    // ==========================
+                    // QUIZ COMPLETED
+                    // ==========================
+
+                    if (
+                        updatedQuiz.status ===
+                        "completed"
+                    ) {
+
+                        showError(
+                            "The teacher has ended the competition."
+                        );
+
+                        return;
+
+                    }
+
+                },
+
+                error => {
+
+                    console.error(
+                        "Waiting room listener error:",
+                        error
+                    );
+
+
+                    showError(
+                        "Connection error. Please check your internet connection and refresh the page."
+                    );
+
+                }
+
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Waiting room error:",
+                error
+            );
+
+
+            showError(
+                "Unable to connect to the competition: " +
+                error.message
+            );
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // GO TO QUIZ
+    // ==========================================
+
+    function goToQuiz() {
+
+        console.log(
+            "Quiz started. Opening student quiz..."
+        );
+
+
+        window.location.href =
+            "student-quiz.html";
+
+    }
+
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    function showError(
+        text
+    ) {
+
+        errorElement.textContent =
+            text;
+
+        errorElement.style.display =
+            "block";
+
+    }
+
+
+
+    // ==========================================
+    // LEAVE COMPETITION
+    // ==========================================
+
+    leaveButton.addEventListener(
+        "click",
+        () => {
+
+            const confirmLeave =
+                confirm(
+                    "Are you sure you want to leave the competition?"
+                );
+
+
+            if (!confirmLeave) {
+
+                return;
+
+            }
+
+
+            sessionStorage.removeItem(
+                "quizId"
+            );
+
+            sessionStorage.removeItem(
+                "studentId"
+            );
+
+            sessionStorage.removeItem(
+                "studentName"
+            );
+
+            sessionStorage.removeItem(
+                "studentGrade"
+            );
+
+            sessionStorage.removeItem(
+                "quizCode"
+            );
+
+
+            window.location.href =
+                "student.html";
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
+

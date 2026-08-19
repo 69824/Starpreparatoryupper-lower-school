@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Audience | Star Preparatory School</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #020617, #071952, #0b3d91);
+            color: white;
+            overflow: hidden;
+        }
+
+        .screen {
+            min-height: 100vh;
+            padding: 30px 50px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.15);
+            padding-bottom: 20px;
+        }
+
+        .school {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: #cbd5e1;
+            margin-top: 5px;
+        }
+
+        .live {
+            background: #dc2626;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: 0.55;
+            }
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.08);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .info-label {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .info-value {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .question-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 1300px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .question-number {
+            text-align: center;
+            font-size: 22px;
+            color: #93c5fd;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .question-card {
+            background: white;
+            color: #071952;
+            border-radius: 25px;
+            padding: 45px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+
+        .question-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 1.35;
+            margin-bottom: 40px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .option {
+            border: 2px solid #dbe3ef;
+            border-radius: 14px;
+            padding: 22px;
+            font-size: 24px;
+            font-weight: bold;
+            background: #f8fafc;
+        }
+
+        .option-letter {
+            display: inline-flex;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #071952;
+            color: white;
+            margin-right: 12px;
+        }
+
+        .waiting {
+            text-align: center;
+            font-size: 30px;
+            color: #cbd5e1;
+        }
+
+        .completed {
+            display: none;
+            text-align: center;
+        }
+
+        .completed-icon {
+            font-size: 90px;
+            margin-bottom: 20px;
+        }
+
+        .completed h1 {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .completed p {
+            font-size: 24px;
+            color: #cbd5e1;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .fullscreen-button {
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .fullscreen-button:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .error {
+            display: none;
+            background: #7f1d1d;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+
+            .screen {
+                padding: 20px;
+            }
+
+            .school {
+                font-size: 22px;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .question-card {
+                padding: 25px;
+            }
+
+            .question-title {
+                font-size: 27px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .option {
+                font-size: 19px;
+            }
+        }
+
+        @media (min-width: 1500px) {
+
+            .question-title {
+                font-size: 45px;
+            }
+
+            .option {
+                font-size: 28px;
+                padding: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="screen" id="screen">
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div>
+            <div class="school">
+                STAR PREPARATORY SCHOOL
+            </div>
+
+            <div class="subtitle">
+                LIVE QUIZ COMPETITION
+            </div>
+        </div>
+
+        <div class="live" id="liveBadge">
+            🔴 LIVE
+        </div>
+
+    </header>
+
+
+    <!-- QUIZ INFORMATION -->
+    <section class="info">
+
+        <div class="info-box">
+            <div class="info-label">
+                Competition
+            </div>
+
+            <div
+                class="info-value"
+                id="quizTitle"
+            >
+                Quiz
+            </div>
+        </div>
+
+
+        <div class="info-box">
+            <div class="info-label">
+                Quiz Code
+            </div>
+
+            <div
+                class="info-value"
+                id="quizCode"
+            >
+                -
+            </div>
+        </div>
+
+
+        <div class="info-box">
+            <div class="info-label">
+                Grade
+            </div>
+
+            <div
+                class="info-value"
+                id="quizGrade"
+            >
+                -
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- QUESTION AREA -->
+    <main class="question-area">
+
+        <div id="questionContent">
+
+            <div
+                class="question-number"
+                id="questionNumber"
+            >
+                WAITING
+            </div>
+
+
+            <div class="question-card">
+
+                <div
+                    class="question-title"
+                    id="questionText"
+                >
+                    Waiting for question...
+                </div>
+
+
+                <div
+                    class="options"
+                    id="optionsContainer"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPLETED -->
+        <div
+            class="completed"
+            id="completedScreen"
+        >
+
+            <div class="completed-icon">
+                🏆
+            </div>
+
+            <h1>
+                QUIZ COMPLETED
+            </h1>
+
+            <p>
+                Thank you for participating!
+            </p>
+
+        </div>
+
+
+        <div
+            class="error"
+            id="error"
+        ></div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <span>
+            Star Preparatory School © 2026
+        </span>
+
+        <button
+            class="fullscreen-button"
+            id="fullscreenButton"
+        >
+            ⛶ FULL SCREEN
+        </button>
+
+    </footer>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    onSnapshot,
+    collection,
+    query,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+    authDomain:
+        "star-preparatory-upper-quiz.firebaseapp.com",
+
+    projectId:
+        "star-preparatory-upper-quiz",
+
+    storageBucket:
+        "star-preparatory-upper-quiz.firebasestorage.app",
+
+    messagingSenderId:
+        "763341549221",
+
+    appId:
+        "1:763341549221:web:cf77f2f9e227306550674c"
+
+};
+
+
+// =====================================================
+// INITIALIZE FIREBASE
+// =====================================================
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const quizTitle =
+    document.getElementById("quizTitle");
+
+const quizCode =
+    document.getElementById("quizCode");
+
+const quizGrade =
+    document.getElementById("quizGrade");
+
+const questionNumber =
+    document.getElementById("questionNumber");
+
+const questionText =
+    document.getElementById("questionText");
+
+const optionsContainer =
+    document.getElementById("optionsContainer");
+
+const questionContent =
+    document.getElementById("questionContent");
+
+const completedScreen =
+    document.getElementById("completedScreen");
+
+const liveBadge =
+    document.getElementById("liveBadge");
+
+const errorElement =
+    document.getElementById("error");
+
+const fullscreenButton =
+    document.getElementById("fullscreenButton");
+
+
+// =====================================================
+// VARIABLES
+// =====================================================
+
+let activeQuizId = null;
+
+let unsubscribeQuiz = null;
+
+let unsubscribeQuestions = null;
+
+let questions = [];
+
+
+// =====================================================
+// ACTIVE COMPETITION
+// =====================================================
+
+const activeCompetitionRef =
+    doc(
+        db,
+        "settings",
+        "activeCompetition"
+    );
+
+
+onSnapshot(
+    activeCompetitionRef,
+
+    async (snapshot) => {
+
+        try {
+
+            clearError();
+
+            if (!snapshot.exists()) {
+
+                showWaiting();
+
+                showError(
+                    "Waiting for the teacher to start a competition."
+                );
+
+                return;
+            }
+
+
+            const active =
+                snapshot.data();
+
+
+            const quizId =
+                active.quizId;
+
+
+            if (!quizId) {
+
+                showWaiting();
+
+                showError(
+                    "No active competition found."
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "Active competition:",
+                quizId
+            );
+
+
+            // Avoid creating duplicate listeners
+            if (activeQuizId === quizId) {
+                return;
+            }
+
+
+            activeQuizId = quizId;
+
+
+            // Clean old listeners
+            if (unsubscribeQuiz) {
+                unsubscribeQuiz();
+                unsubscribeQuiz = null;
+            }
+
+            if (unsubscribeQuestions) {
+                unsubscribeQuestions();
+                unsubscribeQuestions = null;
+            }
+
+
+            // =================================================
+            // QUIZ DOCUMENT
+            // =================================================
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            const quizSnapshot =
+                await getDoc(
+                    quizRef
+                );
+
+
+            if (!quizSnapshot.exists()) {
+
+                showError(
+                    "The active competition could not be found."
+                );
+
+                return;
+            }
+
+
+            const quiz =
+                quizSnapshot.data();
+
+
+            displayQuizInfo(
+                quiz
+            );
+
+
+            // =================================================
+            // LISTEN TO QUIZ DOCUMENT
+            // =================================================
+
+            listenToQuiz(
+                quizRef
+            );
+
+
+            // =================================================
+            // LISTEN TO QUESTIONS
+            // =================================================
+
+            listenToQuestions(
+                quizId
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Active competition error:",
+                error
+            );
+
+            showError(
+                "Unable to load competition: " +
+                error.message
+            );
+
+        }
+
+    },
+
+    error => {
+
+        console.error(
+            "Active competition listener error:",
+            error
+        );
+
+        showError(
+            "Unable to connect to the competition."
+        );
+
+    }
+
+);
+
+
+// =====================================================
+// DISPLAY QUIZ INFORMATION
+// =====================================================
+
+function displayQuizInfo(quiz) {
+
+    quizTitle.textContent =
+        quiz.title ||
+        quiz.name ||
+        "Quiz";
+
+    quizCode.textContent =
+        quiz.quizCode ||
+        quiz.code ||
+        "-";
+
+    quizGrade.textContent =
+        quiz.grade ||
+        quiz.class ||
+        "-";
+
+}
+
+
+// =====================================================
+// LISTEN TO QUIZ
+// =====================================================
+
+function listenToQuiz(quizRef) {
+
+    unsubscribeQuiz =
+        onSnapshot(
+
+            quizRef,
+
+            snapshot => {
+
+                if (!snapshot.exists()) {
+
+                    showError(
+                        "Competition could not be found."
+                    );
+
+                    return;
+                }
+
+
+                const quiz =
+                    snapshot.data();
+
+
+                displayQuizInfo(
+                    quiz
+                );
+
+
+                console.log(
+                    "Quiz status:",
+                    quiz.status
+                );
+
+                console.log(
+                    "Current question index:",
+                    quiz.currentQuestionIndex
+                );
+
+
+                // =============================================
+                // QUIZ COMPLETED
+                // =============================================
+
+                if (
+                    quiz.status ===
+                    "completed"
+                ) {
+
+                    showCompleted();
+
+                    return;
+                }
+
+
+                // =============================================
+                // QUIZ NOT STARTED
+                // =============================================
+
+                if (
+                    quiz.status !==
+                    "started"
+                ) {
+
+                    showWaiting();
+
+                    return;
+                }
+
+
+                // =============================================
+                // QUIZ STARTED
+                // =============================================
+
+                displayCurrentQuestion(
+                    quiz
+                );
+
+            },
+
+            error => {
+
+                console.error(
+                    "Quiz listener error:",
+                    error
+                );
+
+                showError(
+                    "Unable to read the competition."
+                );
+
+            }
+
+        );
+
+}
+
+
+// =====================================================
+// LISTEN TO QUIZ QUESTIONS
+// =====================================================
+
+function listenToQuestions(quizId) {
+
+    const questionsRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "quizQuestions"
+        );
+
+
+    const questionsQuery =
+        query(
+            questionsRef,
+            orderBy(
+                "order",
+                "asc"
+            )
+        );
+
+
+    unsubscribeQuestions =
+        onSnapshot(
+
+            questionsQuery,
+
+            snapshot => {
+
+                questions =
+                    snapshot.docs.map(
+                        item => ({
+
+                            id:
+                                item.id,
+
+                            ...item.data()
+
+                        })
+                    );
+
+
+                console.log(
+                    "Audience questions loaded:",
+                    questions
+                );
+
+
+                // If quiz is already started,
+                // refresh the displayed question.
+
+                if (activeQuizId) {
+
+                    // Get current quiz document
+                    const quizRef =
+                        doc(
+                            db,
+                            "quizzes",
+                            activeQuizId
+                        );
+
+                    getDoc(
+                        quizRef
+                    ).then(
+                        snapshot => {
+
+                            if (
+                                snapshot.exists()
+                            ) {
+
+                                const quiz =
+                                    snapshot.data();
+
+                                if (
+                                    quiz.status ===
+                                    "started"
+                                ) {
+
+                                    displayCurrentQuestion(
+                                        quiz
+                                    );
+
+                                }
+
+                            }
+
+                        }
+                    );
+
+                }
+
+            },
+
+            error => {
+
+                console.error(
+                    "Questions listener error:",
+                    error
+                );
+
+                showError(
+                    "Unable to load quiz questions."
+                );
+
+            }
+
+        );
+
+}
+
+
+// =====================================================
+// DISPLAY CURRENT QUESTION
+// =====================================================
+
+function displayCurrentQuestion(quiz) {
+
+    questionContent.style.display =
+        "block";
+
+    completedScreen.style.display =
+        "none";
+
+    liveBadge.textContent =
+        "🔴 LIVE";
+
+
+    if (
+        questions.length === 0
+    ) {
+
+        questionNumber.textContent =
+            "WAITING";
+
+        questionText.textContent =
+            "Waiting for question...";
+
+        optionsContainer.innerHTML =
+            "";
+
+        return;
+    }
+
+
+    const currentIndex =
+        Number(
+            quiz.currentQuestionIndex ?? 0
+        );
+
+
+    if (
+        currentIndex < 0 ||
+        currentIndex >= questions.length
+    ) {
+
+        console.warn(
+            "Invalid question index:",
+            currentIndex
+        );
+
+        questionNumber.textContent =
+            "WAITING";
+
+        questionText.textContent =
+            "Waiting for question...";
+
+        optionsContainer.innerHTML =
+            "";
+
+        return;
+    }
+
+
+    const question =
+        questions[currentIndex];
+
+
+    if (!question) {
+
+        questionNumber.textContent =
+            "WAITING";
+
+        questionText.textContent =
+            "Waiting for question...";
+
+        optionsContainer.innerHTML =
+            "";
+
+        return;
+    }
+
+
+    // =================================================
+    // QUESTION NUMBER
+    // =================================================
+
+    questionNumber.textContent =
+        `QUESTION ${currentIndex + 1} OF ${questions.length}`;
+
+
+    // =================================================
+    // QUESTION TEXT
+    // =================================================
+
+    questionText.textContent =
+        question.questionText ||
+        question.question ||
+        question.text ||
+        "Question unavailable";
+
+
+    // =================================================
+    // OPTIONS
+    // =================================================
+
+    optionsContainer.innerHTML =
+        "";
+
+
+    const optionList = [
+
+        {
+            letter: "A",
+            value: question.optionA
+        },
+
+        {
+            letter: "B",
+            value: question.optionB
+        },
+
+        {
+            letter: "C",
+            value: question.optionC
+        },
+
+        {
+            letter: "D",
+            value: question.optionD
+        },
+
+        {
+            letter: "E",
+            value: question.optionE
+        }
+
+    ];
+
+
+    optionList.forEach(
+        option => {
+
+            if (
+                option.value === undefined ||
+                option.value === null ||
+                String(option.value).trim() === ""
+            ) {
+
+                return;
+            }
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "option";
+
+
+            const letter =
+                document.createElement(
+                    "span"
+                );
+
+            letter.className =
+                "option-letter";
+
+            letter.textContent =
+                option.letter;
+
+
+            const text =
+                document.createElement(
+                    "span"
+                );
+
+            text.textContent =
+                String(option.value);
+
+
+            div.appendChild(
+                letter
+            );
+
+            div.appendChild(
+                text
+            );
+
+
+            optionsContainer.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// WAITING
+// =====================================================
+
+function showWaiting() {
+
+    questionContent.style.display =
+        "block";
+
+    completedScreen.style.display =
+        "none";
+
+    liveBadge.textContent =
+        "⏳ WAITING";
+
+    questionNumber.textContent =
+        "WAITING";
+
+    questionText.textContent =
+        "Waiting for question...";
+
+    optionsContainer.innerHTML =
+        "";
+
+}
+
+
+// =====================================================
+// COMPLETED
+// =====================================================
+
+function showCompleted() {
+
+    questionContent.style.display =
+        "none";
+
+    completedScreen.style.display =
+        "block";
+
+    liveBadge.textContent =
+        "⛔ COMPLETED";
+
+}
+
+
+// =====================================================
+// ERROR
+// =====================================================
+
+function showError(message) {
+
+    errorElement.textContent =
+        message;
+
+    errorElement.style.display =
+        "block";
+
+}
+
+
+function clearError() {
+
+    errorElement.textContent =
+        "";
+
+    errorElement.style.display =
+        "none";
+
+}
+
+
+// =====================================================
+// FULL SCREEN
+// =====================================================
+
+fullscreenButton.addEventListener(
+    "click",
+    async () => {
+
+        try {
+
+            if (
+                !document.fullscreenElement
+            ) {
+
+                await document
+                    .documentElement
+                    .requestFullscreen();
+
+            }
+
+            else {
+
+                await document.exitFullscreen();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Fullscreen error:",
+                error
+            );
+
+        }
+
+    }
+);
+
+
+// Change button text when fullscreen changes
+
+document.addEventListener(
+    "fullscreenchange",
+    () => {
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            fullscreenButton.textContent =
+                "⛶ EXIT FULL SCREEN";
+
+        }
+
+        else {
+
+            fullscreenButton.textContent =
+                "⛶ FULL SCREEN";
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// CLEANUP
+// =====================================================
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (unsubscribeQuiz) {
+            unsubscribeQuiz();
+        }
+
+        if (unsubscribeQuestions) {
+            unsubscribeQuestions();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

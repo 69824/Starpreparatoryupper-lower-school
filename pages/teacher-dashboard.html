@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teacher Dashboard | Star Preparatory School</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #071952;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .school-name {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            line-height: 1.4;
+        }
+
+        .teacher-label {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            color: white;
+            padding: 13px 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .menu-link:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .menu-link.active {
+            background: rgba(255,255,255,0.18);
+        }
+
+        .logout-button {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            width: calc(100% - 30px);
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-button:hover {
+            background: #b02a37;
+        }
+
+
+        /* =========================
+           MAIN CONTENT
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            color: #071952;
+            font-size: 25px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #198754;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #198754;
+        }
+
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .welcome h2 {
+            color: #071952;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #071952;
+        }
+
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .section-title {
+            margin-bottom: 15px;
+            color: #071952;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .action-card {
+            display: block;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+        }
+
+        .action-icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+
+        .action-card h3 {
+            color: #071952;
+            margin-bottom: 7px;
+        }
+
+        .action-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        #loading {
+            position: fixed;
+            inset: 0;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 18px;
+            color: #071952;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .logout-button {
+                position: static;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .stats,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     AUTHENTICATION LOADING
+========================= -->
+
+<div id="loading">
+    Checking teacher authentication...
+</div>
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="school-name">
+
+        STAR PREPARATORY SCHOOL
+
+        <br>
+
+        <span style="font-size:14px;">
+            Quiz Competition
+        </span>
+
+    </div>
+
+
+    <div class="teacher-label">
+
+        👨‍🏫 Teacher Dashboard
+
+    </div>
+
+
+    <ul class="menu">
+
+        <li>
+            <a
+                href="teacher-dashboard.html"
+                class="menu-link active"
+            >
+                🏠 Dashboard
+            </a>
+        </li>
+
+
+        <li>
+            <a
+                href="question-bank.html"
+                class="menu-link"
+            >
+                📝 Question Bank
+            </a>
+        </li>
+
+
+        <li>
+            <a
+                href="create-quiz.html"
+                class="menu-link"
+            >
+                ➕ Create Quiz
+            </a>
+        </li>
+
+
+        <li>
+            <a
+                href="live-competition.html"
+                class="menu-link"
+            >
+                🎮 Live Competition
+            </a>
+        </li>
+
+
+        <li>
+            <a
+                href="audience.html"
+                class="menu-link"
+            >
+                📺 Audience
+            </a>
+        </li>
+
+
+        <!-- RESULTS LINK -->
+
+        <li>
+            <a
+                href="results.html"
+                class="menu-link"
+            >
+                📊 Results
+            </a>
+        </li>
+
+    </ul>
+
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+    >
+
+        🚪 Logout
+
+    </button>
+
+</aside>
+
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <h1>
+            Teacher Dashboard
+        </h1>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            Logged in
+
+        </div>
+
+    </div>
+
+
+
+    <!-- WELCOME -->
+
+    <section class="welcome">
+
+        <h2>
+            Welcome, Teacher!
+        </h2>
+
+        <p>
+
+            This is your control center for the
+            Star Preparatory School Quiz Competition.
+
+            From here you can create questions,
+            prepare quizzes, start live competitions,
+            monitor students, control the projector
+            display, and view results.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <h3>
+                Question Bank
+            </h3>
+
+            <div
+                class="number"
+                id="questionCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Quizzes
+            </h3>
+
+            <div
+                class="number"
+                id="quizCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Students
+            </h3>
+
+            <div
+                class="number"
+                id="studentCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                Completed Competitions
+            </h3>
+
+            <div
+                class="number"
+                id="competitionCount"
+            >
+                0
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- QUICK ACTIONS -->
+
+    <h2 class="section-title">
+        Quick Actions
+    </h2>
+
+
+    <section class="actions">
+
+
+        <!-- QUESTION BANK -->
+
+        <a
+            href="question-bank.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                📝
+            </div>
+
+            <h3>
+                Question Bank
+            </h3>
+
+            <p>
+                Create, edit and organize
+                your quiz questions.
+            </p>
+
+        </a>
+
+
+
+        <!-- CREATE QUIZ -->
+
+        <a
+            href="create-quiz.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                ➕
+            </div>
+
+            <h3>
+                Create Quiz
+            </h3>
+
+            <p>
+                Build a new competition
+                from your question bank.
+            </p>
+
+        </a>
+
+
+
+        <!-- LIVE COMPETITION -->
+
+        <a
+            href="live-competition.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                🎮
+            </div>
+
+            <h3>
+                Live Competition
+            </h3>
+
+            <p>
+                Control the competition
+                and monitor students
+                in real time.
+            </p>
+
+        </a>
+
+
+
+        <!-- PROJECTOR -->
+
+        <a
+            href="audience.html"
+            class="action-card"
+        >
+
+            <div
+    class="action-card"
+    onclick="window.location.href='audience.html'"
+>
+            </div>
+
+            <h3>
+                Audience / Projector
+            </h3>
+
+            <p>
+                Display questions, timers,
+                answers and scores to
+                the audience.
+            </p>
+
+        </a>
+
+
+
+        <!-- STUDENTS -->
+
+        <a
+            href="live-competition.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                👥
+            </div>
+
+            <h3>
+                Students
+            </h3>
+
+            <p>
+                Monitor students who have
+                joined the current competition.
+            </p>
+
+        </a>
+
+
+
+        <!-- RESULTS -->
+
+        <a
+            href="results.html"
+            class="action-card"
+        >
+
+            <div class="action-icon">
+                📊
+            </div>
+
+            <h3>
+                Results
+            </h3>
+
+            <p>
+                View scores and competition
+                results after the quiz.
+            </p>
+
+        </a>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FIREBASE AUTHENTICATION
+========================= -->
+
+<script type="module">
+
+    import { initializeApp }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut
+    }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import {
+        getFirestore,
+        collection,
+        getDocs
+    }
+        from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+        authDomain:
+            "star-preparatory-upper-quiz.firebaseapp.com",
+
+        projectId:
+            "star-preparatory-upper-quiz",
+
+        storageBucket:
+            "star-preparatory-upper-quiz.firebasestorage.app",
+
+        messagingSenderId:
+            "763341549221",
+
+        appId:
+            "1:763341549221:web:cf77f2f9e227306550674c"
+
+    };
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app =
+        initializeApp(firebaseConfig);
+
+    const auth =
+        getAuth(app);
+
+    const db =
+        getFirestore(app);
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const loading =
+        document.getElementById("loading");
+
+    const questionCount =
+        document.getElementById("questionCount");
+
+    const quizCount =
+        document.getElementById("quizCount");
+
+    const studentCount =
+        document.getElementById("studentCount");
+
+    const competitionCount =
+        document.getElementById("competitionCount");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
+
+
+    // ==========================================
+    // AUTHENTICATION
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (!user) {
+
+                window.location.href =
+                    "teacher-login.html";
+
+                return;
+
+            }
+
+            console.log(
+                "Teacher authenticated:",
+                user.email
+            );
+
+
+            try {
+
+                await loadDashboardStatistics();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Dashboard statistics error:",
+                    error
+                );
+
+            }
+
+            finally {
+
+                loading.style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // LOAD DASHBOARD STATISTICS
+    // ==========================================
+
+    async function loadDashboardStatistics() {
+
+        console.log(
+            "Loading dashboard statistics..."
+        );
+
+
+        // ======================================
+        // 1. QUESTION BANK
+        // ======================================
+
+        try {
+
+            const questionsSnapshot =
+                await getDocs(
+                    collection(
+                        db,
+                        "questions"
+                    )
+                );
+
+
+            questionCount.textContent =
+                questionsSnapshot.size;
+
+
+            console.log(
+                "Questions:",
+                questionsSnapshot.size
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Unable to load questions:",
+                error
+            );
+
+            questionCount.textContent = "0";
+
+        }
+
+
+        // ======================================
+        // 2. QUIZZES
+        // ======================================
+
+        let quizzesSnapshot;
+
+        try {
+
+            quizzesSnapshot =
+                await getDocs(
+                    collection(
+                        db,
+                        "quizzes"
+                    )
+                );
+
+
+            quizCount.textContent =
+                quizzesSnapshot.size;
+
+
+            console.log(
+                "Quizzes:",
+                quizzesSnapshot.size
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Unable to load quizzes:",
+                error
+            );
+
+            quizCount.textContent = "0";
+
+            return;
+
+        }
+
+
+        // ======================================
+        // 3. COMPLETED COMPETITIONS
+        // ======================================
+
+        let completed =
+            0;
+
+
+        quizzesSnapshot.forEach(
+            (quizDoc) => {
+
+                const quiz =
+                    quizDoc.data();
+
+
+                if (
+                    quiz.status ===
+                    "completed"
+                ) {
+
+                    completed++;
+
+                }
+
+            }
+        );
+
+
+        competitionCount.textContent =
+            completed;
+
+
+        console.log(
+            "Completed competitions:",
+            completed
+        );
+
+
+        // ======================================
+        // 4. STUDENTS
+        // ======================================
+
+        /*
+            Students are stored under:
+
+            quizzes/{quizId}/students/{studentId}
+
+            We go through every quiz and count
+            the students inside each competition.
+
+            A Set is used so the same student
+            appearing in multiple competitions
+            is counted only once.
+        */
+
+        const uniqueStudents =
+            new Set();
+
+
+        for (
+            const quizDoc
+            of quizzesSnapshot.docs
+        ) {
+
+            const quizId =
+                quizDoc.id;
+
+
+            try {
+
+                const studentsSnapshot =
+                    await getDocs(
+                        collection(
+                            db,
+                            "quizzes",
+                            quizId,
+                            "students"
+                        )
+                    );
+
+
+                studentsSnapshot.forEach(
+                    (studentDoc) => {
+
+                        const student =
+                            studentDoc.data();
+
+
+                        /*
+                            Prefer the actual student ID.
+                            If your system stores an email,
+                            use that as a backup.
+                        */
+
+                        const uniqueId =
+                            student.studentId ||
+                            student.email ||
+                            studentDoc.id;
+
+
+                        uniqueStudents.add(
+                            uniqueId
+                        );
+
+                    }
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Unable to load students for quiz:",
+                    quizId,
+                    error
+                );
+
+            }
+
+        }
+
+
+        studentCount.textContent =
+            uniqueStudents.size;
+
+
+        console.log(
+            "Unique students:",
+            uniqueStudents.size
+        );
+
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    logoutButton.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "teacher-login.html";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+                alert(
+                    "Unable to logout. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

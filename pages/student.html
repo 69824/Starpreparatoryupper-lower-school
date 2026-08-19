@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Join Quiz | Star Preparatory School</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #071952,
+                    #0b3d91
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 500px;
+
+        }
+
+
+        .school-header {
+
+            text-align: center;
+
+            color: white;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .school-header h1 {
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .school-header p {
+
+            font-size: 15px;
+
+            color: #dbeafe;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,0.25);
+
+        }
+
+
+        .card h2 {
+
+            text-align: center;
+
+            color: #071952;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            color: #333;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccd2da;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+
+        }
+
+
+        input:focus,
+        select:focus {
+
+            border-color: #071952;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(7,25,82,0.1);
+
+        }
+
+
+        #quizCode {
+
+            text-transform: uppercase;
+
+            letter-spacing: 3px;
+
+            font-weight: bold;
+
+        }
+
+
+        .join-button {
+
+            width: 100%;
+
+            border: none;
+
+            background: #071952;
+
+            color: white;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin-top: 5px;
+
+        }
+
+
+        .join-button:hover {
+
+            background: #0b3d91;
+
+        }
+
+
+        .join-button:disabled {
+
+            background: #999;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .message {
+
+            display: none;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            background: #f8d7da;
+
+            color: #842029;
+
+        }
+
+
+        .message.success {
+
+            display: block;
+
+            background: #d1e7dd;
+
+            color: #0f5132;
+
+        }
+
+
+        .school-footer {
+
+            text-align: center;
+
+            color: #dbeafe;
+
+            font-size: 12px;
+
+            margin-top: 20px;
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .card {
+
+                padding: 22px;
+
+            }
+
+
+            .school-header h1 {
+
+                font-size: 23px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- SCHOOL HEADER -->
+
+    <div class="school-header">
+
+        <h1>
+
+            STAR PREPARATORY SCHOOL
+
+        </h1>
+
+        <p>
+
+            Quiz Competition
+
+        </p>
+
+    </div>
+
+
+
+    <!-- JOIN CARD -->
+
+    <div class="card">
+
+
+        <h2>
+
+            Join Competition
+
+        </h2>
+
+
+        <p class="subtitle">
+
+            Enter your details to join the quiz.
+
+        </p>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+
+        <!-- STUDENT NAME -->
+
+        <div class="form-group">
+
+            <label for="studentName">
+
+                Student Name
+
+            </label>
+
+            <input
+                type="text"
+                id="studentName"
+                placeholder="Enter your full name"
+                autocomplete="name"
+            >
+
+        </div>
+
+
+
+        <!-- GRADE -->
+
+        <div class="form-group">
+
+            <label for="studentGrade">
+
+                Grade
+
+            </label>
+
+            <select id="studentGrade">
+
+                <option value="">
+
+                    Select Grade
+
+                </option>
+
+                <option value="Grade 4">
+
+                    Grade 4
+
+                </option>
+
+                <option value="Grade 5">
+
+                    Grade 5
+
+                </option>
+
+                <option value="Grade 6">
+
+                    Grade 6
+
+                </option>
+
+                <option value="Grade 7">
+
+                    Grade 7
+
+                </option>
+
+                <option value="Grade 8">
+
+                    Grade 8
+
+                </option>
+
+                <option value="Grade 9">
+
+                    Grade 9
+
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <!-- QUIZ CODE -->
+
+        <div class="form-group">
+
+            <label for="quizCode">
+
+                Quiz Code
+
+            </label>
+
+            <input
+                type="text"
+                id="quizCode"
+                placeholder="Example: SPQ-7K4P"
+                maxlength="8"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+
+        <!-- JOIN -->
+
+        <button
+            id="joinButton"
+            class="join-button"
+            type="button"
+        >
+
+            JOIN QUIZ
+
+        </button>
+
+
+    </div>
+
+
+
+    <div class="school-footer">
+
+        Star Preparatory School © 2026
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     FIREBASE
+========================================== -->
+
+<script type="module">
+
+
+    import {
+        initializeApp
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+    import {
+
+        getFirestore,
+
+        collection,
+
+        query,
+
+        where,
+
+        getDocs,
+
+        addDoc,
+
+        serverTimestamp
+
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+        authDomain:
+            "star-preparatory-upper-quiz.firebaseapp.com",
+
+        projectId:
+            "star-preparatory-upper-quiz",
+
+        storageBucket:
+            "star-preparatory-upper-quiz.firebasestorage.app",
+
+        messagingSenderId:
+            "763341549221",
+
+        appId:
+            "1:763341549221:web:cf77f2e9f227306550674c"
+
+    };
+
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app =
+        initializeApp(
+            firebaseConfig
+        );
+
+
+    const db =
+        getFirestore(app);
+
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const studentName =
+        document.getElementById(
+            "studentName"
+        );
+
+
+    const studentGrade =
+        document.getElementById(
+            "studentGrade"
+        );
+
+
+    const quizCode =
+        document.getElementById(
+            "quizCode"
+        );
+
+
+    const joinButton =
+        document.getElementById(
+            "joinButton"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+
+    // ==========================================
+    // QUIZ CODE FORMAT
+    // ==========================================
+
+    quizCode.addEventListener(
+        "input",
+        () => {
+
+            quizCode.value =
+                quizCode.value
+                    .toUpperCase()
+                    .replace(
+                        /[^A-Z0-9-]/g,
+                        ""
+                    );
+
+        }
+    );
+
+
+
+    // ==========================================
+    // JOIN QUIZ
+    // ==========================================
+
+    joinButton.addEventListener(
+        "click",
+        joinQuiz
+    );
+
+
+
+    async function joinQuiz() {
+
+
+        const name =
+            studentName.value
+                .trim();
+
+
+        const grade =
+            studentGrade.value;
+
+
+        const code =
+            quizCode.value
+                .trim()
+                .toUpperCase();
+
+
+
+        // ======================================
+        // VALIDATION
+        // ======================================
+
+        if (!name) {
+
+            showMessage(
+                "Please enter your name.",
+                "error"
+            );
+
+            studentName.focus();
+
+            return;
+
+        }
+
+
+        if (!grade) {
+
+            showMessage(
+                "Please select your grade.",
+                "error"
+            );
+
+            studentGrade.focus();
+
+            return;
+
+        }
+
+
+        if (!code) {
+
+            showMessage(
+                "Please enter the quiz code.",
+                "error"
+            );
+
+            quizCode.focus();
+
+            return;
+
+        }
+
+
+
+        joinButton.disabled =
+            true;
+
+        joinButton.textContent =
+            "Checking Quiz...";
+
+
+
+        try {
+
+
+            // ==================================
+            // FIND QUIZ
+            // ==================================
+
+            const quizzesRef =
+                collection(
+                    db,
+                    "quizzes"
+                );
+
+
+            const quizQuery =
+                query(
+
+                    quizzesRef,
+
+                    where(
+                        "quizCode",
+                        "==",
+                        code
+                    )
+
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    quizQuery
+                );
+
+
+
+            if (
+                snapshot.empty
+            ) {
+
+                showMessage(
+                    "Quiz code not found. Please check the code and try again.",
+                    "error"
+                );
+
+                resetButton();
+
+                return;
+
+            }
+
+
+
+            const quizDoc =
+                snapshot.docs[0];
+
+
+            const quiz =
+                quizDoc.data();
+
+
+
+            // ==================================
+            // CHECK GRADE
+            // ==================================
+
+            if (
+                quiz.grade !== grade
+            ) {
+
+                showMessage(
+
+                    `This quiz is for ${quiz.grade}. You selected ${grade}.`,
+
+                    "error"
+
+                );
+
+                resetButton();
+
+                return;
+
+            }
+
+
+
+            // ==================================
+            // CHECK STATUS
+            // ==================================
+
+            if (
+                quiz.status === "completed"
+            ) {
+
+                showMessage(
+                    "This competition has already ended.",
+                    "error"
+                );
+
+                resetButton();
+
+                return;
+
+            }
+
+
+
+            // ==================================
+            // CREATE STUDENT RECORD
+            // ==================================
+
+            joinButton.textContent =
+                "Joining...";
+
+
+
+            const studentRef =
+                await addDoc(
+
+                    collection(
+                        db,
+                        "quizzes",
+                        quizDoc.id,
+                        "students"
+                    ),
+
+                    {
+
+                        name:
+                            name,
+
+                        grade:
+                            grade,
+
+                        score:
+                            0,
+
+                        answered:
+                            false,
+
+                        joinedAt:
+                            serverTimestamp(),
+
+                        quizId:
+                            quizDoc.id
+
+                    }
+
+                );
+
+
+
+            // ==================================
+            // SAVE SESSION
+            // ==================================
+
+            sessionStorage.setItem(
+
+                "quizId",
+
+                quizDoc.id
+
+            );
+
+
+            sessionStorage.setItem(
+
+                "studentId",
+
+                studentRef.id
+
+            );
+
+
+            sessionStorage.setItem(
+
+                "studentName",
+
+                name
+
+            );
+
+
+            sessionStorage.setItem(
+
+                "studentGrade",
+
+                grade
+
+            );
+
+
+            sessionStorage.setItem(
+
+                "quizCode",
+
+                code
+
+            );
+
+
+
+            // ==================================
+            // SUCCESS
+            // ==================================
+
+            showMessage(
+
+                "Successfully joined the quiz!",
+
+                "success"
+
+            );
+
+
+            joinButton.textContent =
+                "Joined ✓";
+
+
+
+            // ==================================
+            // TEMPORARY WAITING PAGE
+            // ==================================
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "student-waiting.html";
+
+                },
+                1000
+            );
+
+
+        }
+
+        catch (error) {
+
+
+            console.error(
+                "Join quiz error:",
+                error
+            );
+
+
+            showMessage(
+
+                "Unable to join the quiz. Please try again.",
+
+                "error"
+
+            );
+
+
+            resetButton();
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // RESET BUTTON
+    // ==========================================
+
+    function resetButton() {
+
+        joinButton.disabled =
+            false;
+
+        joinButton.textContent =
+            "JOIN QUIZ";
+
+    }
+
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+        message.textContent =
+            text;
+
+        message.className =
+            "message " + type;
+
+        message.style.display =
+            "block";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

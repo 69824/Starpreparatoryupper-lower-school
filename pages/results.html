@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Results | Star Preparatory School</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+
+            background: #071952;
+            color: white;
+
+            padding: 25px 15px;
+        }
+
+        .school-name {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+
+            padding-bottom: 25px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.2);
+
+            line-height: 1.4;
+        }
+
+        .teacher-label {
+            text-align: center;
+
+            margin: 20px 0;
+
+            font-size: 14px;
+
+            color: #cbd5e1;
+        }
+
+        .menu {
+            list-style: none;
+        }
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+        .menu-link {
+            display: block;
+
+            width: 100%;
+
+            text-decoration: none;
+
+            color: white;
+
+            padding: 13px 15px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .menu-link:hover {
+            background:
+                rgba(255,255,255,0.12);
+        }
+
+        .menu-link.active {
+            background:
+                rgba(255,255,255,0.18);
+        }
+
+        .logout-button {
+            position: absolute;
+
+            bottom: 25px;
+            left: 15px;
+
+            width:
+                calc(100% - 30px);
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #dc3545;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .logout-button:hover {
+            background: #b02a37;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 30px;
+        }
+
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            background: white;
+
+            padding: 20px 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            color: #071952;
+
+            font-size: 25px;
+        }
+
+
+        /* =========================
+           QUIZ INFORMATION
+        ========================= */
+
+        .quiz-info {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+        }
+
+        .quiz-info h2 {
+            color: #071952;
+
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #f4f7fb;
+
+            padding: 18px;
+
+            border-radius: 10px;
+        }
+
+        .info-box span {
+            display: block;
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-bottom: 7px;
+        }
+
+        .info-box strong {
+            color: #071952;
+
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+
+            text-align: center;
+        }
+
+        .summary-icon {
+            font-size: 35px;
+
+            margin-bottom: 10px;
+        }
+
+        .summary-card h3 {
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+        .summary-number {
+            color: #071952;
+
+            font-size: 32px;
+
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           RESULTS
+        ========================= */
+
+        .results-card {
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+
+            overflow-x: auto;
+        }
+
+        .results-header {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            gap: 15px;
+        }
+
+        .results-header h2 {
+            color: #071952;
+        }
+
+        .print-button {
+            border: none;
+
+            background: #071952;
+
+            color: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .print-button:hover {
+            background: #0b3d91;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse:
+                collapse;
+
+            min-width: 700px;
+        }
+
+        th {
+            background: #071952;
+
+            color: white;
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .rank {
+            font-weight: bold;
+
+            color: #071952;
+        }
+
+        .first {
+            background: #fff8d6;
+        }
+
+        .second {
+            background: #f1f5f9;
+        }
+
+        .third {
+            background: #fff0e6;
+        }
+
+        .score {
+            font-weight: bold;
+
+            color: #071952;
+        }
+
+        .percentage {
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+
+            padding: 40px;
+
+            color: #777;
+        }
+
+        .error {
+            background: #f8d7da;
+
+            color: #842029;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+
+            display: none;
+
+            line-height: 1.5;
+        }
+
+        .loading {
+            position: fixed;
+
+            inset: 0;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #071952;
+
+            font-size: 18px;
+
+            z-index: 9999;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .info-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+            .logout-button {
+                position: static;
+
+                width: 100%;
+
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+
+        /* =========================
+           PRINT
+        ========================= */
+
+        @media print {
+
+            .sidebar,
+            .topbar,
+            .print-button {
+                display: none !important;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            body {
+                background: white;
+            }
+
+            .results-card,
+            .quiz-info,
+            .summary-card {
+                box-shadow: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div
+    id="loading"
+    class="loading"
+>
+    Loading results...
+</div>
+
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="school-name">
+
+        STAR PREPARATORY SCHOOL
+
+        <br>
+
+        <span style="font-size:14px;">
+            Quiz Competition
+        </span>
+
+    </div>
+
+
+    <div class="teacher-label">
+
+        👨‍🏫 Teacher Dashboard
+
+    </div>
+
+
+    <ul class="menu">
+
+        <li>
+
+            <a
+                href="teacher-dashboard.html"
+                class="menu-link"
+            >
+                🏠 Dashboard
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="question-bank.html"
+                class="menu-link"
+            >
+                📝 Question Bank
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="create-quiz.html"
+                class="menu-link"
+            >
+                ➕ Create Quiz
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="live-competition.html"
+                class="menu-link"
+            >
+                🎮 Live Competition
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="#"
+                class="menu-link"
+            >
+                📺 Audience / Projector
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="results.html"
+                class="menu-link active"
+            >
+                📊 Results
+            </a>
+
+        </li>
+
+    </ul>
+
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+        type="button"
+    >
+        🚪 Logout
+    </button>
+
+</aside>
+
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <h1>
+            Competition Results
+        </h1>
+
+    </div>
+
+
+
+    <!-- ERROR -->
+
+    <div
+        id="error"
+        class="error"
+    ></div>
+
+
+
+    <!-- QUIZ INFORMATION -->
+
+    <section class="quiz-info">
+
+        <h2>
+            Competition Information
+        </h2>
+
+
+        <div class="info-grid">
+
+
+            <div class="info-box">
+
+                <span>
+                    Competition
+                </span>
+
+                <strong id="quizTitle">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>
+                    Quiz Code
+                </span>
+
+                <strong id="quizCode">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>
+                    Grade
+                </span>
+
+                <strong id="quizGrade">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>
+                    Status
+                </span>
+
+                <strong id="quizStatus">
+                    -
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary">
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                👥
+            </div>
+
+            <h3>
+                Students
+            </h3>
+
+            <div
+                id="studentTotal"
+                class="summary-number"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📝
+            </div>
+
+            <h3>
+                Questions
+            </h3>
+
+            <div
+                id="questionTotal"
+                class="summary-number"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                🏆
+            </div>
+
+            <h3>
+                Highest Score
+            </h3>
+
+            <div
+                id="highestScore"
+                class="summary-number"
+            >
+                0
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- RESULTS TABLE -->
+
+    <section class="results-card">
+
+
+        <div class="results-header">
+
+            <h2>
+                🏆 Final Leaderboard
+            </h2>
+
+
+            <button
+                class="print-button"
+                onclick="window.print()"
+            >
+                🖨 Print Results
+            </button>
+
+        </div>
+
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Position
+                    </th>
+
+                    <th>
+                        Student
+                    </th>
+
+                    <th>
+                        Grade
+                    </th>
+
+                    <th>
+                        Score
+                    </th>
+
+                    <th>
+                        Percentage
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="resultsBody">
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty"
+                    >
+                        Loading student results...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
+
+<script type="module">
+
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import {
+        getFirestore,
+        doc,
+        getDoc,
+        collection,
+        onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+        authDomain: "star-preparatory-upper-quiz.firebaseapp.com",
+        projectId: "star-preparatory-upper-quiz",
+        storageBucket: "star-preparatory-upper-quiz.firebasestorage.app",
+        messagingSenderId: "763341549221",
+        appId: "1:763341549221:web:cf77f2f9e227306550674c"
+    };
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    const db = getFirestore(app);
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const loading =
+        document.getElementById("loading");
+
+    const errorElement =
+        document.getElementById("error");
+
+    const resultsBody =
+        document.getElementById("resultsBody");
+
+
+    // ==========================================
+    // QUIZ ID
+    // ==========================================
+
+    const quizId =
+        sessionStorage.getItem("teacherQuizId") ||
+        sessionStorage.getItem("quizId");
+
+
+    // ==========================================
+    // AUTHENTICATION
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (!user) {
+
+                window.location.href =
+                    "teacher-login.html";
+
+                return;
+            }
+
+
+            if (!quizId) {
+
+                loading.style.display = "none";
+
+                showError(
+                    "No competition has been selected. Please open Live Competition first."
+                );
+
+                resultsBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty">
+                            No quiz selected.
+                            <br><br>
+                            Go to Live Competition and select a competition.
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+
+            await loadResults();
+
+        }
+    );
+
+
+    // ==========================================
+    // LOAD RESULTS
+    // ==========================================
+
+    async function loadResults() {
+
+        try {
+
+            console.log(
+                "Loading results for quiz:",
+                quizId
+            );
+
+
+            // ==========================================
+            // GET QUIZ
+            // ==========================================
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            const quizSnapshot =
+                await getDoc(quizRef);
+
+
+            if (!quizSnapshot.exists()) {
+
+                throw new Error(
+                    "The selected quiz could not be found."
+                );
+
+            }
+
+
+            const quiz =
+                quizSnapshot.data();
+
+
+            console.log(
+                "Quiz data:",
+                quiz
+            );
+
+
+            // ==========================================
+            // QUIZ INFORMATION
+            // ==========================================
+
+            document.getElementById(
+                "quizTitle"
+            ).textContent =
+                quiz.title ||
+                quiz.name ||
+                "Quiz";
+
+
+            document.getElementById(
+                "quizCode"
+            ).textContent =
+                quiz.code ||
+                quiz.quizCode ||
+                "-";
+
+
+            document.getElementById(
+                "quizGrade"
+            ).textContent =
+                quiz.grade ||
+                quiz.class ||
+                "All Grades";
+
+
+            document.getElementById(
+                "quizStatus"
+            ).textContent =
+                quiz.status ||
+                "-";
+
+
+            // ==========================================
+            // FIND QUESTION COUNT FROM QUIZ
+            // ==========================================
+
+            let questionCount = 0;
+
+
+            // Option 1
+            if (
+                Array.isArray(quiz.questions)
+            ) {
+
+                questionCount =
+                    quiz.questions.length;
+
+            }
+
+
+            // Option 2
+            if (
+                questionCount === 0 &&
+                Array.isArray(quiz.questionIds)
+            ) {
+
+                questionCount =
+                    quiz.questionIds.length;
+
+            }
+
+
+            // Option 3
+            if (
+                questionCount === 0 &&
+                Array.isArray(quiz.selectedQuestions)
+            ) {
+
+                questionCount =
+                    quiz.selectedQuestions.length;
+
+            }
+
+
+            // Option 4
+            if (
+                questionCount === 0 &&
+                Array.isArray(quiz.questionBank)
+            ) {
+
+                questionCount =
+                    quiz.questionBank.length;
+
+            }
+
+
+            // Option 5
+            if (
+                questionCount === 0 &&
+                quiz.totalQuestions !== undefined
+            ) {
+
+                questionCount =
+                    Number(quiz.totalQuestions);
+
+            }
+
+
+            // Option 6
+            if (
+                questionCount === 0 &&
+                quiz.questionsCount !== undefined
+            ) {
+
+                questionCount =
+                    Number(quiz.questionsCount);
+
+            }
+
+
+            console.log(
+                "Initial question count:",
+                questionCount
+            );
+
+
+            // ==========================================
+            // STUDENTS
+            // ==========================================
+
+            const studentsRef =
+                collection(
+                    db,
+                    "quizzes",
+                    quizId,
+                    "students"
+                );
+
+
+            onSnapshot(
+                studentsRef,
+
+                (snapshot) => {
+
+                    const students = [];
+
+
+                    snapshot.forEach(
+                        (studentDoc) => {
+
+                            const student =
+                                studentDoc.data();
+
+
+                            students.push({
+
+                                id:
+                                    studentDoc.id,
+
+                                ...student
+
+                            });
+
+                        }
+                    );
+
+
+                    console.log(
+                        "Students:",
+                        students
+                    );
+
+
+                    // ==========================================
+                    // IMPORTANT FIX
+                    // ==========================================
+                    //
+                    // If quiz itself does not contain
+                    // question information, use the
+                    // student's totalQuestions value.
+                    //
+                    // Example:
+                    // score = 2
+                    // totalQuestions = 2
+                    //
+                    // Therefore Questions = 2
+                    //
+
+                    if (
+                        questionCount === 0 &&
+                        students.length > 0
+                    ) {
+
+                        for (
+                            const student of students
+                        ) {
+
+                            const studentTotal =
+                                Number(
+                                    student.totalQuestions
+                                );
+
+
+                            if (
+                                studentTotal > 0
+                            ) {
+
+                                questionCount =
+                                    studentTotal;
+
+                                console.log(
+                                    "Question count recovered from student:",
+                                    questionCount
+                                );
+
+                                break;
+
+                            }
+
+                        }
+
+                    }
+
+
+                    // ==========================================
+                    // SORT STUDENTS
+                    // ==========================================
+
+                    students.sort(
+                        (a, b) => {
+
+                            const scoreA =
+                                Number(
+                                    a.score || 0
+                                );
+
+
+                            const scoreB =
+                                Number(
+                                    b.score || 0
+                                );
+
+
+                            return scoreB - scoreA;
+
+                        }
+                    );
+
+
+                    // ==========================================
+                    // UPDATE QUESTION COUNT
+                    // ==========================================
+
+                    document.getElementById(
+                        "questionTotal"
+                    ).textContent =
+                        questionCount;
+
+
+                    // ==========================================
+                    // STUDENT COUNT
+                    // ==========================================
+
+                    document.getElementById(
+                        "studentTotal"
+                    ).textContent =
+                        students.length;
+
+
+                    // ==========================================
+                    // HIGHEST SCORE
+                    // ==========================================
+
+                    let highestScore = 0;
+
+
+                    students.forEach(
+                        (student) => {
+
+                            const score =
+                                Number(
+                                    student.score || 0
+                                );
+
+
+                            if (
+                                score > highestScore
+                            ) {
+
+                                highestScore =
+                                    score;
+
+                            }
+
+                        }
+                    );
+
+
+                    document.getElementById(
+                        "highestScore"
+                    ).textContent =
+                        highestScore;
+
+
+                    // ==========================================
+                    // TABLE
+                    // ==========================================
+
+                    resultsBody.innerHTML = "";
+
+
+                    if (
+                        students.length === 0
+                    ) {
+
+                        resultsBody.innerHTML = `
+                            <tr>
+                                <td
+                                    colspan="6"
+                                    class="empty"
+                                >
+                                    No students have
+                                    participated yet.
+                                </td>
+                            </tr>
+                        `;
+
+                    }
+                    else {
+
+                        students.forEach(
+                            (student, index) => {
+
+                                const position =
+                                    index + 1;
+
+
+                                const score =
+                                    Number(
+                                        student.score || 0
+                                    );
+
+
+                                // ==================================
+                                // DETERMINE TOTAL QUESTIONS
+                                // ==================================
+
+                                let total =
+                                    questionCount;
+
+
+                                if (
+                                    total === 0 &&
+                                    student.totalQuestions
+                                ) {
+
+                                    total =
+                                        Number(
+                                            student.totalQuestions
+                                        );
+
+                                }
+
+
+                                // Final fallback:
+                                // score cannot be used as total
+                                // unless the student's data says so.
+                                if (
+                                    total === 0
+                                ) {
+
+                                    total = 0;
+
+                                }
+
+
+                                // ==================================
+                                // PERCENTAGE
+                                // ==================================
+
+                                let percentage = 0;
+
+
+                                if (
+                                    student.percentage !==
+                                    undefined &&
+                                    student.percentage !== null
+                                ) {
+
+                                    percentage =
+                                        Number(
+                                            student.percentage
+                                        );
+
+                                }
+                                else if (
+                                    total > 0
+                                ) {
+
+                                    percentage =
+                                        Math.round(
+                                            (
+                                                score /
+                                                total
+                                            ) * 100
+                                        );
+
+                                }
+
+
+                                // ==================================
+                                // ROW STYLE
+                                // ==================================
+
+                                let rowClass = "";
+
+
+                                if (
+                                    position === 1
+                                ) {
+
+                                    rowClass =
+                                        "first";
+
+                                }
+                                else if (
+                                    position === 2
+                                ) {
+
+                                    rowClass =
+                                        "second";
+
+                                }
+                                else if (
+                                    position === 3
+                                ) {
+
+                                    rowClass =
+                                        "third";
+
+                                }
+
+
+                                // ==================================
+                                // STATUS
+                                // ==================================
+
+                                let status =
+                                    "Completed";
+
+
+                                if (
+                                    quiz.status !==
+                                    "completed"
+                                ) {
+
+                                    status =
+                                        "In Progress";
+
+                                }
+
+
+                                // ==================================
+                                // STUDENT NAME
+                                // ==================================
+
+                                const studentName =
+                                    student.name ||
+                                    student.studentName ||
+                                    student.displayName ||
+                                    "Student";
+
+
+                                // ==================================
+                                // GRADE
+                                // ==================================
+
+                                const grade =
+                                    student.grade ||
+                                    quiz.grade ||
+                                    quiz.class ||
+                                    "-";
+
+
+                                // ==================================
+                                // ADD ROW
+                                // ==================================
+
+                                resultsBody.innerHTML += `
+
+                                    <tr
+                                        class="${rowClass}"
+                                    >
+
+                                        <td class="rank">
+
+                                            ${
+                                                position === 1
+                                                    ? "🥇 1"
+                                                    : position === 2
+                                                    ? "🥈 2"
+                                                    : position === 3
+                                                    ? "🥉 3"
+                                                    : position
+                                            }
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <strong>
+                                                ${studentName}
+                                            </strong>
+
+                                        </td>
+
+
+                                        <td>
+                                            ${grade}
+                                        </td>
+
+
+                                        <td class="score">
+
+                                            ${score}
+                                            /
+                                            ${total}
+
+                                        </td>
+
+
+                                        <td class="percentage">
+
+                                            ${percentage}%
+
+                                        </td>
+
+
+                                        <td>
+
+                                            ${status}
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }
+                        );
+
+                    }
+
+
+                    // ==========================================
+                    // HIDE LOADING
+                    // ==========================================
+
+                    loading.style.display =
+                        "none";
+
+                },
+
+                (error) => {
+
+                    console.error(
+                        "Student results error:",
+                        error
+                    );
+
+
+                    loading.style.display =
+                        "none";
+
+
+                    showError(
+                        "Unable to load student results: " +
+                        error.message
+                    );
+
+                }
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Results error:",
+                error
+            );
+
+
+            loading.style.display =
+                "none";
+
+
+            showError(
+                error.message
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    function showError(message) {
+
+        errorElement.textContent =
+            message;
+
+        errorElement.style.display =
+            "block";
+
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    document
+        .getElementById("logoutButton")
+        .addEventListener(
+            "click",
+            async () => {
+
+                try {
+
+                    await signOut(auth);
+
+                    window.location.href =
+                        "teacher-login.html";
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+</script>
+
+
+</body>
+
+</html>
+

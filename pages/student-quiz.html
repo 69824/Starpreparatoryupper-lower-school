@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Quiz | Star Preparatory School</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+.header{
+    background:#071952;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+.header h1{margin:0;font-size:22px}
+.header p{margin:6px 0 0;color:#dbeafe}
+
+.container{
+    width:100%;
+    max-width:800px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.quiz-info{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+.quiz-info-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+.student-name{
+    font-size:18px;
+    font-weight:bold;
+    color:#071952;
+}
+.question-number{
+    background:#071952;
+    color:white;
+    padding:9px 15px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.question-card{
+    background:white;
+    border-radius:14px;
+    padding:30px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+.question-text{
+    font-size:22px;
+    line-height:1.5;
+    font-weight:bold;
+    color:#071952;
+    margin-bottom:30px;
+}
+
+.options{
+    display:grid;
+    gap:15px;
+}
+.option{
+    width:100%;
+    border:2px solid #e1e5ea;
+    background:white;
+    padding:18px;
+    border-radius:10px;
+    text-align:left;
+    font-size:16px;
+    cursor:pointer;
+}
+.option:hover{
+    border-color:#071952;
+    background:#f8faff;
+}
+.option.selected{
+    border-color:#071952;
+    background:#eef2ff;
+}
+.option.disabled{
+    cursor:not-allowed;
+}
+.option-letter{
+    display:inline-flex;
+    width:34px;
+    height:34px;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    background:#071952;
+    color:white;
+    font-weight:bold;
+    margin-right:10px;
+}
+
+.answer-status{
+    display:none;
+    margin-top:20px;
+    padding:14px;
+    border-radius:9px;
+    text-align:center;
+    font-weight:bold;
+}
+.answer-status.saved{
+    display:block;
+    background:#d1e7dd;
+    color:#0f5132;
+}
+.answer-status.waiting{
+    display:block;
+    background:#fff3cd;
+    color:#664d03;
+}
+
+.loading{
+    text-align:center;
+    padding:60px 20px;
+    color:#071952;
+    font-size:18px;
+}
+
+.waiting{
+    background:white;
+    padding:45px 25px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+.waiting-icon{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+.finished{
+    display:none;
+    background:white;
+    padding:40px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+.finished h2{color:#071952}
+.score{
+    font-size:48px;
+    font-weight:bold;
+    color:#198754;
+    margin:20px 0;
+}
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:25px;
+}
+.result-box{
+    background:#f4f7fb;
+    padding:18px 10px;
+    border-radius:10px;
+}
+.result-box strong{
+    display:block;
+    font-size:22px;
+    color:#071952;
+    margin-bottom:5px;
+}
+.result-box span{
+    font-size:13px;
+    color:#666;
+}
+
+.error{
+    display:none;
+    background:#f8d7da;
+    color:#842029;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+@media(max-width:600px){
+    .container{padding:12px}
+    .question-card{padding:20px}
+    .question-text{font-size:19px}
+    .result-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <h1>🎮 Star Preparatory School</h1>
+    <p>Live Quiz Competition</p>
+</header>
+
+<main class="container">
+
+    <div id="loading" class="loading">
+        Connecting to quiz...
+    </div>
+
+    <div id="waiting" class="waiting" style="display:none">
+        <div class="waiting-icon">⏳</div>
+        <h2>Waiting for Next Question</h2>
+        <p>The teacher is controlling the competition.</p>
+        <p>Please wait for the next question.</p>
+    </div>
+
+    <div id="quizArea" style="display:none">
+
+        <section class="quiz-info">
+            <div class="quiz-info-top">
+
+                <div id="studentName" class="student-name">
+                    Student
+                </div>
+
+                <div id="questionNumber" class="question-number">
+                    Question 1
+                </div>
+
+            </div>
+        </section>
+
+        <section class="question-card">
+
+            <div id="questionText" class="question-text"></div>
+
+            <div id="options" class="options"></div>
+
+            <div id="answerStatus" class="answer-status"></div>
+
+        </section>
+
+    </div>
+
+    <div id="finished" class="finished">
+
+        <div style="font-size:60px">🎉</div>
+
+        <h2>Competition Complete!</h2>
+
+        <p>Well done!</p>
+
+        <div id="scoreDisplay" class="score">
+            0 / 0
+        </div>
+
+        <div class="result-grid">
+
+            <div class="result-box">
+                <strong id="correctDisplay">0</strong>
+                <span>Correct</span>
+            </div>
+
+            <div class="result-box">
+                <strong id="wrongDisplay">0</strong>
+                <span>Wrong</span>
+            </div>
+
+            <div class="result-box">
+                <strong id="percentageDisplay">0%</strong>
+                <span>Percentage</span>
+            </div>
+
+        </div>
+
+        <p style="margin-top:25px">
+            Your answers have been submitted.
+        </p>
+
+    </div>
+
+    <div id="error" class="error"></div>
+
+</main>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    query,
+    orderBy,
+    getDocs,
+    doc,
+    getDoc,
+    updateDoc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+    apiKey:"AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+    authDomain:"star-preparatory-upper-quiz.firebaseapp.com",
+    projectId:"star-preparatory-upper-quiz",
+    storageBucket:"star-preparatory-upper-quiz.firebasestorage.app",
+    messagingSenderId:"763341549221",
+    appId:"1:763341549221:web:cf77f2f9e227306550674c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+const loading =
+    document.getElementById("loading");
+
+const waiting =
+    document.getElementById("waiting");
+
+const quizArea =
+    document.getElementById("quizArea");
+
+const finished =
+    document.getElementById("finished");
+
+const errorBox =
+    document.getElementById("error");
+
+const studentNameElement =
+    document.getElementById("studentName");
+
+const questionNumber =
+    document.getElementById("questionNumber");
+
+const questionText =
+    document.getElementById("questionText");
+
+const optionsContainer =
+    document.getElementById("options");
+
+const answerStatus =
+    document.getElementById("answerStatus");
+
+const scoreDisplay =
+    document.getElementById("scoreDisplay");
+
+const correctDisplay =
+    document.getElementById("correctDisplay");
+
+const wrongDisplay =
+    document.getElementById("wrongDisplay");
+
+const percentageDisplay =
+    document.getElementById("percentageDisplay");
+
+
+const quizId =
+    sessionStorage.getItem("quizId");
+
+const studentId =
+    sessionStorage.getItem("studentId");
+
+const studentName =
+    sessionStorage.getItem("studentName");
+
+const studentGrade =
+    sessionStorage.getItem("studentGrade");
+
+
+studentNameElement.textContent =
+    studentName || "Student";
+
+
+let questions = [];
+
+let currentQuestionIndex = -1;
+
+let selectedAnswer = null;
+
+let score = 0;
+
+let answeredQuestions = new Set();
+
+let quizListener = null;
+
+
+if (!quizId || !studentId) {
+
+    showError(
+        "Your quiz session is missing. Please join the competition again."
+    );
+
+} else {
+
+    startQuiz();
+
+}
+
+
+async function startQuiz(){
+
+    try{
+
+        await loadQuestions();
+
+        const quizRef =
+            doc(db,"quizzes",quizId);
+
+        const quizSnapshot =
+            await getDoc(quizRef);
+
+        if(!quizSnapshot.exists()){
+
+            showError(
+                "This quiz could not be found."
+            );
+
+            return;
+        }
+
+
+        const quiz =
+            quizSnapshot.data();
+
+
+        if(quiz.status === "completed"){
+
+            await finishQuiz();
+
+            return;
+        }
+
+
+        listenToQuiz(quizRef);
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Student quiz error:",
+            error
+        );
+
+        showError(
+            "Unable to connect to the quiz: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+async function loadQuestions(){
+
+    const questionsRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "quizQuestions"
+        );
+
+    const questionsQuery =
+        query(
+            questionsRef,
+            orderBy("order","asc")
+        );
+
+    const snapshot =
+        await getDocs(
+            questionsQuery
+        );
+
+    questions =
+        snapshot.docs.map(
+            questionDoc => ({
+                id:questionDoc.id,
+                ...questionDoc.data()
+            })
+        );
+
+    console.log(
+        "Questions loaded:",
+        questions
+    );
+
+
+    if(questions.length === 0){
+
+        throw new Error(
+            "No questions have been added to this quiz."
+        );
+
+    }
+
+}
+
+
+function listenToQuiz(quizRef){
+
+    quizListener =
+        onSnapshot(
+            quizRef,
+            snapshot => {
+
+                if(!snapshot.exists()){
+
+                    showError(
+                        "The competition no longer exists."
+                    );
+
+                    return;
+                }
+
+
+                const quiz =
+                    snapshot.data();
+
+
+                console.log(
+                    "Live quiz update:",
+                    quiz
+                );
+
+
+                if(quiz.status === "waiting"){
+
+                    showWaiting();
+
+                    return;
+                }
+
+
+                if(quiz.status === "started"){
+
+                    const teacherQuestion =
+                        Number.isInteger(
+                            quiz.currentQuestion
+                        )
+                        ? quiz.currentQuestion
+                        : 0;
+
+                    showTeacherQuestion(
+                        teacherQuestion
+                    );
+
+                    return;
+                }
+
+
+                if(quiz.status === "completed"){
+
+                    finishQuiz();
+
+                    return;
+                }
+
+            },
+            error => {
+
+                console.error(
+                    "Realtime listener error:",
+                    error
+                );
+
+                showError(
+                    "Connection to the competition was lost. Please check your internet connection."
+                );
+
+            }
+        );
+
+}
+
+
+function showWaiting(){
+
+    loading.style.display =
+        "none";
+
+    quizArea.style.display =
+        "none";
+
+    finished.style.display =
+        "none";
+
+    waiting.style.display =
+        "block";
+
+}
+
+
+function showTeacherQuestion(index){
+
+    if(index < 0 || index >= questions.length){
+
+        showWaiting();
+
+        return;
+    }
+
+
+    const question =
+        questions[index];
+
+
+    if(currentQuestionIndex !== index){
+
+        currentQuestionIndex =
+            index;
+
+        selectedAnswer =
+            null;
+
+        answerStatus.className =
+            "answer-status";
+
+        answerStatus.textContent =
+            "";
+
+        renderQuestion(question);
+
+    }
+
+
+    loading.style.display =
+        "none";
+
+    waiting.style.display =
+        "none";
+
+    finished.style.display =
+        "none";
+
+    quizArea.style.display =
+        "block";
+
+}
+
+
+function renderQuestion(question){
+
+    questionNumber.textContent =
+        `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+
+    questionText.textContent =
+        question.questionText || "Question";
+
+
+    optionsContainer.innerHTML =
+        "";
+
+
+    const options = [
+
+        {
+            letter:"A",
+            text:question.optionA
+        },
+
+        {
+            letter:"B",
+            text:question.optionB
+        },
+
+        {
+            letter:"C",
+            text:question.optionC
+        },
+
+        {
+            letter:"D",
+            text:question.optionD
+        }
+
+    ];
+
+
+    options.forEach(option => {
+
+        if(!option.text) return;
+
+
+        const button =
+            document.createElement("button");
+
+        button.type =
+            "button";
+
+        button.className =
+            "option";
+
+
+        button.innerHTML = `
+
+            <span class="option-letter">
+                ${option.letter}
+            </span>
+
+            ${escapeHtml(option.text)}
+
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                selectAnswer(
+                    option.letter,
+                    button
+                );
+
+            }
+        );
+
+
+        optionsContainer.appendChild(
+            button
+        );
+
+    });
+
+
+    if(
+        answeredQuestions.has(
+            currentQuestionIndex
+        )
+    ){
+
+        disableOptions();
+
+        answerStatus.textContent =
+            "✓ Answer submitted. Waiting for the teacher...";
+
+        answerStatus.className =
+            "answer-status saved";
+
+    }
+
+}
+
+
+async function selectAnswer(
+    answer,
+    button
+){
+
+    if(
+        answeredQuestions.has(
+            currentQuestionIndex
+        )
+    ){
+
+        return;
+    }
+
+
+    selectedAnswer =
+        answer;
+
+
+    document
+        .querySelectorAll(".option")
+        .forEach(
+            option => {
+
+                option.classList.remove(
+                    "selected"
+                );
+
+            }
+        );
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    const question =
+        questions[currentQuestionIndex];
+
+
+    if(
+        selectedAnswer ===
+        question.correctAnswer
+    ){
+
+        score++;
+
+    }
+
+
+    answeredQuestions.add(
+        currentQuestionIndex
+    );
+
+
+    disableOptions();
+
+
+    answerStatus.textContent =
+        "✓ Answer submitted. Waiting for the teacher...";
+
+    answerStatus.className =
+        "answer-status saved";
+
+
+    try{
+
+        const studentRef =
+            doc(
+                db,
+                "quizzes",
+                quizId,
+                "students",
+                studentId
+            );
+
+
+        const studentSnapshot =
+            await getDoc(studentRef);
+
+
+        if(!studentSnapshot.exists()){
+
+            throw new Error(
+                "Student record was not found."
+            );
+
+        }
+
+
+        const currentData =
+            studentSnapshot.data();
+
+
+        await updateDoc(
+            studentRef,
+            {
+
+                score:score,
+
+                answered:true,
+
+                currentQuestion:
+                    currentQuestionIndex,
+
+                lastAnswer:
+                    answer,
+
+                lastAnswerAt:
+                    new Date()
+
+            }
+        );
+
+
+        console.log(
+            "Answer saved:",
+            answer
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Could not save answer:",
+            error
+        );
+
+        answerStatus.textContent =
+            "⚠ Answer selected, but there was a problem saving it. Please contact the teacher.";
+
+        answerStatus.className =
+            "answer-status waiting";
+
+    }
+
+}
+
+
+function disableOptions(){
+
+    document
+        .querySelectorAll(".option")
+        .forEach(
+            option => {
+
+                option.disabled =
+                    true;
+
+                option.classList.add(
+                    "disabled"
+                );
+
+            }
+        );
+
+}
+
+
+async function finishQuiz(){
+
+    if(finished.style.display === "block"){
+        return;
+    }
+
+
+    const totalQuestions =
+        questions.length;
+
+
+    const wrong =
+        totalQuestions - score;
+
+
+    const percentage =
+        totalQuestions > 0
+        ? Math.round(
+            score / totalQuestions * 100
+        )
+        : 0;
+
+
+    try{
+
+        const studentRef =
+            doc(
+                db,
+                "quizzes",
+                quizId,
+                "students",
+                studentId
+            );
+
+
+        await updateDoc(
+            studentRef,
+            {
+
+                score:score,
+
+                totalQuestions:
+                    totalQuestions,
+
+                correctAnswers:
+                    score,
+
+                wrongAnswers:
+                    wrong,
+
+                percentage:
+                    percentage,
+
+                answered:true,
+
+                completed:true,
+
+                status:"completed"
+
+            }
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Final result save error:",
+            error
+        );
+
+    }
+
+
+    loading.style.display =
+        "none";
+
+    waiting.style.display =
+        "none";
+
+    quizArea.style.display =
+        "none";
+
+    finished.style.display =
+        "block";
+
+
+    scoreDisplay.textContent =
+        `${score} / ${totalQuestions}`;
+
+    correctDisplay.textContent =
+        score;
+
+    wrongDisplay.textContent =
+        wrong;
+
+    percentageDisplay.textContent =
+        `${percentage}%`;
+
+}
+
+
+function showError(text){
+
+    loading.style.display =
+        "none";
+
+    waiting.style.display =
+        "none";
+
+    quizArea.style.display =
+        "none";
+
+    finished.style.display =
+        "none";
+
+    errorBox.style.display =
+        "block";
+
+    errorBox.textContent =
+        text;
+
+}
+
+
+function escapeHtml(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
+</html>

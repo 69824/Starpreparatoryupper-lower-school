@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Quiz | Star Preparatory School</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f4f7fb;
+
+            color: #222;
+
+        }
+
+
+        /* ==============================
+           SIDEBAR
+        ============================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #071952;
+
+            color: white;
+
+            padding: 25px 15px;
+
+        }
+
+
+        .school-name {
+
+            text-align: center;
+
+            font-size: 19px;
+
+            font-weight: bold;
+
+            line-height: 1.4;
+
+            padding-bottom: 25px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.2);
+
+        }
+
+
+        .teacher-label {
+
+            text-align: center;
+
+            margin: 20px 0;
+
+            color: #cbd5e1;
+
+            font-size: 14px;
+
+        }
+
+
+        .menu {
+
+            list-style: none;
+
+        }
+
+
+        .menu li {
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .menu-link {
+
+            display: block;
+
+            width: 100%;
+
+            text-decoration: none;
+
+            color: white;
+
+            padding: 13px 15px;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+        }
+
+
+        .menu-link:hover {
+
+            background:
+                rgba(255,255,255,0.12);
+
+        }
+
+
+        .menu-link.active {
+
+            background:
+                rgba(255,255,255,0.18);
+
+        }
+
+
+        .logout-button {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+
+            width:
+                calc(100% - 30px);
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #dc3545;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            padding: 30px;
+
+            min-height: 100vh;
+
+        }
+
+
+        .topbar {
+
+            background: white;
+
+            padding: 20px 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+        }
+
+
+        .topbar h1 {
+
+            color: #071952;
+
+            font-size: 25px;
+
+        }
+
+
+        .back-button {
+
+            text-decoration: none;
+
+            background: #071952;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+        }
+
+
+        /* ==============================
+           CARDS
+        ============================== */
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.06);
+
+        }
+
+
+        .card h2 {
+
+            color: #071952;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* ==============================
+           FORM
+        ============================== */
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
+        }
+
+
+        /* ==============================
+           QUESTIONS
+        ============================== */
+
+        .question-toolbar {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .question-toolbar input {
+
+            flex: 1;
+
+            min-width: 220px;
+
+        }
+
+
+        .question-toolbar select {
+
+            width: 180px;
+
+        }
+
+
+        .question-item {
+
+            border: 1px solid #e1e5ea;
+
+            border-radius: 10px;
+
+            padding: 18px;
+
+            margin-bottom: 12px;
+
+            display: flex;
+
+            gap: 15px;
+
+            align-items: flex-start;
+
+            cursor: pointer;
+
+        }
+
+
+        .question-item:hover {
+
+            background: #f8faff;
+
+        }
+
+
+        .question-item.selected {
+
+            border-color: #071952;
+
+            background: #eef2ff;
+
+        }
+
+
+        .question-checkbox {
+
+            width: 20px;
+
+            height: 20px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .question-content {
+
+            flex: 1;
+
+        }
+
+
+        .question-text {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .question-meta {
+
+            display: flex;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .badge {
+
+            background: #e9ecef;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+        }
+
+
+        /* ==============================
+           SELECTED COUNT
+        ============================== */
+
+        .selected-info {
+
+            background: #eef2ff;
+
+            color: #071952;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 15px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ==============================
+           BUTTON
+        ============================== */
+
+        .create-button {
+
+            background: #071952;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .create-button:hover {
+
+            background: #0b3d91;
+
+        }
+
+
+        .create-button:disabled {
+
+            background: #999;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* ==============================
+           MESSAGE
+        ============================== */
+
+        .message {
+
+            display: none;
+
+            padding: 13px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .success {
+
+            display: block;
+
+            background: #d1e7dd;
+
+            color: #0f5132;
+
+        }
+
+
+        .error {
+
+            display: block;
+
+            background: #f8d7da;
+
+            color: #842029;
+
+        }
+
+
+        /* ==============================
+           RESULT
+        ============================== */
+
+        .quiz-created {
+
+            display: none;
+
+            text-align: center;
+
+            padding: 30px;
+
+            background: #eef2ff;
+
+            border-radius: 12px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .quiz-created h2 {
+
+            color: #071952;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .quiz-code {
+
+            font-size: 38px;
+
+            font-weight: bold;
+
+            letter-spacing: 5px;
+
+            color: #071952;
+
+            margin: 20px 0;
+
+        }
+
+
+        .code-note {
+
+            color: #666;
+
+        }
+
+
+        /* ==============================
+           LOADING
+        ============================== */
+
+        #loading {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: white;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 9999;
+
+            color: #071952;
+
+            font-size: 18px;
+
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 800px) {
+
+            .form-row {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+            }
+
+
+            .logout-button {
+
+                position: static;
+
+                width: 100%;
+
+                margin-top: 20px;
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div id="loading">
+
+    Checking teacher authentication...
+
+</div>
+
+
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside class="sidebar">
+
+
+    <div class="school-name">
+
+        STAR PREPARATORY SCHOOL
+
+        <br>
+
+        <span style="font-size:14px;">
+            Quiz Competition
+        </span>
+
+    </div>
+
+
+    <div class="teacher-label">
+
+        👨‍🏫 Teacher
+
+    </div>
+
+
+    <ul class="menu">
+
+
+        <li>
+
+            <a
+                href="teacher-dashboard.html"
+                class="menu-link"
+            >
+
+                🏠 Dashboard
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="question-bank.html"
+                class="menu-link"
+            >
+
+                📝 Question Bank
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="create-quiz.html"
+                class="menu-link active"
+            >
+
+                ➕ Create Quiz
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+    <a
+        href="live-competition.html"
+        class="menu-link"
+    >
+
+        🎮 Live Competition
+
+    </a>
+
+</li>
+
+
+        <li>
+
+            <a
+                href="#"
+                class="menu-link"
+            >
+
+                📺 Audience / Projector
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                href="#"
+                class="menu-link"
+            >
+
+                📊 Results
+
+            </a>
+
+        </li>
+
+
+    </ul>
+
+
+    <button
+        id="logoutButton"
+        class="logout-button"
+    >
+
+        🚪 Logout
+
+    </button>
+
+
+</aside>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="main">
+
+
+    <div class="topbar">
+
+
+        <h1>
+
+            Create Quiz
+
+        </h1>
+
+
+        <a
+            href="teacher-dashboard.html"
+            class="back-button"
+        >
+
+            ← Dashboard
+
+        </a>
+
+
+    </div>
+
+
+
+    <!-- ==========================================
+         QUIZ INFORMATION
+    ========================================== -->
+
+    <section class="card">
+
+
+        <h2>
+
+            1. Quiz Information
+
+        </h2>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <form id="quizForm">
+
+
+            <div class="form-group">
+
+                <label for="quizTitle">
+
+                    Quiz Title
+
+                </label>
+
+                <input
+                    type="text"
+                    id="quizTitle"
+                    placeholder="e.g. Inter-House Quiz Competition"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="quizGrade">
+
+                        Grade
+
+                    </label>
+
+                    <select
+                        id="quizGrade"
+                        required
+                    >
+
+                        <option value="">
+                            Select Grade
+                        </option>
+
+                        <option value="Grade 4">
+                            Grade 4
+                        </option>
+
+                        <option value="Grade 5">
+                            Grade 5
+                        </option>
+
+                        <option value="Grade 6">
+                            Grade 6
+                        </option>
+
+                        <option value="Grade 7">
+                            Grade 7
+                        </option>
+
+                        <option value="Grade 8">
+                            Grade 8
+                        </option>
+
+                        <option value="Grade 9">
+                            Grade 9
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="quizDescription">
+
+                        Description
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="quizDescription"
+                        placeholder="Optional description"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+
+
+    <!-- ==========================================
+         QUESTIONS
+    ========================================== -->
+
+    <section class="card">
+
+
+        <h2>
+
+            2. Select Questions
+
+        </h2>
+
+
+        <div class="selected-info">
+
+            Selected Questions:
+
+            <span id="selectedCount">
+                0
+            </span>
+
+        </div>
+
+
+        <div class="question-toolbar">
+
+
+            <input
+                type="search"
+                id="searchQuestions"
+                placeholder="Search your questions..."
+            >
+
+
+            <select id="filterGrade">
+
+                <option value="all">
+                    All Grades
+                </option>
+
+                <option value="Grade 4">
+                    Grade 4
+                </option>
+
+                <option value="Grade 5">
+                    Grade 5
+                </option>
+
+                <option value="Grade 6">
+                    Grade 6
+                </option>
+
+                <option value="Grade 7">
+                    Grade 7
+                </option>
+
+                <option value="Grade 8">
+                    Grade 8
+                </option>
+
+                <option value="Grade 9">
+                    Grade 9
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <div id="questionsContainer">
+
+            <div style="
+                text-align:center;
+                padding:30px;
+                color:#777;
+            ">
+
+                Loading your questions...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==========================================
+         CREATE
+    ========================================== -->
+
+    <section class="card">
+
+
+        <h2>
+
+            3. Create Competition
+
+        </h2>
+
+
+        <p style="
+            color:#666;
+            margin-bottom:20px;
+        ">
+
+            Select the questions you want to use,
+            then create the quiz.
+
+        </p>
+
+
+        <button
+            id="createQuizButton"
+            class="create-button"
+            type="button"
+        >
+
+            Create Quiz
+
+        </button>
+
+
+        <div
+            id="quizCreated"
+            class="quiz-created"
+        >
+
+            <h2>
+
+                🎉 Quiz Created!
+
+            </h2>
+
+
+            <p>
+
+                Give this code to the students:
+
+            </p>
+
+
+            <div
+                id="quizCode"
+                class="quiz-code"
+            >
+
+                ----
+
+            </div>
+
+
+            <p class="code-note">
+
+                Students will use this code
+                to join the competition.
+
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==========================================
+     FIREBASE
+========================================== -->
+
+<script type="module">
+
+
+    import {
+        initializeApp
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+    import {
+
+        getAuth,
+
+        onAuthStateChanged,
+
+        signOut
+
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+    import {
+
+        getFirestore,
+
+        collection,
+
+        getDocs,
+
+        query,
+
+        where,
+
+        orderBy,
+
+        addDoc,
+
+        doc,
+
+        setDoc,
+
+        serverTimestamp
+
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+        authDomain:
+            "star-preparatory-upper-quiz.firebaseapp.com",
+
+        projectId:
+            "star-preparatory-upper-quiz",
+
+        storageBucket:
+            "star-preparatory-upper-quiz.firebasestorage.app",
+
+        messagingSenderId:
+            "763341549221",
+
+        appId:
+            "1:763341549221:web:cf77f2f9e227306550674c"
+
+    };
+
+
+
+    // ==========================================
+    // INITIALIZE
+    // ==========================================
+
+    const app =
+        initializeApp(firebaseConfig);
+
+
+    const auth =
+        getAuth(app);
+
+
+    const db =
+        getFirestore(app);
+
+
+
+    // ==========================================
+    // VARIABLES
+    // ==========================================
+
+    let currentUser = null;
+
+    let allQuestions = [];
+
+    let selectedQuestions = new Set();
+
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const loading =
+        document.getElementById("loading");
+
+    const questionsContainer =
+        document.getElementById(
+            "questionsContainer"
+        );
+
+    const selectedCount =
+        document.getElementById(
+            "selectedCount"
+        );
+
+    const searchQuestions =
+        document.getElementById(
+            "searchQuestions"
+        );
+
+    const filterGrade =
+        document.getElementById(
+            "filterGrade"
+        );
+
+
+
+    // ==========================================
+    // AUTH
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+
+            if (!user) {
+
+                window.location.href =
+                    "teacher-login.html";
+
+                return;
+
+            }
+
+
+            currentUser =
+                user;
+
+
+            loading.style.display =
+                "none";
+
+
+            await loadQuestions();
+
+        }
+    );
+
+
+
+    // ==========================================
+    // LOAD TEACHER QUESTIONS
+    // ==========================================
+
+    async function loadQuestions() {
+
+
+        try {
+
+
+            questionsContainer.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:30px;
+                    color:#777;
+                ">
+
+                    Loading your questions...
+
+                </div>
+
+            `;
+
+
+            const questionsRef =
+                collection(
+                    db,
+                    "questions"
+                );
+
+
+            const questionsQuery =
+                query(
+
+                    questionsRef,
+
+                    where(
+                        "teacherId",
+                        "==",
+                        currentUser.uid
+                    ),
+
+                    orderBy(
+                        "createdAt",
+                        "desc"
+                    )
+
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    questionsQuery
+                );
+
+
+            allQuestions = [];
+
+
+            snapshot.forEach(
+                (questionDoc) => {
+
+                    allQuestions.push({
+
+                        id:
+                            questionDoc.id,
+
+                        ...questionDoc.data()
+
+                    });
+
+                }
+            );
+
+
+            renderQuestions();
+
+
+        }
+
+        catch (error) {
+
+
+            console.error(
+                "Error loading questions:",
+                error
+            );
+
+
+            questionsContainer.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:30px;
+                    color:#dc3545;
+                ">
+
+                    Unable to load your questions.
+
+                    <br><br>
+
+                    Please check the browser console.
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // RENDER QUESTIONS
+    // ==========================================
+
+    function renderQuestions() {
+
+
+        const search =
+            searchQuestions.value
+                .trim()
+                .toLowerCase();
+
+
+        const grade =
+            filterGrade.value;
+
+
+        const filtered =
+            allQuestions.filter(
+                (question) => {
+
+
+                    const matchesSearch =
+                        question.questionText
+                            .toLowerCase()
+                            .includes(search);
+
+
+                    const matchesGrade =
+                        grade === "all"
+                        ||
+                        question.grade === grade;
+
+
+                    return (
+                        matchesSearch
+                        &&
+                        matchesGrade
+                    );
+
+                }
+            );
+
+
+        if (filtered.length === 0) {
+
+
+            questionsContainer.innerHTML = `
+
+                <div style="
+                    text-align:center;
+                    padding:40px;
+                    color:#777;
+                ">
+
+                    No questions found.
+
+                    <br><br>
+
+                    Create questions first
+                    in the Question Bank.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+
+        questionsContainer.innerHTML =
+            filtered.map(
+                (question) => {
+
+
+                    const isSelected =
+                        selectedQuestions.has(
+                            question.id
+                        );
+
+
+                    return `
+
+                        <div
+                            class="
+                                question-item
+                                ${
+                                    isSelected
+                                    ? "selected"
+                                    : ""
+                                }
+                            "
+                            data-id="${question.id}"
+                        >
+
+                            <input
+                                type="checkbox"
+                                class="question-checkbox"
+                                ${
+                                    isSelected
+                                    ? "checked"
+                                    : ""
+                                }
+                            >
+
+
+                            <div
+                                class="question-content"
+                            >
+
+                                <div
+                                    class="question-text"
+                                >
+
+                                    ${escapeHtml(
+                                        question.questionText
+                                    )}
+
+                                </div>
+
+
+                                <div
+                                    class="question-meta"
+                                >
+
+                                    <span class="badge">
+
+                                        ${escapeHtml(
+                                            question.grade
+                                        )}
+
+                                    </span>
+
+
+                                    <span class="badge">
+
+                                        ${escapeHtml(
+                                            question.category
+                                        )}
+
+                                    </span>
+
+
+                                    <span class="badge">
+
+                                        ${
+                                            question.points
+                                        }
+                                        points
+
+                                    </span>
+
+
+                                    <span class="badge">
+
+                                        ${
+                                            question.timeLimit
+                                        }
+                                        seconds
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+
+
+        document
+            .querySelectorAll(
+                ".question-item"
+            )
+            .forEach(
+                (item) => {
+
+
+                    item.addEventListener(
+                        "click",
+                        (event) => {
+
+
+                            if (
+                                event.target
+                                .classList
+                                .contains(
+                                    "question-checkbox"
+                                )
+                            ) {
+
+                                toggleQuestion(
+                                    item.dataset.id
+                                );
+
+                                return;
+
+                            }
+
+
+                            toggleQuestion(
+                                item.dataset.id
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
+
+
+
+    // ==========================================
+    // SELECT / UNSELECT
+    // ==========================================
+
+    function toggleQuestion(
+        questionId
+    ) {
+
+
+        if (
+            selectedQuestions.has(
+                questionId
+            )
+        ) {
+
+            selectedQuestions.delete(
+                questionId
+            );
+
+        }
+
+        else {
+
+            selectedQuestions.add(
+                questionId
+            );
+
+        }
+
+
+        selectedCount.textContent =
+            selectedQuestions.size;
+
+
+        renderQuestions();
+
+    }
+
+
+
+    // ==========================================
+    // SEARCH
+    // ==========================================
+
+    searchQuestions.addEventListener(
+        "input",
+        renderQuestions
+    );
+
+
+    filterGrade.addEventListener(
+        "change",
+        renderQuestions
+    );
+
+
+
+    // ==========================================
+    // CREATE QUIZ
+    // ==========================================
+
+    document
+        .getElementById(
+            "createQuizButton"
+        )
+        .addEventListener(
+            "click",
+            createQuiz
+        );
+
+
+
+    async function createQuiz() {
+
+
+        const title =
+            document
+                .getElementById(
+                    "quizTitle"
+                )
+                .value
+                .trim();
+
+
+        const grade =
+            document
+                .getElementById(
+                    "quizGrade"
+                )
+                .value;
+
+
+        const description =
+            document
+                .getElementById(
+                    "quizDescription"
+                )
+                .value
+                .trim();
+
+
+
+        if (!title) {
+
+            showMessage(
+                "Please enter a quiz title.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!grade) {
+
+            showMessage(
+                "Please select a grade.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            selectedQuestions.size === 0
+        ) {
+
+            showMessage(
+                "Please select at least one question.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        const button =
+            document.getElementById(
+                "createQuizButton"
+            );
+
+
+        button.disabled =
+            true;
+
+
+        button.textContent =
+            "Creating Quiz...";
+
+
+
+        try {
+
+
+            const quizCode =
+                await generateUniqueQuizCode();
+
+
+            const quizRef =
+                await addDoc(
+                    collection(
+                        db,
+                        "quizzes"
+                    ),
+                    {
+
+                        title:
+                            title,
+
+                        grade:
+                            grade,
+
+                        description:
+                            description,
+
+                        quizCode:
+                            quizCode,
+
+                        teacherId:
+                            currentUser.uid,
+
+                        status:
+                            "draft",
+
+                        currentQuestion:
+                            0,
+
+                        totalQuestions:
+                            selectedQuestions.size,
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+                );
+                sessionStorage.setItem("teacherQuizId", quizRef.id);
+
+
+
+            let order =
+                1;
+
+
+            for (
+                const questionId
+                of selectedQuestions
+            ) {
+
+
+                const question =
+                    allQuestions.find(
+                        (item) =>
+                            item.id ===
+                            questionId
+                    );
+
+
+                if (!question) {
+
+                    continue;
+
+                }
+
+
+                await setDoc(
+
+                    doc(
+
+                        db,
+
+                        "quizzes",
+
+                        quizRef.id,
+
+                        "quizQuestions",
+
+                        questionId
+
+                    ),
+
+                    {
+
+                        questionId:
+                            questionId,
+
+                        order:
+                            order,
+
+                        questionText:
+                            question.questionText,
+
+                        grade:
+                            question.grade,
+
+                        category:
+                            question.category,
+
+                        optionA:
+                            question.optionA,
+
+                        optionB:
+                            question.optionB,
+
+                        optionC:
+                            question.optionC,
+
+                        optionD:
+                            question.optionD,
+
+                        correctAnswer:
+                            question.correctAnswer,
+
+                        points:
+                            question.points,
+
+                        timeLimit:
+                            question.timeLimit,
+
+                        difficulty:
+                            question.difficulty
+
+                    }
+
+                );
+
+
+                order++;
+
+            }
+
+
+
+            document
+                .getElementById(
+                    "quizCode"
+                )
+                .textContent =
+                    quizCode;
+
+            
+            document
+                .getElementById(
+                    "quizCreated"
+                )
+                .style.display =
+                    "block";
+
+
+            button.textContent =
+                "Quiz Created";
+
+
+            showMessage(
+                "Quiz created successfully!",
+                "success"
+            );
+
+
+        }
+
+        catch (error) {
+
+
+            console.error(
+                "Error creating quiz:",
+                error
+            );
+
+
+            showMessage(
+                "Unable to create quiz. Check the browser console.",
+                "error"
+            );
+
+
+            button.disabled =
+                false;
+
+
+            button.textContent =
+                "Create Quiz";
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // GENERATE UNIQUE QUIZ CODE
+    // ==========================================
+
+    async function generateUniqueQuizCode() {
+
+
+        const characters =
+            "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+
+        while (true) {
+
+
+            let code =
+                "SPQ-";
+
+
+            for (
+                let i = 0;
+                i < 4;
+                i++
+            ) {
+
+                code +=
+                    characters[
+                        Math.floor(
+                            Math.random()
+                            *
+                            characters.length
+                        )
+                    ];
+
+            }
+
+
+            const quizQuery =
+                query(
+
+                    collection(
+                        db,
+                        "quizzes"
+                    ),
+
+                    where(
+                        "quizCode",
+                        "==",
+                        code
+                    )
+
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    quizQuery
+                );
+
+
+            if (
+                snapshot.empty
+            ) {
+
+                return code;
+
+            }
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function showMessage(
+        text,
+        type
+    ) {
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        message.textContent =
+            text;
+
+
+        message.className =
+            "message " + type;
+
+
+        message.style.display =
+            "block";
+
+
+        setTimeout(
+            () => {
+
+                message.style.display =
+                    "none";
+
+            },
+            5000
+        );
+
+    }
+
+
+
+    // ==========================================
+    // ESCAPE HTML
+    // ==========================================
+
+    function escapeHtml(
+        value
+    ) {
+
+
+        if (
+            value === undefined
+            ||
+            value === null
+        ) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    document
+        .getElementById(
+            "logoutButton"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+
+                try {
+
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    window.location.href =
+                        "../index.html";
+
+
+                }
+
+                catch (error) {
+
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+
+                    alert(
+                        "Unable to logout. Please try again."
+                    );
+
+                }
+
+            }
+        );
+
+
+</script>
+
+
+</body>
+
+</html>

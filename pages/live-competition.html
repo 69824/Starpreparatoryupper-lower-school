@@ -232,6 +232,2112 @@ button:disabled {
     font-size: 14px;
     margin-bottom: 10px;
 }
+.question-timer {
+    display: inline-block;
+    margin-bottom: 18px;
+    background: #198754;
+    color: white;
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: center;
+}
+.question-timer.warning {
+    background: #dc3545;
+    animation: timerPulse 1s infinite;
+}
+@keyframes timerPulse {
+    50% { opacity: .65; }
+}
+
+.question-text {
+    font-size: 25px;
+    font-weight: bold;
+    color: #071952;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+}
+
+.option {
+    padding: 15px;
+    border: 2px solid #e1e5ea;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.option strong {
+    color: #071952;
+    margin-right: 8px;
+}
+
+/* STUDENTS */
+.students-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.student-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px;
+    border-bottom: 1px solid #e1e5ea;
+}
+
+.student-row:last-child {
+    border-bottom: none;
+}
+
+.student-name {
+    font-weight: bold;
+}
+
+.student-grade {
+    color: #777;
+    font-size: 13px;
+}
+
+.student-score {
+    font-weight: bold;
+    color: #198754;
+}
+
+/* LEADERBOARD */
+.leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard th,
+.leaderboard td {
+    padding: 13px;
+    border-bottom: 1px solid #e1e5ea;
+    text-align: left;
+}
+
+.leaderboard th {
+    background: #071952;
+    color: white;
+}
+
+.leaderboard tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+/* MESSAGE */
+.message {
+    display: none;
+    padding: 15px;
+    border-radius: 9px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.message.error {
+    display: block;
+    background: #f8d7da;
+    color: #842029;
+}
+
+.message.success {
+    display: block;
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.message.warning {
+    display: block;
+    background: #fff3cd;
+    color: #664d03;
+}
+
+/* EMPTY */
+.empty {
+    color: #777;
+    text-align: center;
+    padding: 25px;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .logout-button {
+        position: static;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .quiz-header {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .main {
+        padding: 15px;
+    }
+
+    .quiz-header {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .question-text {
+        font-size: 20px;
+    }
+
+    .student-row {
+        gap: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="school-name">
+        STAR PREPARATORY SCHOOL
+        <br>
+        <span style="font-size:14px;">
+            Quiz Competition
+        </span>
+    </div>
+
+    <div class="teacher-label">
+        👨‍🏫 Teacher Dashboard
+    </div>
+
+    <ul class="menu">
+
+        <li>
+            <a href="teacher-dashboard.html" class="menu-link">
+                🏠 Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="question-bank.html" class="menu-link">
+                📝 Question Bank
+            </a>
+        </li>
+
+        <li>
+            <a href="create-quiz.html" class="menu-link">
+                ➕ Create Quiz
+            </a>
+        </li>
+
+        <li>
+            <a href="live-competition.html" class="menu-link active">
+                🎮 Live Competition
+            </a>
+        </li>
+
+        <li>
+            <a href="audience.html" class="menu-link active">
+                📺 Audience
+            </a>
+        </li>
+
+
+    </ul>
+
+    <button id="logoutButton" class="logout-button">
+        🚪 Logout
+    </button>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+    <div class="topbar">
+
+        <h1>
+            🎮 Live Competition
+        </h1>
+
+        <div id="liveStatus" class="live-status">
+            Waiting
+        </div>
+
+    </div>
+
+
+    <div id="message" class="message"></div>
+
+
+    <!-- QUIZ INFORMATION -->
+    <section class="card">
+
+        <h2>
+            Competition Information
+        </h2>
+
+        <div class="quiz-header">
+
+            <div class="info-box">
+                <span>Quiz</span>
+                <strong id="quizTitle">Loading...</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Quiz Code</span>
+                <strong id="quizCode">---</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Grade</span>
+                <strong id="quizGrade">---</strong>
+            </div>
+
+            <div class="info-box">
+                <span>Students</span>
+                <strong id="studentCount">0</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTROLS -->
+    <section class="card">
+
+        <h2>
+            Competition Controls
+        </h2>
+
+        <div class="controls">
+
+            <button
+                id="startButton"
+                class="start-button"
+            >
+                ▶ START QUIZ
+            </button>
+
+            <button
+                id="nextButton"
+                class="next-button"
+                disabled
+            >
+                NEXT QUESTION →
+            </button>
+
+            <button
+                id="endButton"
+                class="end-button"
+                disabled
+            >
+                ⛔ END QUIZ
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- CURRENT QUESTION -->
+    <section
+        id="questionCard"
+        class="card question-card"
+    >
+
+        <div
+            id="questionNumber"
+            class="question-number"
+        >
+            Question 1
+        </div>
+
+        <div id="questionTimer" class="question-timer" aria-live="polite">
+            ⏱ 00:00
+        </div>
+
+        <div
+            id="questionText"
+            class="question-text"
+        >
+        </div>
+
+        <div
+            id="options"
+            class="options"
+        >
+        </div>
+
+    </section>
+
+
+    <!-- STUDENTS -->
+    <section class="card">
+
+        <h2>
+            👥 Students in Competition
+            (<span id="studentCount2">0</span>)
+        </h2>
+
+        <div
+            id="studentsList"
+            class="students-list"
+        >
+
+            <div class="empty">
+                No students have joined yet.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LEADERBOARD -->
+    <section class="card">
+
+        <h2>
+            🏆 Live Leaderboard
+        </h2>
+
+        <table class="leaderboard">
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Grade</th>
+                    <th>Score</th>
+                    <th>%</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="leaderboardBody">
+
+                <tr>
+                    <td colspan="5" class="empty">
+                        No results yet.
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+import { initializeApp }
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    query,
+    orderBy,
+    getDocs,
+    doc,
+    getDoc,
+    updateDoc,
+    setDoc,
+    onSnapshot
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+    authDomain:
+        "star-preparatory-upper-quiz.firebaseapp.com",
+
+    projectId:
+        "star-preparatory-upper-quiz",
+
+    storageBucket:
+        "star-preparatory-upper-quiz.firebasestorage.app",
+
+    messagingSenderId:
+        "763341549221",
+
+    appId:
+        "1:763341549221:web:cf77f2f9e227306550674c"
+
+};
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const message =
+    document.getElementById("message");
+
+const quizTitle =
+    document.getElementById("quizTitle");
+
+const quizCode =
+    document.getElementById("quizCode");
+
+const quizGrade =
+    document.getElementById("quizGrade");
+
+const studentCount =
+    document.getElementById("studentCount");
+
+const studentCount2 =
+    document.getElementById("studentCount2");
+
+const studentsList =
+    document.getElementById("studentsList");
+
+const leaderboardBody =
+    document.getElementById("leaderboardBody");
+
+const liveStatus =
+    document.getElementById("liveStatus");
+
+const startButton =
+    document.getElementById("startButton");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const endButton =
+    document.getElementById("endButton");
+
+const questionCard =
+    document.getElementById("questionCard");
+
+const questionNumber =
+    document.getElementById("questionNumber");
+
+const questionText =
+    document.getElementById("questionText");
+
+const questionTimer =
+    document.getElementById("questionTimer");
+
+const options =
+    document.getElementById("options");
+
+
+/* =====================================================
+   CURRENT QUIZ
+===================================================== */
+
+let quizId =
+    sessionStorage.getItem("teacherQuizId") ||
+    sessionStorage.getItem("quizId");
+
+let quizData = null;
+
+let questions = [];
+
+let currentQuestionIndex = 0;
+
+let unsubscribeQuiz = null;
+
+let unsubscribeStudents = null;
+let questionTimerInterval = null;
+let timerAdvanceInProgress = false;
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "teacher-login.html";
+
+            return;
+
+        }
+
+        console.log(
+            "Teacher logged in:",
+            user.email
+        );
+
+        await initializeCompetition();
+
+    }
+);
+
+
+/* =====================================================
+   INITIALIZE COMPETITION
+===================================================== */
+
+async function initializeCompetition() {
+
+    if (!quizId) {
+
+        showMessage(
+            "No active quiz was selected. Please open the Live Competition from your quiz.",
+            "error"
+        );
+
+        startButton.disabled = true;
+
+        return;
+
+    }
+
+    console.log(
+        "Live quiz ID:",
+        quizId
+    );
+
+
+    try {
+
+        const quizRef =
+            doc(
+                db,
+                "quizzes",
+                quizId
+            );
+
+
+        const quizSnapshot =
+            await getDoc(
+                quizRef
+            );
+
+
+        if (!quizSnapshot.exists()) {
+
+            showMessage(
+                "The selected quiz could not be found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        quizData =
+            quizSnapshot.data();
+
+
+        displayQuiz();
+
+
+        await loadQuestions();
+
+
+        listenToQuiz();
+
+
+        listenToStudents();
+
+
+        updateControls();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Competition initialization error:",
+            error
+        );
+
+        showMessage(
+            "Unable to load the competition: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY QUIZ
+===================================================== */
+
+function displayQuiz() {
+
+    quizTitle.textContent =
+        quizData.title ||
+        quizData.name ||
+        "Quiz Competition";
+
+    quizCode.textContent =
+        quizData.quizCode ||
+        "---";
+
+    quizGrade.textContent =
+        quizData.grade ||
+        "---";
+
+    updateStatus(
+        quizData.status || "waiting"
+    );
+
+}
+
+
+// ==========================================
+// ACTIVE COMPETITION
+// ==========================================
+
+async function setActiveCompetition(quizId, status) {
+
+    const activeRef = doc(
+        db,
+        "settings",
+        "activeCompetition"
+    );
+
+    await setDoc(
+        activeRef,
+        {
+            quizId: quizId,
+            status: status,
+            updatedAt: new Date()
+        },
+        {
+            merge: true
+        }
+    );
+
+    console.log(
+        "ACTIVE COMPETITION:",
+        quizId,
+        status
+    );
+}
+
+
+/* =====================================================
+   LOAD QUESTIONS
+===================================================== */
+
+async function loadQuestions() {
+
+    const questionsRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "quizQuestions"
+        );
+
+
+    const questionsQuery =
+        query(
+            questionsRef,
+            orderBy("order", "asc")
+        );
+
+
+    const snapshot =
+        await getDocs(
+            questionsQuery
+        );
+
+
+    questions =
+        snapshot.docs.map(
+            item => ({
+
+                id: item.id,
+
+                ...item.data()
+
+            })
+        );
+
+
+    console.log(
+        "Questions loaded:",
+        questions
+    );
+
+
+    if (questions.length === 0) {
+
+        showMessage(
+            "This quiz has no questions. Add questions before starting.",
+            "warning"
+        );
+
+        startButton.disabled =
+            true;
+
+        return;
+
+    }
+
+}
+
+
+/* =====================================================
+   REAL-TIME QUIZ LISTENER
+===================================================== */
+
+function listenToQuiz() {
+
+    const quizRef =
+        doc(
+            db,
+            "quizzes",
+            quizId
+        );
+
+
+    unsubscribeQuiz =
+        onSnapshot(
+            quizRef,
+            snapshot => {
+
+                if (!snapshot.exists()) {
+
+                    showMessage(
+                        "The quiz was deleted.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                quizData =
+                    snapshot.data();
+
+
+                displayQuiz();
+
+
+                currentQuestionIndex =
+                    Number(
+                        quizData.currentQuestionIndex || 0
+                    );
+
+
+                updateControls();
+
+
+                if (
+                    quizData.status ===
+                    "started"
+                ) {
+
+                    showCurrentQuestion();
+
+                }
+
+                else if (
+                    quizData.status ===
+                    "completed"
+                ) {
+
+                    questionCard.classList.remove(
+                        "visible"
+                    );
+
+                }
+
+            },
+            error => {
+
+                console.error(
+                    "Quiz listener error:",
+                    error
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   REAL-TIME STUDENTS
+===================================================== */
+
+function listenToStudents() {
+
+    const studentsRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "students"
+        );
+
+
+    unsubscribeStudents =
+        onSnapshot(
+            studentsRef,
+            snapshot => {
+
+                const students =
+                    snapshot.docs.map(
+                        item => ({
+
+                            id:
+                                item.id,
+
+                            ...item.data()
+
+                        })
+                    );
+
+
+                studentCount.textContent =
+                    students.length;
+
+                studentCount2.textContent =
+                    students.length;
+
+
+                renderStudents(
+                    students
+                );
+
+
+                renderLeaderboard(
+                    students
+                );
+
+            },
+            error => {
+
+                console.error(
+                    "Student listener error:",
+                    error
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   RENDER STUDENTS
+===================================================== */
+
+function renderStudents(
+    students
+) {
+
+    if (
+        students.length === 0
+    ) {
+
+        studentsList.innerHTML = `
+            <div class="empty">
+                No students have joined yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    studentsList.innerHTML =
+        "";
+
+
+    students.forEach(
+        student => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "student-row";
+
+
+            row.innerHTML = `
+
+                <div>
+
+                    <div class="student-name">
+                        ${escapeHtml(
+                            student.name ||
+                            "Student"
+                        )}
+                    </div>
+
+                    <div class="student-grade">
+                        ${escapeHtml(
+                            student.grade ||
+                            "-"
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="student-score">
+
+                    ${Number(
+                        student.score || 0
+                    )} pts
+
+                </div>
+
+            `;
+
+
+            studentsList.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LEADERBOARD
+===================================================== */
+
+function renderLeaderboard(
+    students
+) {
+
+    if (
+        students.length === 0
+    ) {
+
+        leaderboardBody.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No results yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    const sorted =
+        [...students].sort(
+            (a, b) => {
+
+                return Number(
+                    b.score || 0
+                ) -
+                Number(
+                    a.score || 0
+                );
+
+            }
+        );
+
+
+    leaderboardBody.innerHTML =
+        "";
+
+
+    sorted.forEach(
+        (student, index) => {
+
+            const total =
+                Number(
+                    student.totalQuestions ||
+                    questions.length ||
+                    0
+                );
+
+
+            const percentage =
+                student.percentage !== undefined
+                    ? student.percentage
+                    : (
+                        total > 0
+                            ? Math.round(
+                                (
+                                    Number(
+                                        student.score || 0
+                                    ) /
+                                    total
+                                ) * 100
+                            )
+                            : 0
+                    );
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${index + 1}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.name ||
+                        "Student"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        student.grade ||
+                        "-"
+                    )}
+                </td>
+
+                <td>
+                    ${Number(
+                        student.score || 0
+                    )} / ${total}
+                </td>
+
+                <td>
+                    ${percentage}%
+                </td>
+
+            `;
+
+
+            leaderboardBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   START QUIZ
+===================================================== */
+
+startButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            questions.length === 0
+        ) {
+
+            showMessage(
+                "There are no questions in this quiz.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const confirmed =
+            confirm(
+                "Start the quiz now? All students in the waiting room will be allowed to enter."
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        startButton.disabled =
+            true;
+
+        startButton.textContent =
+            "STARTING...";
+
+
+        try {
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            await updateDoc(
+                quizRef,
+                {
+
+                    status:
+                        "started",
+
+                    currentQuestionIndex:
+                        0,
+
+                    currentQuestion:
+                        0,
+
+                    startedAt:
+                        new Date()
+
+                }
+            );
+
+                await setActiveCompetition(
+                     quizId,
+                   "started"
+             );
+
+
+            currentQuestionIndex =
+                0;
+
+
+            showMessage(
+                "Quiz started. Students are entering the competition.",
+                "success"
+            );
+
+
+            showCurrentQuestion();
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Start quiz error:",
+                error
+            );
+
+            showMessage(
+                "Unable to start quiz: " +
+                error.message,
+                "error"
+            );
+
+            startButton.disabled =
+                false;
+
+            startButton.textContent =
+                "▶ START QUIZ";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SHOW CURRENT QUESTION
+===================================================== */
+
+function showCurrentQuestion() {
+
+    if (
+        questions.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const question =
+        questions[
+            currentQuestionIndex
+        ];
+
+
+    if (!question) {
+
+        return;
+
+    }
+
+
+    questionCard.classList.add(
+        "visible"
+    );
+
+
+    questionNumber.textContent =
+        `Question ${
+            currentQuestionIndex + 1
+        } of ${
+            questions.length
+        }`;
+
+
+    questionText.textContent =
+        question.questionText ||
+        "Question";
+
+
+    options.innerHTML =
+        "";
+
+
+    const questionOptions = [
+
+        ["A", question.optionA],
+
+        ["B", question.optionB],
+
+        ["C", question.optionC],
+
+        ["D", question.optionD]
+
+    ];
+
+
+    questionOptions.forEach(
+        item => {
+
+            if (!item[1]) {
+                return;
+            }
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "option";
+
+
+            div.innerHTML = `
+
+                <strong>
+                    ${item[0]}
+                </strong>
+
+                ${escapeHtml(
+                    item[1]
+                )}
+
+            `;
+
+
+            options.appendChild(
+                div
+            );
+
+        }
+    );
+
+
+    updateControls();
+
+}
+
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+nextButton.addEventListener(
+    "click",
+    async () => {
+
+        if (
+            quizData?.status !==
+            "started"
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            currentQuestionIndex >=
+            questions.length - 1
+        ) {
+
+            showMessage(
+                "This is the final question. Click END QUIZ when all students have finished.",
+                "warning"
+            );
+
+            nextButton.disabled =
+                true;
+
+            return;
+
+        }
+
+
+        const newIndex =
+            currentQuestionIndex + 1;
+
+
+        nextButton.disabled =
+            true;
+
+        nextButton.textContent =
+            "MOVING...";
+
+
+        try {
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            await updateDoc(
+                quizRef,
+                {
+
+                    currentQuestionIndex:
+                        newIndex,
+
+                    currentQuestion:
+                        newIndex
+
+                }
+            );
+
+
+            currentQuestionIndex =
+                newIndex;
+
+
+            showCurrentQuestion();
+
+
+            showMessage(
+                `Moved to Question ${
+                    newIndex + 1
+                }.`,
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Next question error:",
+                error
+            );
+
+            showMessage(
+                "Unable to move to the next question: " +
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally {
+
+            nextButton.textContent =
+                "NEXT QUESTION →";
+
+            updateControls();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   END QUIZ
+===================================================== */
+
+endButton.addEventListener(
+    "click",
+    async () => {
+
+        const confirmed =
+            confirm(
+                "Are you sure you want to END this competition? Students will no longer be able to continue."
+            );
+
+
+        if (!confirmed) {
+
+            return;
+
+        }
+
+
+        endButton.disabled =
+            true;
+
+        endButton.textContent =
+            "ENDING...";
+
+
+        try {
+
+            const quizRef =
+                doc(
+                    db,
+                    "quizzes",
+                    quizId
+                );
+
+
+            await updateDoc(
+    quizRef,
+    {
+        status: "completed",
+        completedAt: new Date()
+    }
+);
+
+await setActiveCompetition(
+    quizId,
+    "completed"
+);
+
+questionCard.classList.remove(
+    "visible"
+);
+
+showMessage(
+    "Competition ended successfully. Final results are shown below.",
+    "success"
+);
+
+updateControls();
+
+
+            questionCard.classList.remove(
+                "visible"
+            );
+
+
+            showMessage(
+                "Competition ended successfully. Final results are shown below.",
+                "success"
+            );
+
+
+            updateControls();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "End quiz error:",
+                error
+            );
+
+            showMessage(
+                "Unable to end the quiz: " +
+                error.message,
+                "error"
+            );
+
+            endButton.disabled =
+                false;
+
+            endButton.textContent =
+                "⛔ END QUIZ";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   UPDATE CONTROLS
+===================================================== */
+
+function updateControls() {
+
+    const status =
+        quizData?.status ||
+        "waiting";
+
+
+    if (
+        status === "waiting" ||
+        status === "draft"
+    ) {
+
+        startButton.disabled =
+            questions.length === 0;
+
+        startButton.textContent =
+            "▶ START QUIZ";
+
+        nextButton.disabled =
+            true;
+
+        endButton.disabled =
+            true;
+
+    }
+
+
+    else if (
+        status === "started"
+    ) {
+
+        startButton.disabled =
+            true;
+
+        startButton.textContent =
+            "✓ QUIZ STARTED";
+
+
+        endButton.disabled =
+            false;
+
+
+        if (
+            currentQuestionIndex <
+            questions.length - 1
+        ) {
+
+            nextButton.disabled =
+                false;
+
+        }
+        else {
+
+            nextButton.disabled =
+                true;
+
+        }
+
+    }
+
+
+    else if (
+        status === "completed"
+    ) {
+
+        startButton.disabled =
+            true;
+
+        nextButton.disabled =
+            true;
+
+        endButton.disabled =
+            true;
+
+        endButton.textContent =
+            "✓ QUIZ ENDED";
+
+    }
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function updateStatus(
+    status
+) {
+
+    liveStatus.className =
+        "live-status";
+
+
+    if (
+        status === "started"
+    ) {
+
+        liveStatus.textContent =
+            "🟢 LIVE";
+
+        liveStatus.classList.add(
+            "started"
+        );
+
+    }
+
+    else if (
+        status === "completed"
+    ) {
+
+        liveStatus.textContent =
+            "⛔ COMPLETED";
+
+        liveStatus.classList.add(
+            "completed"
+        );
+
+    }
+
+    else {
+
+        liveStatus.textContent =
+            "⏳ WAITING";
+
+    }
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+
+    message.style.display =
+        "block";
+
+
+    setTimeout(
+        () => {
+
+            message.style.display =
+                "none";
+
+        },
+        5000
+    );
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(auth);
+
+                window.location.href =
+                    "teacher-login.html";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === undefined ||
+        value === null
+    ) {
+
+        return "";
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   CLEANUP
+===================================================== */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if (unsubscribeQuiz) {
+            unsubscribeQuiz();
+        }
+
+        if (unsubscribeStudents) {
+            unsubscribeStudents();
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Competition | Star Preparatory School</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: #071952;
+    color: white;
+    padding: 25px 15px;
+}
+
+.school-name {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    line-height: 1.4;
+}
+
+.teacher-label {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    margin-bottom: 8px;
+}
+
+.menu-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: white;
+    padding: 13px 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu-link:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.menu-link.active {
+    background: rgba(255,255,255,0.18);
+}
+
+.logout-button {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    width: calc(100% - 30px);
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* MAIN */
+.main {
+    margin-left: 250px;
+    min-height: 100vh;
+    padding: 30px;
+}
+
+.topbar {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.topbar h1 {
+    color: #071952;
+    font-size: 25px;
+}
+
+.live-status {
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: #fff3cd;
+    color: #664d03;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.live-status.started {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.live-status.completed {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+.card h2 {
+    color: #071952;
+    margin-bottom: 18px;
+}
+
+.quiz-header {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.info-box {
+    background: #f4f7fb;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.info-box span {
+    display: block;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.info-box strong {
+    color: #071952;
+    font-size: 20px;
+}
+
+/* CONTROLS */
+.controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 22px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:disabled {
+    background: #999 !important;
+    cursor: not-allowed;
+}
+
+.start-button {
+    background: #198754;
+    color: white;
+}
+
+.start-button:hover {
+    background: #146c43;
+}
+
+.next-button {
+    background: #071952;
+    color: white;
+}
+
+.next-button:hover {
+    background: #0b3d91;
+}
+
+.end-button {
+    background: #dc3545;
+    color: white;
+}
+
+.end-button:hover {
+    background: #b02a37;
+}
+
+/* QUESTION */
+.question-card {
+    display: none;
+}
+
+.question-card.visible {
+    display: block;
+}
+
+.question-number {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
 
 .question-text {
     font-size: 25px;

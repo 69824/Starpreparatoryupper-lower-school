@@ -56,6 +56,22 @@ body{
     border-radius:20px;
     font-weight:bold;
 }
+.question-timer{
+    background:#198754;
+    color:white;
+    padding:9px 15px;
+    border-radius:20px;
+    font-weight:bold;
+    min-width:95px;
+    text-align:center;
+}
+.question-timer.warning{
+    background:#dc3545;
+    animation:timerPulse 1s infinite;
+}
+@keyframes timerPulse{
+    50%{opacity:.65}
+}
 
 .question-card{
     background:white;
@@ -235,6 +251,10 @@ body{
                     Question 1
                 </div>
 
+                <div id="questionTimer" class="question-timer" aria-live="polite">
+                    ⏱ 00:00
+                </div>
+
             </div>
         </section>
 
@@ -345,6 +365,9 @@ const studentNameElement =
 const questionNumber =
     document.getElementById("questionNumber");
 
+const questionTimer =
+    document.getElementById("questionTimer");
+
 const questionText =
     document.getElementById("questionText");
 
@@ -395,6 +418,9 @@ let score = 0;
 let answeredQuestions = new Set();
 
 let quizListener = null;
+let timerInterval = null;
+let currentQuestionStartedAt = null;
+let timerExpiredNotice = false;
 
 
 if (!quizId || !studentId) {
@@ -556,7 +582,8 @@ function listenToQuiz(quizRef){
                         : 0;
 
                     showTeacherQuestion(
-                        teacherQuestion
+                        teacherQuestion,
+                        quiz
                     );
 
                     return;
@@ -590,6 +617,10 @@ function listenToQuiz(quizRef){
 
 function showWaiting(){
 
+    clearInterval(timerInterval);
+    questionTimer.textContent = "⏱ --:--";
+    questionTimer.classList.remove("warning");
+
     loading.style.display =
         "none";
 
@@ -605,7 +636,7 @@ function showWaiting(){
 }
 
 
-function showTeacherQuestion(index){
+function showTeacherQuestion(index, quiz){
 
     if(index < 0 || index >= questions.length){
 
@@ -650,6 +681,52 @@ function showTeacherQuestion(index){
     quizArea.style.display =
         "block";
 
+    startQuestionTimer(question, quiz);
+
+}
+
+
+function startQuestionTimer(question, quiz){
+
+    clearInterval(timerInterval);
+    timerExpiredNotice = false;
+
+    const seconds = Math.max(1, Number(question.timeLimit) || 10);
+    let started = Date.now();
+
+    if(quiz && quiz.questionStartedAt){
+        if(typeof quiz.questionStartedAt.toMillis === "function") started = quiz.questionStartedAt.toMillis();
+        else if(quiz.questionStartedAt.seconds) started = quiz.questionStartedAt.seconds * 1000;
+        else if(quiz.questionStartedAt instanceof Date) started = quiz.questionStartedAt.getTime();
+        else if(typeof quiz.questionStartedAt === "string") {
+            const parsed = Date.parse(quiz.questionStartedAt);
+            if(!Number.isNaN(parsed)) started = parsed;
+        }
+    }
+
+    currentQuestionStartedAt = started;
+
+    function tick(){
+        const elapsed = Math.floor((Date.now() - started) / 1000);
+        const remaining = Math.max(0, seconds - elapsed);
+        const mins = String(Math.floor(remaining / 60)).padStart(2,"0");
+        const secs = String(remaining % 60).padStart(2,"0");
+        questionTimer.textContent = `⏱ ${mins}:${secs}`;
+        questionTimer.classList.toggle("warning", remaining <= 5);
+
+        if(remaining <= 0){
+            clearInterval(timerInterval);
+            if(!timerExpiredNotice){
+                timerExpiredNotice = true;
+                disableOptions();
+                answerStatus.textContent = "⏰ Time is up. Moving to the next question...";
+                answerStatus.className = "answer-status waiting";
+            }
+        }
+    }
+
+    tick();
+    timerInterval = setInterval(tick, 250);
 }
 
 
@@ -918,6 +995,10 @@ function disableOptions(){
 
 
 async function finishQuiz(){
+
+    clearInterval(timerInterval);
+    questionTimer.textContent = "⏱ 00:00";
+    questionTimer.classList.remove("warning");
 
     if(finished.style.display === "block"){
         return;

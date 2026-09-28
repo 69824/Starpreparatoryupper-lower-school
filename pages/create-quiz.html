@@ -1843,7 +1843,16 @@
                             selectedQuestions.size,
 
                         createdAt:
-                            serverTimestamp()
+                            serverTimestamp(),
+
+                        // Students may join this quiz for 48 hours
+                        // from the time it was created. Teachers are
+                        // not restricted by this window.
+                        studentAccessHours:
+                            48,
+
+                        studentAccessExpiresAt:
+                            new Date(Date.now() + 48 * 60 * 60 * 1000)
 
                     }
                 );

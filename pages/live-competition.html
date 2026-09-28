@@ -891,6 +891,13 @@ async function initializeCompetition() {
         quizData =
             quizSnapshot.data();
 
+        // The 48-hour restriction is for students only. A teacher can reopen any quiz they created.
+        if (quizData.teacherId && quizData.teacherId !== auth.currentUser.uid) {
+            showMessage("You can only control quizzes that you created.", "error");
+            startButton.disabled = true;
+            return;
+        }
+
 
         displayQuiz();
 
@@ -2969,6 +2976,13 @@ async function initializeCompetition() {
 
         quizData =
             quizSnapshot.data();
+
+        // The 48-hour restriction is for students only. A teacher can reopen any quiz they created.
+        if (quizData.teacherId && quizData.teacherId !== auth.currentUser.uid) {
+            showMessage("You can only control quizzes that you created.", "error");
+            startButton.disabled = true;
+            return;
+        }
 
 
         displayQuiz();

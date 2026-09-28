@@ -1363,17 +1363,215 @@ function renderLeaderboard(
 }
 
 
-function listenToChat(){
-    const ref=collection(db,"quizzes",quizId,"chatMessages");
-    onSnapshot(query(ref,orderBy("createdAt","asc")),snap=>{
-        chatMessages.innerHTML="";
-        snap.forEach(d=>{const m=d.data(); const div=document.createElement("div"); div.className="chat-message "+(m.senderRole==="teacher"?"teacher":"student"); div.innerHTML=`<strong>${escapeHtml(m.senderName||m.senderRole||"User")}:</strong> ${escapeHtml(m.text||"")}`; chatMessages.appendChild(div);});
-        chatMessages.scrollTop=chatMessages.scrollHeight;
-    });
-}
-async function sendTeacherChat(){const text=chatInput.value.trim();if(!text)return;chatInput.value="";await addDoc(collection(db,"quizzes",quizId,"chatMessages"),{text,senderId:auth.currentUser.uid,senderName:auth.currentUser.displayName||auth.currentUser.email||"Teacher",senderRole:"teacher",createdAt:serverTimestamp()});}
-sendChatButton.addEventListener("click",sendTeacherChat);chatInput.addEventListener("keydown",e=>{if(e.key==="Enter")sendTeacherChat();});
+/* =====================================================
+   TEACHER ↔ STUDENT CHAT
+===================================================== */
 
+function listenToChat() {
+
+    const chatRef = collection(
+        db,
+        "quizzes",
+        quizId,
+        "chatMessages"
+    );
+
+    const chatQuery = query(
+        chatRef,
+        orderBy("createdAt", "asc")
+    );
+
+    onSnapshot(
+        chatQuery,
+
+        snapshot => {
+
+            chatMessages.innerHTML = "";
+
+            if (snapshot.empty) {
+
+                chatMessages.innerHTML =
+                    '<div class="empty">No messages yet.</div>';
+
+                return;
+            }
+
+            snapshot.forEach(messageDoc => {
+
+                const data = messageDoc.data();
+
+                const div =
+                    document.createElement("div");
+
+                div.className =
+                    "chat-message " +
+                    (
+                        data.senderRole === "teacher"
+                            ? "teacher"
+                            : "student"
+                    );
+
+                div.innerHTML = `
+                    <strong>
+                        ${escapeHtml(
+                            data.senderName ||
+                            data.senderRole ||
+                            "User"
+                        )}:
+                    </strong>
+                    ${escapeHtml(
+                        data.text || ""
+                    )}
+                `;
+
+                chatMessages.appendChild(div);
+
+            });
+
+            chatMessages.scrollTop =
+                chatMessages.scrollHeight;
+
+        },
+
+        error => {
+
+            console.error(
+                "CHAT LISTENER ERROR:",
+                error
+            );
+
+        }
+    );
+}
+
+
+async function sendTeacherChat() {
+
+    const text =
+        chatInput.value.trim();
+
+    if (!text) {
+        return;
+    }
+
+    if (!quizId) {
+
+        alert(
+            "No quiz ID was found."
+        );
+
+        return;
+    }
+
+    if (!auth.currentUser) {
+
+        alert(
+            "Teacher is not logged in."
+        );
+
+        return;
+    }
+
+    sendChatButton.disabled = true;
+
+    try {
+
+        const chatData = {
+
+            text:
+                text,
+
+            senderId:
+                auth.currentUser.uid,
+
+            senderName:
+                auth.currentUser.displayName ||
+                auth.currentUser.email ||
+                "Teacher",
+
+            senderRole:
+                "teacher",
+
+            /*
+             * THIS WAS MISSING
+             */
+            quizId:
+                quizId,
+
+            createdAt:
+                serverTimestamp()
+        };
+
+
+        console.log(
+            "TEACHER CHAT DATA:",
+            chatData
+        );
+
+
+        await addDoc(
+            collection(
+                db,
+                "quizzes",
+                quizId,
+                "chatMessages"
+            ),
+            chatData
+        );
+
+
+        chatInput.value = "";
+
+        console.log(
+            "Teacher chat sent successfully."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "TEACHER CHAT ERROR:",
+            error
+        );
+
+        alert(
+            "Message could not be sent:\n\n" +
+            error.message
+        );
+
+    }
+
+    finally {
+
+        sendChatButton.disabled = false;
+
+        chatInput.focus();
+
+    }
+}
+
+
+sendChatButton.addEventListener(
+    "click",
+    sendTeacherChat
+);
+
+
+chatInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            sendTeacherChat();
+
+        }
+
+    }
+);
 /* =====================================================
    START QUIZ
 ===================================================== */

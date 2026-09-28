@@ -364,6 +364,9 @@ button:disabled {
     padding: 25px;
 }
 
+/* COMMUNICATION */
+.chat-card{margin-top:20px}.chat-messages{height:240px;overflow:auto;background:#f4f7fb;padding:12px;border-radius:10px;margin-bottom:10px}.chat-message{padding:9px 11px;margin:6px 0;background:#fff;border-radius:8px}.chat-message.teacher{border-left:4px solid #071952}.chat-message.student{border-left:4px solid #198754}.chat-row{display:flex;gap:8px}.chat-row input{flex:1;padding:12px;border:1px solid #ccd4df;border-radius:8px}.chat-row button{padding:12px 16px;border:0;border-radius:8px;background:#071952;color:#fff;font-weight:bold}.response-box{margin-top:10px;background:#f8f9fa;padding:10px;border-radius:8px}.mark-input{width:80px;padding:7px;margin-left:8px}.mark-button{padding:7px 10px;border:0;border-radius:6px;background:#198754;color:white;cursor:pointer}
+
 /* MOBILE */
 @media (max-width: 900px) {
 
@@ -563,6 +566,13 @@ button:disabled {
     </section>
 
 
+    <section class="card">
+        <h2>🛠️ Teacher Tools</h2>
+        <button type="button" class="start-button" onclick="window.open('print-exam.html?quizId='+encodeURIComponent(sessionStorage.getItem('teacherQuizId')||sessionStorage.getItem('quizId')), '_blank')">🖨️ PRINT EXAM PAPER</button>
+        <p style="color:#666;margin-top:10px">Print the same questions used by this quiz, including written-answer spaces.</p>
+    </section>
+
+
     <!-- CURRENT QUESTION -->
     <section
         id="questionCard"
@@ -614,6 +624,16 @@ button:disabled {
 
         </div>
 
+    </section>
+
+
+    <section class="card chat-card">
+        <h2>💬 Teacher ↔ Student Communication</h2>
+        <div id="chatMessages" class="chat-messages"><div class="empty">No messages yet.</div></div>
+        <div class="chat-row">
+            <input id="chatInput" type="text" maxlength="500" placeholder="Send a message to all students...">
+            <button id="sendChatButton" type="button">Send</button>
+        </div>
     </section>
 
 
@@ -683,6 +703,8 @@ import {
     getDoc,
     updateDoc,
     setDoc,
+    addDoc,
+    serverTimestamp,
     onSnapshot
 }
 from
@@ -784,6 +806,9 @@ const questionTimer =
 
 const options =
     document.getElementById("options");
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const sendChatButton = document.getElementById("sendChatButton");
 
 
 /* =====================================================
@@ -909,6 +934,7 @@ async function initializeCompetition() {
 
 
         listenToStudents();
+        listenToChat();
 
 
         updateControls();
@@ -1030,6 +1056,8 @@ async function loadQuestions() {
 
             })
         );
+
+    quizData.totalPoints = questions.reduce((sum,q)=>sum + Number(q.points || 1), 0);
 
 
     console.log(
@@ -1203,80 +1231,19 @@ function listenToStudents() {
    RENDER STUDENTS
 ===================================================== */
 
-function renderStudents(
-    students
-) {
-
-    if (
-        students.length === 0
-    ) {
-
-        studentsList.innerHTML = `
-            <div class="empty">
-                No students have joined yet.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    studentsList.innerHTML =
-        "";
-
-
-    students.forEach(
-        student => {
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.className =
-                "student-row";
-
-
-            row.innerHTML = `
-
-                <div>
-
-                    <div class="student-name">
-                        ${escapeHtml(
-                            student.name ||
-                            "Student"
-                        )}
-                    </div>
-
-                    <div class="student-grade">
-                        ${escapeHtml(
-                            student.grade ||
-                            "-"
-                        )}
-                    </div>
-
-                </div>
-
-                <div class="student-score">
-
-                    ${Number(
-                        student.score || 0
-                    )} pts
-
-                </div>
-
-            `;
-
-
-            studentsList.appendChild(
-                row
-            );
-
-        }
-    );
-
+function renderStudents(students) {
+    if(students.length===0){studentsList.innerHTML='<div class="empty">No students have joined yet.</div>';return;}
+    studentsList.innerHTML="";
+    students.forEach(student=>{
+        const row=document.createElement("div"); row.className="student-row";
+        const response = student.lastAnswer ? `<div class="response-box"><strong>Latest answer:</strong> ${escapeHtml(String(student.lastAnswer))}${student.needsManualMark ? `<div style="margin-top:8px"><strong>Manual mark:</strong><input class="mark-input" id="mark-${student.id}" type="number" min="0" step="0.5" placeholder="points"><button class="mark-button" data-mark="${student.id}">Save Mark</button></div>` : ""}</div>` : "";
+        row.innerHTML=`<div style="width:100%"><div style="display:flex;justify-content:space-between;gap:10px"><div><div class="student-name">${escapeHtml(student.name||"Student")}</div><div class="student-grade">${escapeHtml(student.grade||"-")}</div></div><div class="student-score">${Number(student.score||0)} pts</div></div>${response}</div>`;
+        studentsList.appendChild(row);
+    });
+    studentsList.querySelectorAll("[data-mark]").forEach(btn=>btn.addEventListener("click",async()=>{
+        const id=btn.dataset.mark; const input=document.getElementById("mark-"+id); const mark=Number(input.value); if(!Number.isFinite(mark)||mark<0){alert("Enter a valid mark.");return;}
+        await updateDoc(doc(db,"quizzes",quizId,"students",id),{score:Number(students.find(x=>x.id===id)?.score||0)+mark,needsManualMark:false,lastManualMark:mark,markedBy:auth.currentUser.uid,markedAt:new Date()});
+    }));
 }
 
 
@@ -1327,12 +1294,7 @@ function renderLeaderboard(
     sorted.forEach(
         (student, index) => {
 
-            const total =
-                Number(
-                    student.totalQuestions ||
-                    questions.length ||
-                    0
-                );
+            const total = Number(quizData?.totalPoints || questions.reduce((sum,q)=>sum+Number(q.points||1),0) || 0);
 
 
             const percentage =
@@ -1400,6 +1362,17 @@ function renderLeaderboard(
 
 }
 
+
+function listenToChat(){
+    const ref=collection(db,"quizzes",quizId,"chatMessages");
+    onSnapshot(query(ref,orderBy("createdAt","asc")),snap=>{
+        chatMessages.innerHTML="";
+        snap.forEach(d=>{const m=d.data(); const div=document.createElement("div"); div.className="chat-message "+(m.senderRole==="teacher"?"teacher":"student"); div.innerHTML=`<strong>${escapeHtml(m.senderName||m.senderRole||"User")}:</strong> ${escapeHtml(m.text||"")}`; chatMessages.appendChild(div);});
+        chatMessages.scrollTop=chatMessages.scrollHeight;
+    });
+}
+async function sendTeacherChat(){const text=chatInput.value.trim();if(!text)return;chatInput.value="";await addDoc(collection(db,"quizzes",quizId,"chatMessages"),{text,senderId:auth.currentUser.uid,senderName:auth.currentUser.displayName||auth.currentUser.email||"Teacher",senderRole:"teacher",createdAt:serverTimestamp()});}
+sendChatButton.addEventListener("click",sendTeacherChat);chatInput.addEventListener("keydown",e=>{if(e.key==="Enter")sendTeacherChat();});
 
 /* =====================================================
    START QUIZ

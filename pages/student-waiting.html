@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Waiting Room | Star Preparatory School</title>
 
     <style>
@@ -256,12 +257,6 @@
             border-bottom-left-radius: 3px;
         }
 
-        .message-role {
-            font-size: 10px;
-            opacity: 0.75;
-            margin-left: 5px;
-        }
-
         .chat-form {
             display: flex;
             gap: 8px;
@@ -318,6 +313,7 @@
         }
 
         @media (max-width: 500px) {
+
             .card {
                 padding: 28px 20px;
             }
@@ -351,10 +347,18 @@
 
 <div class="container">
 
+    <!-- SCHOOL HEADER -->
+
     <div class="school-header">
+
         <h1>STAR PREPARATORY SCHOOL</h1>
+
         <p>Live Quiz Competition</p>
+
     </div>
+
+
+    <!-- WAITING ROOM -->
 
     <div class="card">
 
@@ -365,45 +369,70 @@
         <h2>You're In!</h2>
 
         <p class="welcome">
+
             Welcome,
-            <span id="studentName" class="student-name">
+
+            <span
+                id="studentName"
+                class="student-name">
                 Student
             </span>
+
         </p>
+
+
+        <!-- QUIZ INFORMATION -->
 
         <div class="quiz-info">
 
             <div class="info-row">
-                <span class="info-label">Grade</span>
+
+                <span class="info-label">
+                    Grade
+                </span>
 
                 <span
                     id="studentGrade"
                     class="info-value">
                     -
                 </span>
+
             </div>
 
+
             <div class="info-row">
-                <span class="info-label">Quiz Code</span>
+
+                <span class="info-label">
+                    Quiz Code
+                </span>
 
                 <span
                     id="quizCode"
                     class="info-value">
                     -
                 </span>
+
             </div>
 
+
             <div class="info-row">
-                <span class="info-label">Competition</span>
+
+                <span class="info-label">
+                    Competition
+                </span>
 
                 <span
                     id="quizTitle"
                     class="info-value">
                     Loading...
                 </span>
+
             </div>
 
         </div>
+
+
+        <!-- STATUS -->
 
         <div class="status">
 
@@ -413,22 +442,29 @@
 
         </div>
 
+
         <p class="instruction">
+
             Please stay on this page.
             The quiz will start automatically
             when your teacher begins the competition.
+
         </p>
+
 
         <div
             id="error"
             class="error">
         </div>
 
+
         <button
             id="leaveButton"
             class="leave-button"
             type="button">
+
             Leave Competition
+
         </button>
 
     </div>
@@ -445,26 +481,32 @@
             <span
                 id="onlineStatus"
                 class="online-status">
-                ● Connected
+
+                ● Connecting...
+
             </span>
 
         </div>
+
 
         <div
             id="chatError"
             class="chat-error">
         </div>
 
+
         <div
             id="chatMessages"
             class="chat-messages">
 
             <div class="chat-empty">
-                No messages yet.<br>
-                You can send a message to your teacher.
+
+                Connecting to teacher chat...
+
             </div>
 
         </div>
+
 
         <form
             id="chatForm"
@@ -482,7 +524,9 @@
                 type="submit"
                 id="sendButton"
                 class="send-button">
+
                 Send
+
             </button>
 
         </form>
@@ -491,7 +535,9 @@
 
 
     <div class="footer">
+
         Star Preparatory School © 2026
+
     </div>
 
 </div>
@@ -503,11 +549,6 @@
         initializeApp
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
-    import {
-        getAuth,
-        signInAnonymously,
-        onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
     import {
         getFirestore,
@@ -517,7 +558,6 @@
         collection,
         query,
         orderBy,
-        onSnapshot as onMessagesSnapshot,
         addDoc,
         serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -559,9 +599,6 @@
 
     const db =
         getFirestore(app);
-
-    const auth =
-        getAuth(app);
 
 
     // ==========================================
@@ -649,6 +686,11 @@
             "Quiz information is missing. Please return to the join page and join the competition again."
         );
 
+        setChatStatus(
+            "● Not connected",
+            false
+        );
+
     } else {
 
         startWaitingRoom();
@@ -657,7 +699,7 @@
 
 
     // ==========================================
-    // WAITING ROOM
+    // START WAITING ROOM
     // ==========================================
 
     async function startWaitingRoom() {
@@ -678,6 +720,19 @@
                 studentId
             );
 
+
+            if (!studentId) {
+
+                showChatError(
+                    "Student information is missing. Please leave and join the competition again."
+                );
+
+            }
+
+
+            // ==================================
+            // GET QUIZ
+            // ==================================
 
             const quizRef =
                 doc(
@@ -720,6 +775,10 @@
                 "Quiz Competition";
 
 
+            // ==================================
+            // CHECK CURRENT STATUS
+            // ==================================
+
             if (
                 quiz.status === "started"
             ) {
@@ -754,7 +813,9 @@
 
                 snapshot => {
 
-                    if (!snapshot.exists()) {
+                    if (
+                        !snapshot.exists()
+                    ) {
 
                         showError(
                             "The quiz could not be found."
@@ -782,7 +843,8 @@
 
 
                     if (
-                        updatedQuiz.status === "started"
+                        updatedQuiz.status ===
+                        "started"
                     ) {
 
                         goToQuiz();
@@ -793,7 +855,8 @@
 
 
                     if (
-                        updatedQuiz.status === "completed"
+                        updatedQuiz.status ===
+                        "completed"
                     ) {
 
                         showError(
@@ -813,6 +876,7 @@
                         error
                     );
 
+
                     showError(
                         "Connection error. Please check your internet connection and refresh the page."
                     );
@@ -823,11 +887,10 @@
 
 
             // ==================================
-            // START STUDENT AUTHENTICATION
+            // START CHAT
             // ==================================
 
-            await connectStudentAuthentication();
-
+            startChat();
 
         }
 
@@ -837,6 +900,7 @@
                 "Waiting room error:",
                 error
             );
+
 
             showError(
                 "Unable to connect to the competition: " +
@@ -849,97 +913,46 @@
 
 
     // ==========================================
-    // STUDENT FIREBASE AUTHENTICATION
-    // ==========================================
-
-    async function connectStudentAuthentication() {
-
-        try {
-
-            if (!auth.currentUser) {
-
-                console.log(
-                    "Signing student in anonymously..."
-                );
-
-                await signInAnonymously(auth);
-
-            }
-
-
-            if (auth.currentUser) {
-
-                console.log(
-                    "Student authenticated:",
-                    auth.currentUser.uid
-                );
-
-                sessionStorage.setItem(
-                    "studentAuthUid",
-                    auth.currentUser.uid
-                );
-
-                startChat();
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "Student authentication error:",
-                error
-            );
-
-            showChatError(
-                "Chat could not connect. Firebase Anonymous Authentication must be enabled."
-            );
-
-        }
-
-    }
-
-
-    // ==========================================
-    // AUTH STATE
-    // ==========================================
-
-    onAuthStateChanged(
-        auth,
-        user => {
-
-            if (user) {
-
-                console.log(
-                    "Firebase student user:",
-                    user.uid
-                );
-
-            }
-
-        }
-    );
-
-
-    // ==========================================
     // START CHAT
     // ==========================================
 
     function startChat() {
 
         if (!quizId) {
+
             return;
+
         }
 
-        if (!auth.currentUser) {
+
+        if (!studentId) {
+
+            setChatStatus(
+                "● Not connected",
+                false
+            );
+
+            showChatError(
+                "Student ID is missing. Please leave and join the competition again."
+            );
+
             return;
+
         }
 
 
         console.log(
-            "Starting student chat for quiz:",
+            "Starting student chat..."
+        );
+
+        console.log(
+            "Chat Quiz ID:",
             quizId
+        );
+
+        console.log(
+            "Chat Student ID:",
+            studentId
         );
 
 
@@ -962,16 +975,24 @@
             );
 
 
-        onMessagesSnapshot(
+        onSnapshot(
 
             messagesQuery,
 
             snapshot => {
 
+                console.log(
+                    "Chat messages received:",
+                    snapshot.size
+                );
+
+
                 chatMessagesElement.innerHTML = "";
 
 
-                if (snapshot.empty) {
+                if (
+                    snapshot.empty
+                ) {
 
                     chatMessagesElement.innerHTML = `
                         <div class="chat-empty">
@@ -980,28 +1001,34 @@
                         </div>
                     `;
 
-                    return;
+                }
+                else {
+
+                    snapshot.forEach(
+                        messageDoc => {
+
+                            const message =
+                                messageDoc.data();
+
+
+                            displayMessage(
+                                message
+                            );
+
+                        }
+                    );
 
                 }
 
 
-                snapshot.forEach(
-                    messageDoc => {
-
-                        const message =
-                            messageDoc.data();
-
-
-                        displayMessage(
-                            message
-                        );
-
-                    }
-                );
-
-
                 chatMessagesElement.scrollTop =
                     chatMessagesElement.scrollHeight;
+
+
+                setChatStatus(
+                    "● Connected",
+                    true
+                );
 
             },
 
@@ -1012,11 +1039,15 @@
                     error
                 );
 
-                onlineStatus.textContent =
-                    "● Chat error";
+
+                setChatStatus(
+                    "● Chat error",
+                    false
+                );
+
 
                 showChatError(
-                    "Unable to load chat messages: " +
+                    "Unable to connect to teacher chat: " +
                     error.message
                 );
 
@@ -1028,18 +1059,19 @@
 
 
     // ==========================================
-    // DISPLAY CHAT MESSAGE
+    // DISPLAY MESSAGE
     // ==========================================
 
-    function displayMessage(message) {
+    function displayMessage(
+        message
+    ) {
 
         const messageDiv =
             document.createElement("div");
 
 
         const isMine =
-            auth.currentUser &&
-            message.senderId === auth.currentUser.uid;
+            message.senderId === studentId;
 
 
         messageDiv.className =
@@ -1063,29 +1095,36 @@
                 : "Student";
 
 
+        const nameElement =
+            document.createElement("div");
+
+
+        nameElement.className =
+            "message-name";
+
+
+        nameElement.textContent =
+            name +
+            " • " +
+            role;
+
+
         const bubble =
             document.createElement("div");
 
+
         bubble.className =
             "message-bubble";
+
 
         bubble.textContent =
             message.text || "";
 
 
-        const nameElement =
-            document.createElement("div");
-
-        nameElement.className =
-            "message-name";
-
-        nameElement.textContent =
-            name + " • " + role;
-
-
         messageDiv.appendChild(
             nameElement
         );
+
 
         messageDiv.appendChild(
             bubble
@@ -1100,7 +1139,7 @@
 
 
     // ==========================================
-    // SEND CHAT MESSAGE
+    // SEND MESSAGE
     // ==========================================
 
     chatForm.addEventListener(
@@ -1115,15 +1154,6 @@
 
 
             if (!text) {
-                return;
-            }
-
-
-            if (!auth.currentUser) {
-
-                showChatError(
-                    "Please wait for the connection to complete."
-                );
 
                 return;
 
@@ -1141,7 +1171,19 @@
             }
 
 
-            sendButton.disabled = true;
+            if (!studentId) {
+
+                showChatError(
+                    "Student connection is missing. Please leave and join again."
+                );
+
+                return;
+
+            }
+
+
+            sendButton.disabled =
+                true;
 
 
             try {
@@ -1159,16 +1201,24 @@
                     messagesRef,
                     {
 
-                        text: text,
+                        text:
+                            text,
 
                         senderId:
-                            auth.currentUser.uid,
+                            studentId,
 
                         senderName:
-                            studentName || "Student",
+                            studentName ||
+                            "Student",
 
                         senderRole:
                             "student",
+
+                        studentId:
+                            studentId,
+
+                        quizId:
+                            quizId,
 
                         createdAt:
                             serverTimestamp()
@@ -1177,7 +1227,11 @@
                 );
 
 
-                chatInput.value = "";
+                chatInput.value =
+                    "";
+
+
+                hideChatError();
 
 
             }
@@ -1189,6 +1243,7 @@
                     error
                 );
 
+
                 showChatError(
                     "Message could not be sent: " +
                     error.message
@@ -1198,7 +1253,8 @@
 
             finally {
 
-                sendButton.disabled = false;
+                sendButton.disabled =
+                    false;
 
                 chatInput.focus();
 
@@ -1209,15 +1265,63 @@
 
 
     // ==========================================
+    // CHAT STATUS
+    // ==========================================
+
+    function setChatStatus(
+        text,
+        connected
+    ) {
+
+        onlineStatus.textContent =
+            text;
+
+
+        onlineStatus.style.color =
+            connected
+                ? "#198754"
+                : "#842029";
+
+    }
+
+
+    // ==========================================
     // CHAT ERROR
     // ==========================================
 
-    function showChatError(text) {
+    function showChatError(
+        text
+    ) {
 
         chatErrorElement.textContent =
             text;
 
         chatErrorElement.style.display =
+            "block";
+
+    }
+
+
+    function hideChatError() {
+
+        chatErrorElement.style.display =
+            "none";
+
+    }
+
+
+    // ==========================================
+    // GENERAL ERROR
+    // ==========================================
+
+    function showError(
+        text
+    ) {
+
+        errorElement.textContent =
+            text;
+
+        errorElement.style.display =
             "block";
 
     }
@@ -1241,21 +1345,6 @@
 
 
     // ==========================================
-    // GENERAL ERROR
-    // ==========================================
-
-    function showError(text) {
-
-        errorElement.textContent =
-            text;
-
-        errorElement.style.display =
-            "block";
-
-    }
-
-
-    // ==========================================
     // LEAVE COMPETITION
     // ==========================================
 
@@ -1270,7 +1359,9 @@
 
 
             if (!confirmLeave) {
+
                 return;
+
             }
 
 
@@ -1308,4 +1399,5 @@
 </script>
 
 </body>
+
 </html>

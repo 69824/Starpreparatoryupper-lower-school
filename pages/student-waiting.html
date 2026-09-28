@@ -1,20 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waiting Room | Star Preparatory School</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -22,438 +14,396 @@
         }
 
         body {
-
             min-height: 100vh;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #071952,
-                    #0b3d91
-                );
-
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #071952, #0b3d91);
             display: flex;
-
             justify-content: center;
-
             align-items: center;
-
             padding: 20px;
-
         }
 
         .container {
-
             width: 100%;
-
-            max-width: 520px;
-
+            max-width: 620px;
         }
 
         .school-header {
-
             text-align: center;
-
             color: white;
-
             margin-bottom: 25px;
-
         }
 
         .school-header h1 {
-
             font-size: 27px;
-
             margin-bottom: 8px;
-
         }
 
         .school-header p {
-
             color: #dbeafe;
-
             font-size: 15px;
-
         }
 
         .card {
-
             background: white;
-
             border-radius: 18px;
-
             padding: 35px 30px;
-
-            box-shadow:
-                0 20px 50px
-                rgba(0, 0, 0, 0.25);
-
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
             text-align: center;
-
         }
 
         .waiting-icon {
-
             width: 90px;
-
             height: 90px;
-
             margin: 0 auto 20px;
-
             border-radius: 50%;
-
             background: #eef2ff;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             font-size: 45px;
-
         }
 
         .card h2 {
-
             color: #071952;
-
             margin-bottom: 10px;
-
             font-size: 25px;
-
         }
 
         .welcome {
-
             color: #555;
-
             font-size: 15px;
-
             margin-bottom: 25px;
-
         }
 
         .student-name {
-
             color: #071952;
-
             font-weight: bold;
-
         }
 
         .quiz-info {
-
             background: #f4f7fb;
-
             border-radius: 12px;
-
             padding: 18px;
-
             margin-bottom: 25px;
-
         }
 
         .info-row {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             padding: 9px 0;
-
             border-bottom: 1px solid #e1e5ea;
-
             gap: 15px;
-
         }
 
         .info-row:last-child {
-
             border-bottom: none;
-
         }
 
         .info-label {
-
             color: #666;
-
             font-size: 14px;
-
         }
 
         .info-value {
-
             color: #071952;
-
             font-weight: bold;
-
             font-size: 14px;
-
             text-align: right;
-
         }
 
         .status {
-
             background: #fff3cd;
-
             color: #664d03;
-
             padding: 14px;
-
             border-radius: 10px;
-
             font-weight: bold;
-
             margin-bottom: 20px;
-
         }
 
         .loader {
-
             width: 42px;
-
             height: 42px;
-
             border: 4px solid #e1e5ea;
-
             border-top-color: #071952;
-
             border-radius: 50%;
-
             animation: spin 1s linear infinite;
-
             margin: 0 auto 15px;
-
         }
 
         @keyframes spin {
-
             to {
-
                 transform: rotate(360deg);
-
             }
-
         }
 
         .instruction {
-
             color: #777;
-
             font-size: 13px;
-
             line-height: 1.6;
-
         }
 
         .error {
-
             display: none;
-
             background: #f8d7da;
-
             color: #842029;
-
             padding: 15px;
-
             border-radius: 10px;
-
             margin-top: 20px;
-
             font-size: 14px;
-
             line-height: 1.5;
-
         }
 
         .leave-button {
-
             margin-top: 25px;
-
             border: none;
-
             background: transparent;
-
             color: #071952;
-
             font-weight: bold;
-
             cursor: pointer;
-
             font-size: 14px;
-
         }
 
         .leave-button:hover {
-
             text-decoration: underline;
+        }
 
+        /* CHAT */
+
+        .chat-card {
+            background: white;
+            border-radius: 18px;
+            margin-top: 20px;
+            padding: 22px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chat-header h3 {
+            color: #071952;
+            font-size: 19px;
+        }
+
+        .online-status {
+            font-size: 12px;
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            height: 260px;
+            overflow-y: auto;
+            background: #f4f7fb;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .chat-empty {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            padding: 40px 10px;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.mine {
+            align-items: flex-end;
+        }
+
+        .message.other {
+            align-items: flex-start;
+        }
+
+        .message-name {
+            font-size: 11px;
+            color: #777;
+            margin-bottom: 3px;
+            padding: 0 5px;
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 9px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.mine .message-bubble {
+            background: #071952;
+            color: white;
+            border-bottom-right-radius: 3px;
+        }
+
+        .message.other .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e1e5ea;
+            border-bottom-left-radius: 3px;
+        }
+
+        .message-role {
+            font-size: 10px;
+            opacity: 0.75;
+            margin-left: 5px;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: 1px solid #d5dbe3;
+            border-radius: 10px;
+            padding: 12px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            border-color: #071952;
+        }
+
+        .send-button {
+            border: none;
+            background: #071952;
+            color: white;
+            padding: 0 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .send-button:hover {
+            background: #0b3d91;
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .chat-error {
+            display: none;
+            color: #842029;
+            background: #f8d7da;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-align: left;
         }
 
         .footer {
-
             text-align: center;
-
             color: #dbeafe;
-
             font-size: 12px;
-
             margin-top: 20px;
-
         }
 
         @media (max-width: 500px) {
-
             .card {
-
                 padding: 28px 20px;
-
             }
 
             .school-header h1 {
-
                 font-size: 22px;
-
             }
 
             .info-row {
-
                 flex-direction: column;
-
                 align-items: flex-start;
-
                 gap: 4px;
-
             }
 
             .info-value {
-
                 text-align: left;
-
             }
 
+            .chat-form {
+                flex-direction: column;
+            }
+
+            .send-button {
+                height: 44px;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
-
-    <!-- SCHOOL HEADER -->
-
     <div class="school-header">
-
-        <h1>
-            STAR PREPARATORY SCHOOL
-        </h1>
-
-        <p>
-            Live Quiz Competition
-        </p>
-
+        <h1>STAR PREPARATORY SCHOOL</h1>
+        <p>Live Quiz Competition</p>
     </div>
 
-
-    <!-- WAITING CARD -->
-
     <div class="card">
-
 
         <div class="waiting-icon">
             ⏳
         </div>
 
-
-        <h2>
-            You're In!
-        </h2>
-
+        <h2>You're In!</h2>
 
         <p class="welcome">
-
             Welcome,
-            <span
-                id="studentName"
-                class="student-name"
-            >
+            <span id="studentName" class="student-name">
                 Student
             </span>
-
         </p>
-
-
-        <!-- QUIZ INFORMATION -->
 
         <div class="quiz-info">
 
-
             <div class="info-row">
-
-                <span class="info-label">
-                    Grade
-                </span>
+                <span class="info-label">Grade</span>
 
                 <span
                     id="studentGrade"
-                    class="info-value"
-                >
+                    class="info-value">
                     -
                 </span>
-
             </div>
 
-
             <div class="info-row">
-
-                <span class="info-label">
-                    Quiz Code
-                </span>
+                <span class="info-label">Quiz Code</span>
 
                 <span
                     id="quizCode"
-                    class="info-value"
-                >
+                    class="info-value">
                     -
                 </span>
-
             </div>
 
-
             <div class="info-row">
-
-                <span class="info-label">
-                    Competition
-                </span>
+                <span class="info-label">Competition</span>
 
                 <span
                     id="quizTitle"
-                    class="info-value"
-                >
+                    class="info-value">
                     Loading...
                 </span>
-
             </div>
 
-
         </div>
-
-
-        <!-- STATUS -->
 
         <div class="status">
 
@@ -463,75 +413,114 @@
 
         </div>
 
-
         <p class="instruction">
-
             Please stay on this page.
             The quiz will start automatically
             when your teacher begins the competition.
-
         </p>
-
 
         <div
             id="error"
-            class="error"
-        ></div>
-
+            class="error">
+        </div>
 
         <button
             id="leaveButton"
             class="leave-button"
-            type="button"
-        >
-
+            type="button">
             Leave Competition
-
         </button>
 
+    </div>
+
+
+    <!-- CHAT -->
+
+    <div class="chat-card">
+
+        <div class="chat-header">
+
+            <h3>💬 Teacher & Student Chat</h3>
+
+            <span
+                id="onlineStatus"
+                class="online-status">
+                ● Connected
+            </span>
+
+        </div>
+
+        <div
+            id="chatError"
+            class="chat-error">
+        </div>
+
+        <div
+            id="chatMessages"
+            class="chat-messages">
+
+            <div class="chat-empty">
+                No messages yet.<br>
+                You can send a message to your teacher.
+            </div>
+
+        </div>
+
+        <form
+            id="chatForm"
+            class="chat-form">
+
+            <input
+                type="text"
+                id="chatInput"
+                class="chat-input"
+                placeholder="Type a message to your teacher..."
+                maxlength="500"
+                autocomplete="off">
+
+            <button
+                type="submit"
+                id="sendButton"
+                class="send-button">
+                Send
+            </button>
+
+        </form>
 
     </div>
 
 
     <div class="footer">
-
         Star Preparatory School © 2026
-
     </div>
-
 
 </div>
 
 
-
-<!-- ==========================================
-     FIREBASE
-========================================== -->
-
 <script type="module">
-
 
     import {
         initializeApp
-    }
-    from
-        "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
     import {
+        getAuth,
+        signInAnonymously,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
+    import {
         getFirestore,
-
         doc,
-
         getDoc,
-
-        onSnapshot
-
-    }
-    from
-        "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+        onSnapshot,
+        collection,
+        query,
+        orderBy,
+        onSnapshot as onMessagesSnapshot,
+        addDoc,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
     // ==========================================
@@ -541,7 +530,7 @@
     const firebaseConfig = {
 
         apiKey:
-            "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+            "AIzaSyAnafAfauEaxRrTRIWrfdLxHLG5ET463Y",
 
         authDomain:
             "star-preparatory-upper-quiz.firebaseapp.com",
@@ -561,20 +550,18 @@
     };
 
 
-
     // ==========================================
     // INITIALIZE FIREBASE
     // ==========================================
 
     const app =
-        initializeApp(
-            firebaseConfig
-        );
-
+        initializeApp(firebaseConfig);
 
     const db =
         getFirestore(app);
 
+    const auth =
+        getAuth(app);
 
 
     // ==========================================
@@ -582,40 +569,40 @@
     // ==========================================
 
     const studentNameElement =
-        document.getElementById(
-            "studentName"
-        );
-
+        document.getElementById("studentName");
 
     const studentGradeElement =
-        document.getElementById(
-            "studentGrade"
-        );
-
+        document.getElementById("studentGrade");
 
     const quizCodeElement =
-        document.getElementById(
-            "quizCode"
-        );
-
+        document.getElementById("quizCode");
 
     const quizTitleElement =
-        document.getElementById(
-            "quizTitle"
-        );
-
+        document.getElementById("quizTitle");
 
     const errorElement =
-        document.getElementById(
-            "error"
-        );
-
+        document.getElementById("error");
 
     const leaveButton =
-        document.getElementById(
-            "leaveButton"
-        );
+        document.getElementById("leaveButton");
 
+    const chatMessagesElement =
+        document.getElementById("chatMessages");
+
+    const chatInput =
+        document.getElementById("chatInput");
+
+    const chatForm =
+        document.getElementById("chatForm");
+
+    const sendButton =
+        document.getElementById("sendButton");
+
+    const chatErrorElement =
+        document.getElementById("chatError");
+
+    const onlineStatus =
+        document.getElementById("onlineStatus");
 
 
     // ==========================================
@@ -623,34 +610,19 @@
     // ==========================================
 
     const quizId =
-        sessionStorage.getItem(
-            "quizId"
-        );
-
+        sessionStorage.getItem("quizId");
 
     const studentId =
-        sessionStorage.getItem(
-            "studentId"
-        );
-
+        sessionStorage.getItem("studentId");
 
     const studentName =
-        sessionStorage.getItem(
-            "studentName"
-        );
-
+        sessionStorage.getItem("studentName");
 
     const studentGrade =
-        sessionStorage.getItem(
-            "studentGrade"
-        );
-
+        sessionStorage.getItem("studentGrade");
 
     const quizCode =
-        sessionStorage.getItem(
-            "quizCode"
-        );
-
+        sessionStorage.getItem("quizCode");
 
 
     // ==========================================
@@ -660,14 +632,11 @@
     studentNameElement.textContent =
         studentName || "Student";
 
-
     studentGradeElement.textContent =
         studentGrade || "-";
 
-
     quizCodeElement.textContent =
         quizCode || "-";
-
 
 
     // ==========================================
@@ -680,13 +649,11 @@
             "Quiz information is missing. Please return to the join page and join the competition again."
         );
 
-    }
-    else {
+    } else {
 
         startWaitingRoom();
 
     }
-
 
 
     // ==========================================
@@ -712,10 +679,6 @@
             );
 
 
-            // ==================================
-            // GET QUIZ INFORMATION
-            // ==================================
-
             const quizRef =
                 doc(
                     db,
@@ -730,9 +693,7 @@
                 );
 
 
-            if (
-                !quizSnapshot.exists()
-            ) {
+            if (!quizSnapshot.exists()) {
 
                 showError(
                     "This quiz could not be found. Please contact your teacher."
@@ -753,19 +714,11 @@
             );
 
 
-            // ==================================
-            // DISPLAY QUIZ TITLE
-            // ==================================
-
             quizTitleElement.textContent =
                 quiz.title ||
                 quiz.name ||
                 "Quiz Competition";
 
-
-            // ==================================
-            // CHECK CURRENT STATUS
-            // ==================================
 
             if (
                 quiz.status === "started"
@@ -792,7 +745,7 @@
 
 
             // ==================================
-            // REAL-TIME LISTENER
+            // REAL-TIME QUIZ STATUS
             // ==================================
 
             onSnapshot(
@@ -801,9 +754,7 @@
 
                 snapshot => {
 
-                    if (
-                        !snapshot.exists()
-                    ) {
+                    if (!snapshot.exists()) {
 
                         showError(
                             "The quiz could not be found."
@@ -824,13 +775,14 @@
                     );
 
 
-                    // ==========================
-                    // QUIZ STARTED
-                    // ==========================
+                    quizTitleElement.textContent =
+                        updatedQuiz.title ||
+                        updatedQuiz.name ||
+                        "Quiz Competition";
+
 
                     if (
-                        updatedQuiz.status ===
-                        "started"
+                        updatedQuiz.status === "started"
                     ) {
 
                         goToQuiz();
@@ -840,13 +792,8 @@
                     }
 
 
-                    // ==========================
-                    // QUIZ COMPLETED
-                    // ==========================
-
                     if (
-                        updatedQuiz.status ===
-                        "completed"
+                        updatedQuiz.status === "completed"
                     ) {
 
                         showError(
@@ -866,7 +813,6 @@
                         error
                     );
 
-
                     showError(
                         "Connection error. Please check your internet connection and refresh the page."
                     );
@@ -874,6 +820,14 @@
                 }
 
             );
+
+
+            // ==================================
+            // START STUDENT AUTHENTICATION
+            // ==================================
+
+            await connectStudentAuthentication();
+
 
         }
 
@@ -884,7 +838,6 @@
                 error
             );
 
-
             showError(
                 "Unable to connect to the competition: " +
                 error.message
@@ -894,6 +847,380 @@
 
     }
 
+
+    // ==========================================
+    // STUDENT FIREBASE AUTHENTICATION
+    // ==========================================
+
+    async function connectStudentAuthentication() {
+
+        try {
+
+            if (!auth.currentUser) {
+
+                console.log(
+                    "Signing student in anonymously..."
+                );
+
+                await signInAnonymously(auth);
+
+            }
+
+
+            if (auth.currentUser) {
+
+                console.log(
+                    "Student authenticated:",
+                    auth.currentUser.uid
+                );
+
+                sessionStorage.setItem(
+                    "studentAuthUid",
+                    auth.currentUser.uid
+                );
+
+                startChat();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Student authentication error:",
+                error
+            );
+
+            showChatError(
+                "Chat could not connect. Firebase Anonymous Authentication must be enabled."
+            );
+
+        }
+
+    }
+
+
+    // ==========================================
+    // AUTH STATE
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        user => {
+
+            if (user) {
+
+                console.log(
+                    "Firebase student user:",
+                    user.uid
+                );
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // START CHAT
+    // ==========================================
+
+    function startChat() {
+
+        if (!quizId) {
+            return;
+        }
+
+        if (!auth.currentUser) {
+            return;
+        }
+
+
+        console.log(
+            "Starting student chat for quiz:",
+            quizId
+        );
+
+
+        const messagesRef =
+            collection(
+                db,
+                "quizzes",
+                quizId,
+                "chatMessages"
+            );
+
+
+        const messagesQuery =
+            query(
+                messagesRef,
+                orderBy(
+                    "createdAt",
+                    "asc"
+                )
+            );
+
+
+        onMessagesSnapshot(
+
+            messagesQuery,
+
+            snapshot => {
+
+                chatMessagesElement.innerHTML = "";
+
+
+                if (snapshot.empty) {
+
+                    chatMessagesElement.innerHTML = `
+                        <div class="chat-empty">
+                            No messages yet.<br>
+                            You can send a message to your teacher.
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                snapshot.forEach(
+                    messageDoc => {
+
+                        const message =
+                            messageDoc.data();
+
+
+                        displayMessage(
+                            message
+                        );
+
+                    }
+                );
+
+
+                chatMessagesElement.scrollTop =
+                    chatMessagesElement.scrollHeight;
+
+            },
+
+            error => {
+
+                console.error(
+                    "Chat listener error:",
+                    error
+                );
+
+                onlineStatus.textContent =
+                    "● Chat error";
+
+                showChatError(
+                    "Unable to load chat messages: " +
+                    error.message
+                );
+
+            }
+
+        );
+
+    }
+
+
+    // ==========================================
+    // DISPLAY CHAT MESSAGE
+    // ==========================================
+
+    function displayMessage(message) {
+
+        const messageDiv =
+            document.createElement("div");
+
+
+        const isMine =
+            auth.currentUser &&
+            message.senderId === auth.currentUser.uid;
+
+
+        messageDiv.className =
+            isMine
+                ? "message mine"
+                : "message other";
+
+
+        const name =
+            message.senderName ||
+            (
+                message.senderRole === "teacher"
+                    ? "Teacher"
+                    : "Student"
+            );
+
+
+        const role =
+            message.senderRole === "teacher"
+                ? "Teacher"
+                : "Student";
+
+
+        const bubble =
+            document.createElement("div");
+
+        bubble.className =
+            "message-bubble";
+
+        bubble.textContent =
+            message.text || "";
+
+
+        const nameElement =
+            document.createElement("div");
+
+        nameElement.className =
+            "message-name";
+
+        nameElement.textContent =
+            name + " • " + role;
+
+
+        messageDiv.appendChild(
+            nameElement
+        );
+
+        messageDiv.appendChild(
+            bubble
+        );
+
+
+        chatMessagesElement.appendChild(
+            messageDiv
+        );
+
+    }
+
+
+    // ==========================================
+    // SEND CHAT MESSAGE
+    // ==========================================
+
+    chatForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            const text =
+                chatInput.value.trim();
+
+
+            if (!text) {
+                return;
+            }
+
+
+            if (!auth.currentUser) {
+
+                showChatError(
+                    "Please wait for the connection to complete."
+                );
+
+                return;
+
+            }
+
+
+            if (!quizId) {
+
+                showChatError(
+                    "Quiz connection is missing."
+                );
+
+                return;
+
+            }
+
+
+            sendButton.disabled = true;
+
+
+            try {
+
+                const messagesRef =
+                    collection(
+                        db,
+                        "quizzes",
+                        quizId,
+                        "chatMessages"
+                    );
+
+
+                await addDoc(
+                    messagesRef,
+                    {
+
+                        text: text,
+
+                        senderId:
+                            auth.currentUser.uid,
+
+                        senderName:
+                            studentName || "Student",
+
+                        senderRole:
+                            "student",
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+                chatInput.value = "";
+
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Send message error:",
+                    error
+                );
+
+                showChatError(
+                    "Message could not be sent: " +
+                    error.message
+                );
+
+            }
+
+            finally {
+
+                sendButton.disabled = false;
+
+                chatInput.focus();
+
+            }
+
+        }
+    );
+
+
+    // ==========================================
+    // CHAT ERROR
+    // ==========================================
+
+    function showChatError(text) {
+
+        chatErrorElement.textContent =
+            text;
+
+        chatErrorElement.style.display =
+            "block";
+
+    }
 
 
     // ==========================================
@@ -913,14 +1240,11 @@
     }
 
 
-
     // ==========================================
-    // ERROR
+    // GENERAL ERROR
     // ==========================================
 
-    function showError(
-        text
-    ) {
+    function showError(text) {
 
         errorElement.textContent =
             text;
@@ -929,7 +1253,6 @@
             "block";
 
     }
-
 
 
     // ==========================================
@@ -947,9 +1270,7 @@
 
 
             if (!confirmLeave) {
-
                 return;
-
             }
 
 
@@ -973,6 +1294,10 @@
                 "quizCode"
             );
 
+            sessionStorage.removeItem(
+                "studentAuthUid"
+            );
+
 
             window.location.href =
                 "student.html";
@@ -980,11 +1305,7 @@
         }
     );
 
-
 </script>
 
-
 </body>
-
 </html>
-

@@ -1069,6 +1069,11 @@
         </h2>
 
 
+        <div class="form-group" style="max-width:300px;margin-bottom:20px;">
+            <label for="examDuration"><strong>Exam Duration (minutes)</strong></label>
+            <input type="number" id="examDuration" value="60" min="1" max="600" style="width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;">
+        </div>
+
         <p style="
             color:#666;
             margin-bottom:20px;
@@ -1126,6 +1131,8 @@
                 to join the competition.
 
             </p>
+
+            <button id="printExamButton" type="button" class="create-button" style="margin-top:15px;background:#198754;">🖨️ Print Exam Paper</button>
 
         </div>
 
@@ -1717,6 +1724,11 @@
             createQuiz
         );
 
+    document.getElementById("printExamButton").addEventListener("click", () => {
+        const id = sessionStorage.getItem("teacherQuizId");
+        if(id) window.open("print-exam.html?quizId=" + encodeURIComponent(id), "_blank");
+    });
+
 
 
     async function createQuiz() {
@@ -1852,7 +1864,13 @@
                             48,
 
                         studentAccessExpiresAt:
-                            new Date(Date.now() + 48 * 60 * 60 * 1000)
+                            new Date(Date.now() + 48 * 60 * 60 * 1000),
+
+                        examDurationMinutes:
+                            Number(document.getElementById("examDuration").value) || 60,
+
+                        totalPoints:
+                            0
 
                     }
                 );
@@ -1908,6 +1926,12 @@
 
                         order:
                             order,
+
+                        questionType:
+                            question.questionType || "multiple_choice",
+
+                        correctTextAnswer:
+                            question.correctTextAnswer || "",
 
                         questionText:
                             question.questionText,

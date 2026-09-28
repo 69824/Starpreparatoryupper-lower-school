@@ -7,6 +7,7 @@
 <title>Live Competition | Star Preparatory School</title>
 
 <style>
+
 * {
     margin: 0;
     padding: 0;
@@ -20,6 +21,7 @@ body {
 }
 
 /* SIDEBAR */
+
 .sidebar {
     position: fixed;
     left: 0;
@@ -89,6 +91,7 @@ body {
 }
 
 /* MAIN */
+
 .main {
     margin-left: 250px;
     min-height: 100vh;
@@ -133,6 +136,7 @@ body {
 }
 
 /* CARDS */
+
 .card {
     background: white;
     border-radius: 14px;
@@ -171,6 +175,7 @@ body {
 }
 
 /* CONTROLS */
+
 .controls {
     display: flex;
     gap: 12px;
@@ -219,6 +224,7 @@ button:disabled {
 }
 
 /* QUESTION */
+
 .question-card {
     display: none;
 }
@@ -232,6 +238,7 @@ button:disabled {
     font-size: 14px;
     margin-bottom: 10px;
 }
+
 .question-timer {
     display: inline-block;
     margin-bottom: 18px;
@@ -243,12 +250,16 @@ button:disabled {
     min-width: 100px;
     text-align: center;
 }
+
 .question-timer.warning {
     background: #dc3545;
     animation: timerPulse 1s infinite;
 }
+
 @keyframes timerPulse {
-    50% { opacity: .65; }
+    50% {
+        opacity: .65;
+    }
 }
 
 .question-text {
@@ -277,6 +288,7 @@ button:disabled {
 }
 
 /* STUDENTS */
+
 .students-list {
     max-height: 350px;
     overflow-y: auto;
@@ -309,6 +321,7 @@ button:disabled {
 }
 
 /* LEADERBOARD */
+
 .leaderboard {
     width: 100%;
     border-collapse: collapse;
@@ -331,6 +344,7 @@ button:disabled {
 }
 
 /* MESSAGE */
+
 .message {
     display: none;
     padding: 15px;
@@ -358,6 +372,7 @@ button:disabled {
 }
 
 /* EMPTY */
+
 .empty {
     color: #777;
     text-align: center;
@@ -365,9 +380,80 @@ button:disabled {
 }
 
 /* COMMUNICATION */
-.chat-card{margin-top:20px}.chat-messages{height:240px;overflow:auto;background:#f4f7fb;padding:12px;border-radius:10px;margin-bottom:10px}.chat-message{padding:9px 11px;margin:6px 0;background:#fff;border-radius:8px}.chat-message.teacher{border-left:4px solid #071952}.chat-message.student{border-left:4px solid #198754}.chat-row{display:flex;gap:8px}.chat-row input{flex:1;padding:12px;border:1px solid #ccd4df;border-radius:8px}.chat-row button{padding:12px 16px;border:0;border-radius:8px;background:#071952;color:#fff;font-weight:bold}.response-box{margin-top:10px;background:#f8f9fa;padding:10px;border-radius:8px}.mark-input{width:80px;padding:7px;margin-left:8px}.mark-button{padding:7px 10px;border:0;border-radius:6px;background:#198754;color:white;cursor:pointer}
+
+.chat-card {
+    margin-top: 20px;
+}
+
+.chat-messages {
+    height: 240px;
+    overflow: auto;
+    background: #f4f7fb;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    padding: 9px 11px;
+    margin: 6px 0;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.chat-message.teacher {
+    border-left: 4px solid #071952;
+}
+
+.chat-message.student {
+    border-left: 4px solid #198754;
+}
+
+.chat-row {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-row input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccd4df;
+    border-radius: 8px;
+}
+
+.chat-row button {
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #071952;
+    color: #fff;
+    font-weight: bold;
+}
+
+.response-box {
+    margin-top: 10px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.mark-input {
+    width: 80px;
+    padding: 7px;
+    margin-left: 8px;
+}
+
+.mark-button {
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: #198754;
+    color: white;
+    cursor: pointer;
+}
 
 /* MOBILE */
+
 @media (max-width: 900px) {
 
     .sidebar {
@@ -413,13 +499,23 @@ button:disabled {
     .student-row {
         gap: 10px;
     }
+
+    .chat-row {
+        flex-direction: column;
+    }
+
+    .chat-row button {
+        width: 100%;
+    }
 }
+
 </style>
 </head>
 
 <body>
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar">
 
     <div class="school-name">
@@ -461,11 +557,10 @@ button:disabled {
         </li>
 
         <li>
-            <a href="audience.html" class="menu-link active">
+            <a href="audience.html" class="menu-link">
                 📺 Audience
             </a>
         </li>
-
 
     </ul>
 
@@ -477,6 +572,7 @@ button:disabled {
 
 
 <!-- MAIN -->
+
 <main class="main">
 
     <div class="topbar">
@@ -496,6 +592,7 @@ button:disabled {
 
 
     <!-- QUIZ INFORMATION -->
+
     <section class="card">
 
         <h2>
@@ -530,6 +627,7 @@ button:disabled {
 
 
     <!-- CONTROLS -->
+
     <section class="card">
 
         <h2>
@@ -566,14 +664,29 @@ button:disabled {
     </section>
 
 
+    <!-- TEACHER TOOLS -->
+
     <section class="card">
+
         <h2>🛠️ Teacher Tools</h2>
-        <button type="button" class="start-button" onclick="window.open('print-exam.html?quizId='+encodeURIComponent(sessionStorage.getItem('teacherQuizId')||sessionStorage.getItem('quizId')), '_blank')">🖨️ PRINT EXAM PAPER</button>
-        <p style="color:#666;margin-top:10px">Print the same questions used by this quiz, including written-answer spaces.</p>
+
+        <button
+            type="button"
+            class="start-button"
+            onclick="window.open('print-exam.html?quizId=' + encodeURIComponent(sessionStorage.getItem('teacherQuizId') || sessionStorage.getItem('quizId')), '_blank')"
+        >
+            🖨️ PRINT EXAM PAPER
+        </button>
+
+        <p style="color:#666;margin-top:10px">
+            Print the same questions used by this quiz, including written-answer spaces.
+        </p>
+
     </section>
 
 
     <!-- CURRENT QUESTION -->
+
     <section
         id="questionCard"
         class="card question-card"
@@ -586,7 +699,11 @@ button:disabled {
             Question 1
         </div>
 
-        <div id="questionTimer" class="question-timer" aria-live="polite">
+        <div
+            id="questionTimer"
+            class="question-timer"
+            aria-live="polite"
+        >
             ⏱ 00:00
         </div>
 
@@ -606,6 +723,7 @@ button:disabled {
 
 
     <!-- STUDENTS -->
+
     <section class="card">
 
         <h2>
@@ -627,17 +745,46 @@ button:disabled {
     </section>
 
 
+    <!-- CHAT -->
+
     <section class="card chat-card">
-        <h2>💬 Teacher ↔ Student Communication</h2>
-        <div id="chatMessages" class="chat-messages"><div class="empty">No messages yet.</div></div>
-        <div class="chat-row">
-            <input id="chatInput" type="text" maxlength="500" placeholder="Send a message to all students...">
-            <button id="sendChatButton" type="button">Send</button>
+
+        <h2>
+            💬 Teacher ↔ Student Communication
+        </h2>
+
+        <div
+            id="chatMessages"
+            class="chat-messages"
+        >
+            <div class="empty">
+                No messages yet.
+            </div>
         </div>
+
+        <div class="chat-row">
+
+            <input
+                id="chatInput"
+                type="text"
+                maxlength="500"
+                placeholder="Send a message to all students..."
+            >
+
+            <button
+                id="sendChatButton"
+                type="button"
+            >
+                Send
+            </button>
+
+        </div>
+
     </section>
 
 
     <!-- LEADERBOARD -->
+
     <section class="card">
 
         <h2>
@@ -681,7 +828,9 @@ button:disabled {
    FIREBASE
 ===================================================== */
 
-import { initializeApp }
+import {
+    initializeApp
+}
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
@@ -718,7 +867,7 @@ from
 const firebaseConfig = {
 
     apiKey:
-        "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+        "AIzaSyAnafAfauEaxRrTRIWrfdLxHLG5ET463Y",
 
     authDomain:
         "star-preparatory-upper-quiz.firebaseapp.com",
@@ -806,9 +955,15 @@ const questionTimer =
 
 const options =
     document.getElementById("options");
-const chatMessages = document.getElementById("chatMessages");
-const chatInput = document.getElementById("chatInput");
-const sendChatButton = document.getElementById("sendChatButton");
+
+const chatMessages =
+    document.getElementById("chatMessages");
+
+const chatInput =
+    document.getElementById("chatInput");
+
+const sendChatButton =
+    document.getElementById("sendChatButton");
 
 
 /* =====================================================
@@ -828,7 +983,11 @@ let currentQuestionIndex = 0;
 let unsubscribeQuiz = null;
 
 let unsubscribeStudents = null;
+
+let unsubscribeChat = null;
+
 let questionTimerInterval = null;
+
 let timerAdvanceInProgress = false;
 
 
@@ -916,29 +1075,40 @@ async function initializeCompetition() {
         quizData =
             quizSnapshot.data();
 
-        // The 48-hour restriction is for students only. A teacher can reopen any quiz they created.
-        if (quizData.teacherId && quizData.teacherId !== auth.currentUser.uid) {
-            showMessage("You can only control quizzes that you created.", "error");
+
+        /*
+         * Teacher can reopen/control quizzes
+         * that belong to this teacher.
+         */
+
+        if (
+            quizData.teacherId &&
+            quizData.teacherId !== auth.currentUser.uid
+        ) {
+
+            showMessage(
+                "You can only control quizzes that you created.",
+                "error"
+            );
+
             startButton.disabled = true;
+
             return;
+
         }
 
 
         displayQuiz();
 
-
         await loadQuestions();
-
 
         listenToQuiz();
 
-
         listenToStudents();
+
         listenToChat();
 
-
         updateControls();
-
 
     }
 
@@ -980,41 +1150,56 @@ function displayQuiz() {
         "---";
 
     updateStatus(
-        quizData.status || "waiting"
+        quizData.status ||
+        "waiting"
     );
 
 }
 
 
-// ==========================================
-// ACTIVE COMPETITION
-// ==========================================
+/* =====================================================
+   ACTIVE COMPETITION
+===================================================== */
 
-async function setActiveCompetition(quizId, status) {
+async function setActiveCompetition(
+    quizId,
+    status
+) {
 
-    const activeRef = doc(
-        db,
-        "settings",
-        "activeCompetition"
-    );
+    const activeRef =
+        doc(
+            db,
+            "settings",
+            "activeCompetition"
+        );
+
 
     await setDoc(
         activeRef,
         {
-            quizId: quizId,
-            status: status,
-            updatedAt: new Date()
+
+            quizId:
+                quizId,
+
+            status:
+                status,
+
+            updatedAt:
+                new Date()
+
         },
         {
             merge: true
         }
     );
 
+
     console.log(
         "ACTIVE COMPETITION:",
         quizId,
         status
     );
+
 }
 
 
@@ -1036,7 +1221,10 @@ async function loadQuestions() {
     const questionsQuery =
         query(
             questionsRef,
-            orderBy("order", "asc")
+            orderBy(
+                "order",
+                "asc"
+            )
         );
 
 
@@ -1050,14 +1238,27 @@ async function loadQuestions() {
         snapshot.docs.map(
             item => ({
 
-                id: item.id,
+                id:
+                    item.id,
 
                 ...item.data()
 
             })
         );
 
-    quizData.totalPoints = questions.reduce((sum,q)=>sum + Number(q.points || 1), 0);
+
+    quizData.totalPoints =
+        questions.reduce(
+            (
+                sum,
+                q
+            ) =>
+                sum +
+                Number(
+                    q.points || 1
+                ),
+            0
+        );
 
 
     console.log(
@@ -1066,15 +1267,16 @@ async function loadQuestions() {
     );
 
 
-    if (questions.length === 0) {
+    if (
+        questions.length === 0
+    ) {
 
         showMessage(
             "This quiz has no questions. Add questions before starting.",
             "warning"
         );
 
-        startButton.disabled =
-            true;
+        startButton.disabled = true;
 
         return;
 
@@ -1100,9 +1302,12 @@ function listenToQuiz() {
     unsubscribeQuiz =
         onSnapshot(
             quizRef,
+
             snapshot => {
 
-                if (!snapshot.exists()) {
+                if (
+                    !snapshot.exists()
+                ) {
 
                     showMessage(
                         "The quiz was deleted.",
@@ -1123,7 +1328,8 @@ function listenToQuiz() {
 
                 currentQuestionIndex =
                     Number(
-                        quizData.currentQuestionIndex || 0
+                        quizData.currentQuestionIndex ||
+                        0
                     );
 
 
@@ -1151,6 +1357,7 @@ function listenToQuiz() {
                 }
 
             },
+
             error => {
 
                 console.error(
@@ -1182,6 +1389,7 @@ function listenToStudents() {
     unsubscribeStudents =
         onSnapshot(
             studentsRef,
+
             snapshot => {
 
                 const students =
@@ -1214,6 +1422,7 @@ function listenToStudents() {
                 );
 
             },
+
             error => {
 
                 console.error(
@@ -1231,19 +1440,255 @@ function listenToStudents() {
    RENDER STUDENTS
 ===================================================== */
 
-function renderStudents(students) {
-    if(students.length===0){studentsList.innerHTML='<div class="empty">No students have joined yet.</div>';return;}
-    studentsList.innerHTML="";
-    students.forEach(student=>{
-        const row=document.createElement("div"); row.className="student-row";
-        const response = student.lastAnswer ? `<div class="response-box"><strong>Latest answer:</strong> ${escapeHtml(String(student.lastAnswer))}${student.needsManualMark ? `<div style="margin-top:8px"><strong>Manual mark:</strong><input class="mark-input" id="mark-${student.id}" type="number" min="0" step="0.5" placeholder="points"><button class="mark-button" data-mark="${student.id}">Save Mark</button></div>` : ""}</div>` : "";
-        row.innerHTML=`<div style="width:100%"><div style="display:flex;justify-content:space-between;gap:10px"><div><div class="student-name">${escapeHtml(student.name||"Student")}</div><div class="student-grade">${escapeHtml(student.grade||"-")}</div></div><div class="student-score">${Number(student.score||0)} pts</div></div>${response}</div>`;
-        studentsList.appendChild(row);
-    });
-    studentsList.querySelectorAll("[data-mark]").forEach(btn=>btn.addEventListener("click",async()=>{
-        const id=btn.dataset.mark; const input=document.getElementById("mark-"+id); const mark=Number(input.value); if(!Number.isFinite(mark)||mark<0){alert("Enter a valid mark.");return;}
-        await updateDoc(doc(db,"quizzes",quizId,"students",id),{score:Number(students.find(x=>x.id===id)?.score||0)+mark,needsManualMark:false,lastManualMark:mark,markedBy:auth.currentUser.uid,markedAt:new Date()});
-    }));
+function renderStudents(
+    students
+) {
+
+    if (
+        students.length === 0
+    ) {
+
+        studentsList.innerHTML =
+            '<div class="empty">No students have joined yet.</div>';
+
+        return;
+
+    }
+
+
+    studentsList.innerHTML = "";
+
+
+    students.forEach(
+        student => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+            row.className =
+                "student-row";
+
+
+            const response =
+                student.lastAnswer
+
+                    ?
+
+                    `
+                    <div class="response-box">
+
+                        <strong>
+                            Latest answer:
+                        </strong>
+
+                        ${escapeHtml(
+                            String(
+                                student.lastAnswer
+                            )
+                        )}
+
+                        ${
+                            student.needsManualMark
+
+                                ?
+
+                                `
+                                <div style="margin-top:8px">
+
+                                    <strong>
+                                        Manual mark:
+                                    </strong>
+
+                                    <input
+                                        class="mark-input"
+                                        id="mark-${student.id}"
+                                        type="number"
+                                        min="0"
+                                        step="0.5"
+                                        placeholder="points"
+                                    >
+
+                                    <button
+                                        class="mark-button"
+                                        data-mark="${student.id}"
+                                    >
+                                        Save Mark
+                                    </button>
+
+                                </div>
+                                `
+
+                                :
+
+                                ""
+                        }
+
+                    </div>
+                    `
+
+                    :
+
+                    "";
+
+
+            row.innerHTML =
+                `
+                <div style="width:100%">
+
+                    <div
+                        style="
+                            display:flex;
+                            justify-content:space-between;
+                            gap:10px
+                        "
+                    >
+
+                        <div>
+
+                            <div class="student-name">
+                                ${escapeHtml(
+                                    student.name ||
+                                    "Student"
+                                )}
+                            </div>
+
+                            <div class="student-grade">
+                                ${escapeHtml(
+                                    student.grade ||
+                                    "-"
+                                )}
+                            </div>
+
+                        </div>
+
+                        <div class="student-score">
+                            ${Number(
+                                student.score || 0
+                            )} pts
+                        </div>
+
+                    </div>
+
+                    ${response}
+
+                </div>
+                `;
+
+
+            studentsList.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    studentsList
+        .querySelectorAll(
+            "[data-mark]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async () => {
+
+                        const id =
+                            button.dataset.mark;
+
+                        const input =
+                            document.getElementById(
+                                "mark-" + id
+                            );
+
+                        const mark =
+                            Number(
+                                input.value
+                            );
+
+
+                        if (
+                            !Number.isFinite(
+                                mark
+                            ) ||
+                            mark < 0
+                        ) {
+
+                            alert(
+                                "Enter a valid mark."
+                            );
+
+                            return;
+
+                        }
+
+
+                        const student =
+                            students.find(
+                                item =>
+                                    item.id === id
+                            );
+
+
+                        try {
+
+                            await updateDoc(
+                                doc(
+                                    db,
+                                    "quizzes",
+                                    quizId,
+                                    "students",
+                                    id
+                                ),
+                                {
+
+                                    score:
+                                        Number(
+                                            student?.score ||
+                                            0
+                                        ) +
+                                        mark,
+
+                                    needsManualMark:
+                                        false,
+
+                                    lastManualMark:
+                                        mark,
+
+                                    markedBy:
+                                        auth.currentUser.uid,
+
+                                    markedAt:
+                                        new Date()
+
+                                }
+                            );
+
+                        }
+
+                        catch (error) {
+
+                            console.error(
+                                "Manual mark error:",
+                                error
+                            );
+
+                            alert(
+                                "Unable to save mark: " +
+                                error.message
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
 }
 
 
@@ -1259,13 +1704,19 @@ function renderLeaderboard(
         students.length === 0
     ) {
 
-        leaderboardBody.innerHTML = `
+        leaderboardBody.innerHTML =
+            `
             <tr>
-                <td colspan="5" class="empty">
+
+                <td
+                    colspan="5"
+                    class="empty"
+                >
                     No results yet.
                 </td>
+
             </tr>
-        `;
+            `;
 
         return;
 
@@ -1274,7 +1725,10 @@ function renderLeaderboard(
 
     const sorted =
         [...students].sort(
-            (a, b) => {
+            (
+                a,
+                b
+            ) => {
 
                 return Number(
                     b.score || 0
@@ -1292,25 +1746,57 @@ function renderLeaderboard(
 
 
     sorted.forEach(
-        (student, index) => {
+        (
+            student,
+            index
+        ) => {
 
-            const total = Number(quizData?.totalPoints || questions.reduce((sum,q)=>sum+Number(q.points||1),0) || 0);
+            const total =
+                Number(
+                    quizData?.totalPoints ||
+                    questions.reduce(
+                        (
+                            sum,
+                            q
+                        ) =>
+                            sum +
+                            Number(
+                                q.points || 1
+                            ),
+                        0
+                    ) ||
+                    0
+                );
 
 
             const percentage =
                 student.percentage !== undefined
-                    ? student.percentage
-                    : (
+
+                    ?
+
+                    student.percentage
+
+                    :
+
+                    (
                         total > 0
-                            ? Math.round(
+
+                            ?
+
+                            Math.round(
                                 (
                                     Number(
-                                        student.score || 0
+                                        student.score ||
+                                        0
                                     ) /
                                     total
-                                ) * 100
+                                ) *
+                                100
                             )
-                            : 0
+
+                            :
+
+                            0
                     );
 
 
@@ -1320,8 +1806,8 @@ function renderLeaderboard(
                 );
 
 
-            row.innerHTML = `
-
+            row.innerHTML =
+                `
                 <td>
                     ${index + 1}
                 </td>
@@ -1349,8 +1835,7 @@ function renderLeaderboard(
                 <td>
                     ${percentage}%
                 </td>
-
-            `;
+                `;
 
 
             leaderboardBody.appendChild(
@@ -1363,16 +1848,297 @@ function renderLeaderboard(
 }
 
 
-function listenToChat(){
-    const ref=collection(db,"quizzes",quizId,"chatMessages");
-    onSnapshot(query(ref,orderBy("createdAt","asc")),snap=>{
-        chatMessages.innerHTML="";
-        snap.forEach(d=>{const m=d.data(); const div=document.createElement("div"); div.className="chat-message "+(m.senderRole==="teacher"?"teacher":"student"); div.innerHTML=`<strong>${escapeHtml(m.senderName||m.senderRole||"User")}:</strong> ${escapeHtml(m.text||"")}`; chatMessages.appendChild(div);});
-        chatMessages.scrollTop=chatMessages.scrollHeight;
-    });
+/* =====================================================
+   CHAT LISTENER
+===================================================== */
+
+function listenToChat() {
+
+    const chatRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "chatMessages"
+        );
+
+
+    const chatQuery =
+        query(
+            chatRef,
+            orderBy(
+                "createdAt",
+                "asc"
+            )
+        );
+
+
+    unsubscribeChat =
+        onSnapshot(
+            chatQuery,
+
+            snapshot => {
+
+                chatMessages.innerHTML = "";
+
+
+                if (
+                    snapshot.empty
+                ) {
+
+                    chatMessages.innerHTML =
+                        '<div class="empty">No messages yet.</div>';
+
+                    return;
+
+                }
+
+
+                snapshot.forEach(
+                    messageDoc => {
+
+                        const data =
+                            messageDoc.data();
+
+
+                        const div =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        div.className =
+                            "chat-message " +
+                            (
+                                data.senderRole ===
+                                "teacher"
+
+                                    ?
+
+                                    "teacher"
+
+                                    :
+
+                                    "student"
+                            );
+
+
+                        div.innerHTML =
+                            `
+                            <strong>
+                                ${escapeHtml(
+                                    data.senderName ||
+                                    data.senderRole ||
+                                    "User"
+                                )}:
+                            </strong>
+
+                            ${escapeHtml(
+                                data.text ||
+                                ""
+                            )}
+                            `;
+
+
+                        chatMessages.appendChild(
+                            div
+                        );
+
+                    }
+                );
+
+
+                chatMessages.scrollTop =
+                    chatMessages.scrollHeight;
+
+            },
+
+            error => {
+
+                console.error(
+                    "Chat listener error:",
+                    error
+                );
+
+            }
+        );
+
 }
-async function sendTeacherChat(){const text=chatInput.value.trim();if(!text)return;chatInput.value="";await addDoc(collection(db,"quizzes",quizId,"chatMessages"),{text,senderId:auth.currentUser.uid,senderName:auth.currentUser.displayName||auth.currentUser.email||"Teacher",senderRole:"teacher",createdAt:serverTimestamp()});}
-sendChatButton.addEventListener("click",sendTeacherChat);chatInput.addEventListener("keydown",e=>{if(e.key==="Enter")sendTeacherChat();});
+
+
+/* =====================================================
+   SEND TEACHER CHAT
+===================================================== */
+
+async function sendTeacherChat() {
+
+    const text =
+        chatInput.value.trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    if (!quizId) {
+
+        alert(
+            "No active quiz is selected."
+        );
+
+        return;
+
+    }
+
+
+    if (!auth.currentUser) {
+
+        alert(
+            "Teacher authentication is not available."
+        );
+
+        return;
+
+    }
+
+
+    sendChatButton.disabled =
+        true;
+
+
+    try {
+
+        /*
+         * IMPORTANT:
+         * quizId is included in the document.
+         * This is required by the Firestore rule.
+         */
+
+        const chatData = {
+
+            text:
+                text,
+
+            senderId:
+                auth.currentUser.uid,
+
+            senderName:
+                auth.currentUser.displayName ||
+                auth.currentUser.email ||
+                "Teacher",
+
+            senderRole:
+                "teacher",
+
+            quizId:
+                quizId,
+
+            createdAt:
+                serverTimestamp()
+
+        };
+
+
+        console.log(
+            "CHAT DEBUG:",
+            {
+
+                teacherUid:
+                    auth.currentUser.uid,
+
+                teacherEmail:
+                    auth.currentUser.email,
+
+                quizId:
+                    quizId,
+
+                collectionPath:
+                    `quizzes/${quizId}/chatMessages`,
+
+                data:
+                    chatData
+
+            }
+        );
+
+
+        await addDoc(
+            collection(
+                db,
+                "quizzes",
+                quizId,
+                "chatMessages"
+            ),
+            chatData
+        );
+
+
+        chatInput.value =
+            "";
+
+
+        console.log(
+            "Teacher chat message sent successfully."
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "TEACHER CHAT ERROR:",
+            error
+        );
+
+
+        alert(
+            "Message could not be sent:\n\n" +
+            error.message
+        );
+
+    }
+
+    finally {
+
+        sendChatButton.disabled =
+            false;
+
+        chatInput.focus();
+
+    }
+
+}
+
+
+/* =====================================================
+   CHAT BUTTONS
+===================================================== */
+
+sendChatButton.addEventListener(
+    "click",
+    sendTeacherChat
+);
+
+
+chatInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Enter"
+        ) {
+
+            event.preventDefault();
+
+            sendTeacherChat();
+
+        }
+
+    }
+);
+
 
 /* =====================================================
    START QUIZ
@@ -1403,9 +2169,7 @@ startButton.addEventListener(
 
 
         if (!confirmed) {
-
             return;
-
         }
 
 
@@ -1445,10 +2209,11 @@ startButton.addEventListener(
                 }
             );
 
-                await setActiveCompetition(
-                     quizId,
-                   "started"
-             );
+
+            await setActiveCompetition(
+                quizId,
+                "started"
+            );
 
 
             currentQuestionIndex =
@@ -1463,7 +2228,6 @@ startButton.addEventListener(
 
             showCurrentQuestion();
 
-
         }
 
         catch (error) {
@@ -1473,11 +2237,13 @@ startButton.addEventListener(
                 error
             );
 
+
             showMessage(
                 "Unable to start quiz: " +
                 error.message,
                 "error"
             );
+
 
             startButton.disabled =
                 false;
@@ -1500,9 +2266,7 @@ function showCurrentQuestion() {
     if (
         questions.length === 0
     ) {
-
         return;
-
     }
 
 
@@ -1513,9 +2277,7 @@ function showCurrentQuestion() {
 
 
     if (!question) {
-
         return;
-
     }
 
 
@@ -1543,13 +2305,25 @@ function showCurrentQuestion() {
 
     const questionOptions = [
 
-        ["A", question.optionA],
+        [
+            "A",
+            question.optionA
+        ],
 
-        ["B", question.optionB],
+        [
+            "B",
+            question.optionB
+        ],
 
-        ["C", question.optionC],
+        [
+            "C",
+            question.optionC
+        ],
 
-        ["D", question.optionD]
+        [
+            "D",
+            question.optionD
+        ]
 
     ];
 
@@ -1572,8 +2346,8 @@ function showCurrentQuestion() {
                 "option";
 
 
-            div.innerHTML = `
-
+            div.innerHTML =
+                `
                 <strong>
                     ${item[0]}
                 </strong>
@@ -1581,8 +2355,7 @@ function showCurrentQuestion() {
                 ${escapeHtml(
                     item[1]
                 )}
-
-            `;
+                `;
 
 
             options.appendChild(
@@ -1625,6 +2398,7 @@ nextButton.addEventListener(
                 "This is the final question. Click END QUIZ when all students have finished.",
                 "warning"
             );
+
 
             nextButton.disabled =
                 true;
@@ -1692,6 +2466,7 @@ nextButton.addEventListener(
                 error
             );
 
+
             showMessage(
                 "Unable to move to the next question: " +
                 error.message,
@@ -1728,9 +2503,7 @@ endButton.addEventListener(
 
 
         if (!confirmed) {
-
             return;
-
         }
 
 
@@ -1752,28 +2525,23 @@ endButton.addEventListener(
 
 
             await updateDoc(
-    quizRef,
-    {
-        status: "completed",
-        completedAt: new Date()
-    }
-);
+                quizRef,
+                {
 
-await setActiveCompetition(
-    quizId,
-    "completed"
-);
+                    status:
+                        "completed",
 
-questionCard.classList.remove(
-    "visible"
-);
+                    completedAt:
+                        new Date()
 
-showMessage(
-    "Competition ended successfully. Final results are shown below.",
-    "success"
-);
+                }
+            );
 
-updateControls();
+
+            await setActiveCompetition(
+                quizId,
+                "completed"
+            );
 
 
             questionCard.classList.remove(
@@ -1798,11 +2566,13 @@ updateControls();
                 error
             );
 
+
             showMessage(
                 "Unable to end the quiz: " +
                 error.message,
                 "error"
             );
+
 
             endButton.disabled =
                 false;
@@ -1838,8 +2608,10 @@ function updateControls() {
         startButton.textContent =
             "▶ START QUIZ";
 
+
         nextButton.disabled =
             true;
+
 
         endButton.disabled =
             true;
@@ -1871,6 +2643,7 @@ function updateControls() {
                 false;
 
         }
+
         else {
 
             nextButton.disabled =
@@ -1963,7 +2736,8 @@ function showMessage(
         text;
 
     message.className =
-        "message " + type;
+        "message " +
+        type;
 
     message.style.display =
         "block";
@@ -1987,14 +2761,19 @@ function showMessage(
 ===================================================== */
 
 document
-    .getElementById("logoutButton")
+    .getElementById(
+        "logoutButton"
+    )
     .addEventListener(
         "click",
         async () => {
 
             try {
 
-                await signOut(auth);
+                await signOut(
+                    auth
+                );
+
 
                 window.location.href =
                     "teacher-login.html";
@@ -2069,12 +2848,41 @@ window.addEventListener(
     "beforeunload",
     () => {
 
-        if (unsubscribeQuiz) {
+        if (
+            unsubscribeQuiz
+        ) {
+
             unsubscribeQuiz();
+
         }
 
-        if (unsubscribeStudents) {
+
+        if (
+            unsubscribeStudents
+        ) {
+
             unsubscribeStudents();
+
+        }
+
+
+        if (
+            unsubscribeChat
+        ) {
+
+            unsubscribeChat();
+
+        }
+
+
+        if (
+            questionTimerInterval
+        ) {
+
+            clearInterval(
+                questionTimerInterval
+            );
+
         }
 
     }

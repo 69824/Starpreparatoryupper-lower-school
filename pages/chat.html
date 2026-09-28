@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Preparatory School - Chat</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+}
+
+.header {
+    background: #071952;
+    color: white;
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.header small {
+    opacity: .8;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 25px auto;
+    padding: 0 15px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 18px;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-header h2 {
+    margin: 0 0 6px;
+}
+
+#quizInfo {
+    color: #666;
+    font-size: 14px;
+}
+
+.messages {
+    height: 500px;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8f9fc;
+}
+
+.empty {
+    text-align: center;
+    color: #777;
+    padding: 100px 20px;
+}
+
+.message-row {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.message-row.mine {
+    justify-content: flex-end;
+}
+
+.message-bubble {
+    max-width: 75%;
+    padding: 11px 15px;
+    border-radius: 14px;
+    background: white;
+    box-shadow: 0 2px 7px rgba(0,0,0,.08);
+}
+
+.message-row.mine .message-bubble {
+    background: #071952;
+    color: white;
+}
+
+.sender {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.role {
+    font-size: 11px;
+    opacity: .7;
+    margin-left: 5px;
+}
+
+.message-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.time {
+    font-size: 10px;
+    opacity: .65;
+    margin-top: 5px;
+}
+
+.composer {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    background: white;
+}
+
+#messageInput {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    padding: 13px;
+    font-size: 15px;
+    outline: none;
+}
+
+#messageInput:focus {
+    border-color: #071952;
+}
+
+#sendButton {
+    border: none;
+    background: #071952;
+    color: white;
+    padding: 0 25px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#sendButton:hover {
+    opacity: .9;
+}
+
+#sendButton:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.top-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    border: none;
+    border-radius: 7px;
+    padding: 9px 14px;
+    cursor: pointer;
+    background: white;
+    color: #071952;
+    font-weight: bold;
+}
+
+.error {
+    background: #f8d7da;
+    color: #842029;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: none;
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 18px;
+    }
+
+    .messages {
+        height: 60vh;
+    }
+
+    .message-bubble {
+        max-width: 88%;
+    }
+
+    .composer {
+        padding: 10px;
+    }
+
+    #sendButton {
+        padding: 0 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div>
+        <h1>💬 Star Preparatory School Chat</h1>
+        <small>Teacher and Student Communication</small>
+    </div>
+
+    <div class="top-actions">
+        <button class="action-button" onclick="goBack()">
+            ← Back
+        </button>
+
+        <button class="action-button" onclick="logout()">
+            Logout
+        </button>
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <div id="errorMessage" class="error"></div>
+
+    <div class="card">
+
+        <div class="chat-header">
+
+            <h2>💬 Quiz Chat</h2>
+
+            <div id="quizInfo">
+                Loading...
+            </div>
+
+        </div>
+
+
+        <div id="messages" class="messages">
+
+            <div class="empty">
+                Loading messages...
+            </div>
+
+        </div>
+
+
+        <div class="composer">
+
+            <input
+                type="text"
+                id="messageInput"
+                placeholder="Type your message..."
+                maxlength="1000"
+                autocomplete="off"
+            >
+
+            <button id="sendButton">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp,
+    doc,
+    getDoc
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyAnafAfauEaxRrTRIWrfdLxHL7G5ET463Y",
+
+    authDomain:
+        "star-preparatory-upper-quiz.firebaseapp.com",
+
+    projectId:
+        "star-preparatory-upper-quiz",
+
+    storageBucket:
+        "star-preparatory-upper-quiz.firebasestorage.app",
+
+    messagingSenderId:
+        "763341549221",
+
+    appId:
+        "1:763341549221:web:cf77f2f9e227306550674c"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+const db =
+    getFirestore(app);
+
+
+const messagesBox =
+    document.getElementById("messages");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const quizInfo =
+    document.getElementById("quizInfo");
+
+
+let currentUser = null;
+let quizId = null;
+let unsubscribeMessages = null;
+
+
+/* =====================================================
+   GET QUIZ ID
+===================================================== */
+
+quizId =
+    sessionStorage.getItem("teacherQuizId") ||
+    sessionStorage.getItem("quizId");
+
+
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+if (!quizId) {
+
+    quizId =
+        urlParams.get("quizId");
+
+}
+
+
+/* =====================================================
+   SHOW ERROR
+===================================================== */
+
+function showError(text) {
+
+    errorMessage.textContent = text;
+
+    errorMessage.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
+   AUTHENTICATION
+===================================================== */
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        if (!user) {
+
+            window.location.href =
+                "teacher-login.html";
+
+            return;
+
+        }
+
+        currentUser = user;
+
+        if (!quizId) {
+
+            showError(
+                "No quiz was selected. Please open the chat from a quiz."
+            );
+
+            sendButton.disabled = true;
+
+            return;
+
+        }
+
+        await loadQuiz();
+
+        listenToMessages();
+
+    }
+);
+
+
+/* =====================================================
+   LOAD QUIZ
+===================================================== */
+
+async function loadQuiz() {
+
+    try {
+
+        const quizRef =
+            doc(
+                db,
+                "quizzes",
+                quizId
+            );
+
+        const quizSnapshot =
+            await getDoc(quizRef);
+
+
+        if (!quizSnapshot.exists()) {
+
+            showError(
+                "The selected quiz could not be found."
+            );
+
+            return;
+
+        }
+
+
+        const data =
+            quizSnapshot.data();
+
+
+        quizInfo.textContent =
+            `${data.title || data.name || "Quiz"}`
+            +
+            ` • Grade: ${data.grade || "---"}`
+            +
+            ` • Code: ${data.quizCode || "---"}`;
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showError(
+            "Unable to load the quiz."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   REAL-TIME CHAT
+===================================================== */
+
+function listenToMessages() {
+
+    const messagesRef =
+        collection(
+            db,
+            "quizzes",
+            quizId,
+            "chatMessages"
+        );
+
+
+    const messagesQuery =
+        query(
+            messagesRef,
+            orderBy(
+                "createdAt",
+                "asc"
+            )
+        );
+
+
+    unsubscribeMessages =
+        onSnapshot(
+            messagesQuery,
+
+            snapshot => {
+
+                messagesBox.innerHTML = "";
+
+
+                if (snapshot.empty) {
+
+                    messagesBox.innerHTML =
+                        `
+                        <div class="empty">
+                            No messages yet.<br>
+                            Start the conversation.
+                        </div>
+                        `;
+
+                    return;
+
+                }
+
+
+                snapshot.forEach(
+                    messageDoc => {
+
+                        const data =
+                            messageDoc.data();
+
+                        displayMessage(data);
+
+                    }
+                );
+
+
+                scrollToBottom();
+
+            },
+
+            error => {
+
+                console.error(
+                    "Chat listener error:",
+                    error
+                );
+
+                showError(
+                    "Unable to load chat messages: "
+                    +
+                    error.message
+                );
+
+            }
+        );
+
+}
+
+
+/* =====================================================
+   DISPLAY MESSAGE
+===================================================== */
+
+function displayMessage(data) {
+
+    const row =
+        document.createElement("div");
+
+
+    const isMine =
+        data.senderId ===
+        currentUser.uid;
+
+
+    row.className =
+        "message-row"
+        +
+        (isMine ? " mine" : "");
+
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+
+    const sender =
+        document.createElement("div");
+
+    sender.className =
+        "sender";
+
+
+    sender.textContent =
+        data.senderName ||
+        "User";
+
+
+    const role =
+        document.createElement("span");
+
+    role.className =
+        "role";
+
+
+    role.textContent =
+        data.senderRole ||
+        "User";
+
+
+    sender.appendChild(role);
+
+
+    const text =
+        document.createElement("div");
+
+    text.className =
+        "message-text";
+
+
+    text.textContent =
+        data.text ||
+        "";
+
+
+    const time =
+        document.createElement("div");
+
+    time.className =
+        "time";
+
+
+    time.textContent =
+        formatTime(
+            data.createdAt
+        );
+
+
+    bubble.appendChild(sender);
+
+    bubble.appendChild(text);
+
+    bubble.appendChild(time);
+
+    row.appendChild(bubble);
+
+    messagesBox.appendChild(row);
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
+
+async function sendMessage() {
+
+    const text =
+        messageInput.value.trim();
+
+
+    if (!text) {
+
+        return;
+
+    }
+
+
+    if (!currentUser) {
+
+        showError(
+            "You must be logged in to send messages."
+        );
+
+        return;
+
+    }
+
+
+    if (!quizId) {
+
+        showError(
+            "No quiz selected."
+        );
+
+        return;
+
+    }
+
+
+    sendButton.disabled =
+        true;
+
+
+    try {
+
+        const messagesRef =
+            collection(
+                db,
+                "quizzes",
+                quizId,
+                "chatMessages"
+            );
+
+
+        const senderName =
+            sessionStorage.getItem(
+                "studentName"
+            )
+            ||
+            sessionStorage.getItem(
+                "teacherName"
+            )
+            ||
+            currentUser.displayName
+            ||
+            currentUser.email
+            ||
+            "User";
+
+
+        const senderRole =
+            sessionStorage.getItem(
+                "userRole"
+            )
+            ||
+            sessionStorage.getItem(
+                "role"
+            )
+            ||
+            (
+                sessionStorage.getItem(
+                    "teacherQuizId"
+                )
+                ? "Teacher"
+                : "Student"
+            );
+
+
+        await addDoc(
+            messagesRef,
+            {
+
+                text: text,
+
+                senderId:
+                    currentUser.uid,
+
+                senderName:
+                    senderName,
+
+                senderRole:
+                    senderRole,
+
+                createdAt:
+                    serverTimestamp()
+
+            }
+        );
+
+
+        messageInput.value = "";
+
+        messageInput.focus();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Send message error:",
+            error
+        );
+
+        showError(
+            "Message could not be sent: "
+            +
+            error.message
+        );
+
+    }
+
+    finally {
+
+        sendButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT TIME
+===================================================== */
+
+function formatTime(timestamp) {
+
+    if (!timestamp) {
+
+        return "Sending...";
+
+    }
+
+
+    try {
+
+        const date =
+            timestamp.toDate();
+
+
+        return date.toLocaleString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+    catch {
+
+        return "";
+
+    }
+
+}
+
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+function scrollToBottom() {
+
+    messagesBox.scrollTop =
+        messagesBox.scrollHeight;
+
+}
+
+
+/* =====================================================
+   ENTER TO SEND
+===================================================== */
+
+messageInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter"
+            &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SEND BUTTON
+===================================================== */
+
+sendButton.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+window.logout =
+    async function () {
+
+        try {
+
+            if (unsubscribeMessages) {
+
+                unsubscribeMessages();
+
+            }
+
+            await signOut(auth);
+
+            window.location.href =
+                "teacher-login.html";
+
+        }
+
+        catch (error) {
+
+            showError(
+                "Unable to logout."
+            );
+
+        }
+
+    };
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+window.goBack =
+    function () {
+
+        if (
+            sessionStorage.getItem(
+                "teacherQuizId"
+            )
+        ) {
+
+            window.location.href =
+                "teacher-dashboard.html";
+
+        }
+
+        else {
+
+            window.history.back();
+
+        }
+
+    };
+
+
+</script>
+
+</body>
+</html>

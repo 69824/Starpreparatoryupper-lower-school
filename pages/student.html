@@ -791,6 +791,44 @@
 
 
             // ==================================
+            // CHECK 48-HOUR STUDENT ACCESS WINDOW
+            // ==================================
+
+            const createdAtMillis =
+                quiz.createdAt?.toMillis
+                    ? quiz.createdAt.toMillis()
+                    : (quiz.createdAt?.toDate
+                        ? quiz.createdAt.toDate().getTime()
+                        : (quiz.createdAt ? new Date(quiz.createdAt).getTime() : NaN));
+
+            const expiryMillis =
+                quiz.studentAccessExpiresAt?.toMillis
+                    ? quiz.studentAccessExpiresAt.toMillis()
+                    : (quiz.studentAccessExpiresAt?.toDate
+                        ? quiz.studentAccessExpiresAt.toDate().getTime()
+                        : (quiz.studentAccessExpiresAt
+                            ? new Date(quiz.studentAccessExpiresAt).getTime()
+                            : (Number.isFinite(createdAtMillis)
+                                ? createdAtMillis + 48 * 60 * 60 * 1000
+                                : NaN)));
+
+            if (!Number.isFinite(expiryMillis) || Date.now() > expiryMillis) {
+
+                const expiredDate = Number.isFinite(expiryMillis)
+                    ? new Date(expiryMillis).toLocaleString()
+                    : "the 48-hour access window";
+
+                showMessage(
+                    `This quiz code has expired. Student access ended ${expiredDate}. Please ask the teacher for a newly generated quiz code.`,
+                    "error"
+                );
+
+                resetButton();
+                return;
+            }
+
+
+            // ==================================
             // CHECK STATUS
             // ==================================
 

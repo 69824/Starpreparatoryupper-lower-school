@@ -247,6 +247,26 @@ button:disabled {
     background: #dc3545;
     animation: timerPulse 1s infinite;
 }
+.question-timer.expired {
+    background: #842029;
+    color: #fff;
+    animation: none;
+    min-width: 150px;
+}
+.time-up-notice {
+    display: none;
+    margin: 0 0 18px 0;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: #f8d7da;
+    color: #842029;
+    font-weight: 800;
+    font-size: 17px;
+    border: 2px solid #f1aeb5;
+}
+.time-up-notice.visible {
+    display: block;
+}
 @keyframes timerPulse {
     50% { opacity: .65; }
 }
@@ -590,6 +610,10 @@ button:disabled {
             ⏱ 00:00
         </div>
 
+        <div id="timeUpNotice" class="time-up-notice" role="status" aria-live="assertive">
+            ⏰ TIME UP — This question's time has ended. Click <strong>NEXT QUESTION</strong> to continue.
+        </div>
+
         <div
             id="questionText"
             class="question-text"
@@ -804,6 +828,9 @@ const questionText =
 const questionTimer =
     document.getElementById("questionTimer");
 
+const timeUpNotice =
+    document.getElementById("timeUpNotice");
+
 const options =
     document.getElementById("options");
 const chatMessages = document.getElementById("chatMessages");
@@ -830,6 +857,7 @@ let unsubscribeQuiz = null;
 let unsubscribeStudents = null;
 let questionTimerInterval = null;
 let timerAdvanceInProgress = false;
+let questionTimerExpired = false;
 
 
 /* =====================================================
@@ -1638,7 +1666,12 @@ startButton.addEventListener(
                         0,
 
                     startedAt:
-                        new Date()
+                        new Date(),
+
+                    // One authoritative start time for this question.
+                    // Students and the teacher use this same Firebase timestamp.
+                    questionStartedAt:
+                        serverTimestamp()
 
                 }
             );
@@ -1738,6 +1771,9 @@ function showCurrentQuestion() {
     options.innerHTML =
         "";
 
+    // Keep the teacher's countdown synchronized with every student's countdown.
+    startTeacherQuestionTimer(question, quizData);
+
 
     const questionOptions = [
 
@@ -1793,6 +1829,88 @@ function showCurrentQuestion() {
 
     updateControls();
 
+}
+
+
+/* =====================================================
+   TEACHER QUESTION TIMER
+===================================================== */
+
+function getQuestionStartedMillis(quiz) {
+
+    if (!quiz || !quiz.questionStartedAt) {
+        return Date.now();
+    }
+
+    const value = quiz.questionStartedAt;
+
+    if (typeof value.toMillis === "function") {
+        return value.toMillis();
+    }
+
+    if (value.seconds !== undefined) {
+        return Number(value.seconds) * 1000 + Math.floor(Number(value.nanoseconds || 0) / 1000000);
+    }
+
+    if (value instanceof Date) {
+        return value.getTime();
+    }
+
+    if (typeof value === "string") {
+        const parsed = Date.parse(value);
+        if (!Number.isNaN(parsed)) return parsed;
+    }
+
+    return Date.now();
+}
+
+function startTeacherQuestionTimer(question, quiz) {
+
+    clearInterval(questionTimerInterval);
+    questionTimerExpired = false;
+
+    questionTimer.classList.remove("warning", "expired");
+    timeUpNotice.classList.remove("visible");
+
+    const seconds = Math.max(1, Number(question?.timeLimit) || 10);
+    const started = getQuestionStartedMillis(quiz);
+
+    function tick() {
+
+        const elapsed = Math.floor((Date.now() - started) / 1000);
+        const remaining = Math.max(0, seconds - elapsed);
+        const mins = String(Math.floor(remaining / 60)).padStart(2, "0");
+        const secs = String(remaining % 60).padStart(2, "0");
+
+        questionTimer.textContent = `⏱ ${mins}:${secs}`;
+
+        if (remaining <= 5 && remaining > 0) {
+            questionTimer.classList.add("warning");
+        } else {
+            questionTimer.classList.remove("warning");
+        }
+
+        if (remaining <= 0) {
+
+            clearInterval(questionTimerInterval);
+            questionTimer.classList.remove("warning");
+            questionTimer.classList.add("expired");
+            questionTimer.textContent = "⏰ TIME UP";
+
+            if (!questionTimerExpired) {
+                questionTimerExpired = true;
+                timeUpNotice.classList.add("visible");
+                nextButton.disabled = currentQuestionIndex >= questions.length - 1;
+                showMessage(
+                    `⏰ Time is up for Question ${currentQuestionIndex + 1}. Click NEXT QUESTION to continue.`,
+                    "warning"
+                );
+            }
+        }
+    }
+
+    tick();
+    questionTimerInterval = setInterval(tick, 250);
 }
 
 
@@ -1861,7 +1979,11 @@ nextButton.addEventListener(
                         newIndex,
 
                     currentQuestion:
-                        newIndex
+                        newIndex,
+
+                    // Reset the timer from the exact moment this question starts.
+                    questionStartedAt:
+                        serverTimestamp()
 
                 }
             );
@@ -1940,6 +2062,10 @@ endButton.addEventListener(
 
 
         try {
+
+            clearInterval(questionTimerInterval);
+            questionTimer.classList.remove("warning", "expired");
+            timeUpNotice.classList.remove("visible");
 
             const quizRef =
                 doc(
